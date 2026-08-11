@@ -1,0 +1,130 @@
+.about-page {
+  padding-bottom: 80px;
+}
+
+.about-hero {
+  background: var(--color-bg-alt);
+  padding: 80px 20px;
+  text-align: center;
+  margin-bottom: 60px;
+  border-bottom: 1px solid var(--color-border);
+}
+.about-hero h1 {
+  font-size: 48px;
+  color: #1b4332;
+  margin-bottom: 20px;
+}
+.about-hero p {
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+  color: var(--color-text-light);
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.about-history {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.history-text {
+  flex: 1.5;
+}
+.history-text h2 {
+  font-size: 32px;
+  color: #1b4332;
+  margin-bottom: 24px;
+}
+.history-text p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-text-light);
+  margin-bottom: 16px;
+}
+
+.history-stats {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.stat-box {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+.stat-number {
+  display: block;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 14px;
+  color: var(--color-text-light);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.about-values .section-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.about-values .section-header h2 {
+  font-size: 32px;
+  color: #1b4332;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.value-card {
+  background: white;
+  padding: 40px 32px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.08);
+}
+.value-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+.value-card h3 {
+  font-size: 20px;
+  color: #1b4332;
+  margin-bottom: 12px;
+}
+.value-card p {
+  font-size: 15px;
+  color: var(--color-text-light);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .about-history {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .values-grid {
+    grid-template-columns: 1fr;
+  }
+}
