@@ -25,6 +25,7 @@ export interface Product {
   aromas?: string[];
   aromaImages?: Record<string, string>;
   presentationImages?: Record<string, string>;
+  presentationPrices?: Record<string, number | string>;
 }
 
 export const products: Product[] = [
@@ -47,6 +48,10 @@ export const products: Product[] = [
     presentationImages: {
       '30 mL': '/images/megatrol-spray-30ml.png',
       '155 mL': '/images/megatrol-spray-155ml.png'
+    },
+    presentationPrices: {
+      '30 mL': 'pendiente',
+      '155 mL': 349
     },
     formula: 'Agua, monoterpenos cíclicos de extracción vegetal, aceites totales de neem (Azadirachtina en nanopartículas), surfactantes activos etoxilados, alcohol hexa-hidroxílico, potenciador de penetrancia y antioxidantes.',
     administration: 'Tópica directa a contra pelo y ambiental.',
