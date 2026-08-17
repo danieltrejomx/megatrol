@@ -965,7 +965,7 @@ export const products: Product[] = [
     price: 210,
     tag: 'Control Ectoparásitos',
     emoji: '🐜',
-    image: '/images/ultimatum.png',
+    image: '/images/ultimatum-portada.png',
     desc: 'Concentrado para control de garrapatas, chinches y pulgas en casas, perros, ganado e instalaciones.',
     longDesc: 'ULTIMATUM es un concentrado botánico emulsionable de alta eficacia indicado para el control de garrapatas, chinches de cama, pulgas y parásitos en hogares, perros, instalaciones ganaderas y perreras.',
     howToUse: 'Mezclar 30 mL de ULTIMATUM en 10 litros de agua limpia. Rociar por aspersión.',
