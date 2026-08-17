@@ -1117,6 +1117,14 @@ export const products: Product[] = [
     category: 'urbanidad',
     line: 'Línea Urbanidad',
     presentation: '155 mL y 500 mL',
+    presentationImages: {
+      '155 mL': '/images/plagatrol-spray-155ml.png',
+      '500 mL': '/images/plagatrol-spray-500ml.png'
+    },
+    presentationPrices: {
+      '155 mL': 260,
+      '500 mL': 'pendiente'
+    },
     formula: 'Agua, monoterpenos cíclicos de extracción vegetal, surfactantes activos etoxilados, alcohol hexahidroxílico, potenciador de penetrancia.',
     administration: 'Sobre superficies y directo en la plaga.',
     indications: 'Para el control de cucarachas y otros insectos rastreros.',
