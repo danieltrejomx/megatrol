@@ -257,8 +257,7 @@ const ProductDetail = () => {
           )}
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default ProductDetail;
