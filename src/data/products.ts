@@ -1,3 +1,8 @@
+export interface AromaOption {
+  name: string;
+  image?: string;
+}
+
 export interface Product {
   id: number;
   slug: string;
@@ -17,6 +22,7 @@ export interface Product {
   administration?: string;
   indications?: string;
   species?: string;
+  aromas?: (string | AromaOption)[];
 }
 
 export const products: Product[] = [
@@ -705,6 +711,12 @@ export const products: Product[] = [
     emoji: '🍑',
     image: '/images/shower-shampoo-aromas.png',
     desc: 'Shampoo ecológico para perros y gatos en 4 aromas: Durazno, Baby, Fresa y Chicle.',
+    aromas: [
+      { name: '🍑 Durazno', image: '/images/shower-shampoo-durazno.png' },
+      { name: '👶 Baby', image: '/images/shower-shampoo-baby.png' },
+      { name: '🍓 Fresa', image: '/images/shower-shampoo-fresa.png' },
+      { name: '🍬 Chicle', image: '/images/shower-shampoo-chicle.png' }
+    ],
     longDesc: 'SHOWER SHAMPOO AROMAS es una línea dermatológica biodegradable diseñada para perros y gatos de todas las razas y edades. Formulado con extractos de aloe vera, avena y manteca de karité.',
     howToUse: 'Mojar el pelaje con agua tibia. Aplicar shampoo y masajear de 3 a 5 minutos y enjuagar.',
     benefits: [
