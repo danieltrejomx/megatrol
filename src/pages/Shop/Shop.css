@@ -248,7 +248,7 @@
 
 .product-card-image-wrap {
   aspect-ratio: 1;
-  background: linear-gradient(135deg, #f1f8e9, #dcedc8);
+  background: #f1f8e9;
   display: flex;
   align-items: center;
   justify-content: center;
