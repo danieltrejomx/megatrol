@@ -24,6 +24,7 @@ export interface Product {
   species?: string;
   aromas?: string[];
   aromaImages?: Record<string, string>;
+  presentationImages?: Record<string, string>;
 }
 
 export const products: Product[] = [
@@ -43,6 +44,10 @@ export const products: Product[] = [
     category: 'control',
     line: 'Línea Megatrol',
     presentation: '30 mL y 155 mL',
+    presentationImages: {
+      '30 mL': '/images/megatrol-spray-30ml.png',
+      '155 mL': '/images/megatrol-spray-155ml.png'
+    },
     formula: 'Agua, monoterpenos cíclicos de extracción vegetal, aceites totales de neem (Azadirachtina en nanopartículas), surfactantes activos etoxilados, alcohol hexa-hidroxílico, potenciador de penetrancia y antioxidantes.',
     administration: 'Tópica directa a contra pelo y ambiental.',
     indications: 'Indicado para infestaciones por ectoparásitos como pulgas, garrapatas, ácaros, piojos, etc. Para uso directo en el animal y en los alojamientos.',
