@@ -22,7 +22,8 @@ export interface Product {
   administration?: string;
   indications?: string;
   species?: string;
-  aromas?: (string | AromaOption)[];
+  aromas?: string[];
+  aromaImages?: Record<string, string>;
 }
 
 export const products: Product[] = [
@@ -711,7 +712,7 @@ export const products: Product[] = [
     emoji: '🍑',
     image: '/images/shower-shampoo-aromas.png',
     desc: 'Shampoo ecológico para perros y gatos en 4 aromas: Durazno, Baby, Fresa y Chicle.',
-       aromas: ['🍑 Durazno', '👶 Baby', '🍓 Fresa', '🍬 Chicle'],
+    aromas: ['🍑 Durazno', '👶 Baby', '🍓 Fresa', '🍬 Chicle'],
     aromaImages: {
       '🍑 Durazno': '/images/shower-shampoo-durazno.png',
       '👶 Baby': '/images/shower-shampoo-baby.png',
