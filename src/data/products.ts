@@ -978,7 +978,15 @@ export const products: Product[] = [
     ],
     category: 'urbanidad',
     line: 'Línea Urbanidad',
-    presentation: 'Frasco de 120 mL',
+    presentation: '120 mL y 1 L',
+    presentationImages: {
+      '120 mL': '/images/ultimatum.png',
+      '1 L': '/images/ultimatum-1l.png'
+    },
+    presentationPrices: {
+      '120 mL': 210,
+      '1 L': 850
+    },
     formula: 'Aceites totales de neem 10%, terpenoides de extracción vegetal 12%, aceite de margosa 40%, surfactantes activos 38%.',
     administration: 'Tópica y sobre superficies por aspersión.',
     indications: 'Indicado en el control de garrapatas, chinches y pulgas, para uso en casas, perros, ganado e instalaciones.',
