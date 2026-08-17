@@ -62,6 +62,16 @@ const ProductDetail = () => {
     addToCart(product, quantity);
     navigate('/carrito');
   };
+  const currentPriceRaw =
+    selectedPresentation && product.presentationPrices?.[selectedPresentation] !== undefined
+      ? product.presentationPrices[selectedPresentation]
+      : product.price;
+
+  const isPricePending =
+    currentPriceRaw === 'pendiente' ||
+    currentPriceRaw === 'Pendiente' ||
+    currentPriceRaw === null ||
+    currentPriceRaw === 0;
 
   return (
     <div className="product-detail-page">
@@ -123,9 +133,20 @@ const ProductDetail = () => {
           </div>
 
           <div className="product-price-display">
-            <span className="current-price">${product.price.toFixed(2)} MXN</span>
-            {product.id === 5 && <span className="original-price">$877.00 MXN</span>}
-            {product.tag === 'Oferta' && <span className="discount-badge">¡Ahorra 32%!</span>}
+            {isPricePending ? (
+              <div className="pending-price-tag">
+                <span className="current-price text-pending">⏳ Precio Pendiente</span>
+                <span className="pending-badge">Próximamente</span>
+              </div>
+            ) : (
+              <>
+                <span className="current-price">
+                  ${typeof currentPriceRaw === 'number' ? currentPriceRaw.toFixed(2) : product.price.toFixed(2)} MXN
+                </span>
+                {product.id === 5 && <span className="original-price">$877.00 MXN</span>}
+                {product.tag === 'Oferta' && <span className="discount-badge">¡Ahorra 32%!</span>}
+              </>
+            )}
           </div>
 
           <p className="product-description">{product.longDesc}</p>
@@ -210,24 +231,41 @@ const ProductDetail = () => {
           )}
 
           {/* Quantity & Actions */}
-          <div className="product-actions">
-            <div className="quantity-selector">
-              <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>−</button>
-              <span>{quantity}</span>
-              <button onClick={() => setQuantity(q => q + 1)}>+</button>
+          {isPricePending ? (
+            <div className="product-actions pending-actions">
+              <div className="pending-notice-box">
+                <p><strong>⚠️ Precio pendiente para {selectedPresentation}</strong></p>
+                <small>El precio de esta presentación aún está por confirmarse. Puedes cotizar o consultar disponibilidad por WhatsApp.</small>
+              </div>
+              <a
+                href={`https://wa.me/525500000000?text=Hola,%20quisiera%20consultar%20el%20precio%20de%20${encodeURIComponent(product.name)}%20en%20presentación%20${encodeURIComponent(selectedPresentation)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-whatsapp-inquire"
+              >
+                💬 Consultar en WhatsApp
+              </a>
             </div>
+          ) : (
+            <div className="product-actions">
+              <div className="quantity-selector">
+                <button onClick={() => setQuantity(q => Math.max(1, q - 1))}>−</button>
+                <span>{quantity}</span>
+                <button onClick={() => setQuantity(q => q + 1)}>+</button>
+              </div>
 
-            <button
-              className={`btn btn-outline-primary add-to-cart-btn ${added ? 'added' : ''}`}
-              onClick={handleAddToCart}
-            >
-              {added ? '✅ ¡Agregado al Carrito!' : '🛒 Agregar al Carrito'}
-            </button>
+              <button
+                className={`btn btn-outline-primary add-to-cart-btn ${added ? 'added' : ''}`}
+                onClick={handleAddToCart}
+              >
+                {added ? '✅ ¡Agregado al Carrito!' : '🛒 Agregar al Carrito'}
+              </button>
 
-            <button className="btn btn-primary buy-now-btn" onClick={handleBuyNow}>
-              ⚡ Comprar Ahora
-            </button>
-          </div>
+              <button className="btn btn-primary buy-now-btn" onClick={handleBuyNow}>
+                ⚡ Comprar Ahora
+              </button>
+            </div>
+          )}
 
           {/* Payment Info */}
           <div className="payment-info">
