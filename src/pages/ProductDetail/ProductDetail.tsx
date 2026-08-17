@@ -43,7 +43,10 @@ const ProductDetail = () => {
     );
   }
 
-  const activeImage = (selectedAroma && product.aromaImages?.[selectedAroma]) || product.image;
+  const activeImage =
+    (selectedAroma && product.aromaImages?.[selectedAroma]) ||
+    (selectedPresentation && product.presentationImages?.[selectedPresentation]) ||
+    product.image;
 
   const isNoImagePresentation =
     selectedPresentation.toLowerCase().includes('galón') ||
