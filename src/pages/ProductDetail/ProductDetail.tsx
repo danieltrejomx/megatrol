@@ -25,10 +25,8 @@ const ProductDetail = () => {
   const presentations = parsePresentations(product?.presentation);
   const [selectedPresentation, setSelectedPresentation] = useState<string>('');
   
-  const aromaOptions = (product?.aromas || []).map(a =>
-    typeof a === 'string' ? { name: a } : a
-  );
-  const [selectedAromaName, setSelectedAromaName] = useState<string>('');
+  const aromas = product?.aromas || [];
+  const [selectedAroma, setSelectedAroma] = useState<string>('');
 
   // Set initial selected presentation when product loads
   if (product && !selectedPresentation && presentations.length > 0) {
@@ -45,8 +43,7 @@ const ProductDetail = () => {
     );
   }
 
-  const activeAromaObj = aromaOptions.find(a => a.name === selectedAromaName);
-  const activeImage = activeAromaObj?.image || product.image;
+  const activeImage = (selectedAroma && product.aromaImages?.[selectedAroma]) || product.image;
 
   const isNoImagePresentation =
     selectedPresentation.toLowerCase().includes('galón') ||
@@ -98,9 +95,9 @@ const ProductDetail = () => {
                 <strong>Presentación activa:</strong> {selectedPresentation || product.presentation}
               </div>
             )}
-            {aromaOptions.length > 0 && (
+            {aromas.length > 0 && selectedAroma && (
               <div className="spec-badge">
-                <strong>Aroma seleccionado:</strong> {selectedAromaName}
+                <strong>Aroma seleccionado:</strong> {selectedAroma}
               </div>
             )}
           </div>
@@ -154,20 +151,20 @@ const ProductDetail = () => {
           )}
 
           {/* Interactive Aroma Selector */}
-          {aromaOptions.length > 0 && (
+          {aromas.length > 0 && (
             <div className="aroma-selector-block">
               <span className="aroma-selector-label">🌸 Elige el Aroma / Fragancia:</span>
               <div className="aroma-buttons-group">
-                {aromaOptions.map((aroma) => {
-                  const isSelected = selectedAromaName === aroma.name;
+                {aromas.map((aroma) => {
+                  const isSelected = selectedAroma === aroma;
                   return (
                     <button
-                      key={aroma.name}
+                      key={aroma}
                       type="button"
                       className={`aroma-option-btn ${isSelected ? 'active' : ''}`}
-                      onClick={() => setSelectedAromaName(aroma.name)}
+                      onClick={() => setSelectedAroma(aroma)}
                     >
-                      {aroma.name}
+                      {aroma}
                     </button>
                   );
                 })}
