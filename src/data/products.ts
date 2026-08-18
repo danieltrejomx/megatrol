@@ -650,6 +650,14 @@ export const products: Product[] = [
     category: 'dermatologicos',
     line: 'Pequeñas Especies',
     presentation: '250 mL y Galón 4 L',
+    presentationImages: {
+      '250 mL': '/images/dermapet-250ml.png',
+      'Galón 4 L': '/images/dermapet-4l.png'
+    },
+    presentationPrices: {
+      '250 mL': 270,
+      'Galón 4 L': 'pendiente'
+    },
     formula: 'Ácido salicílico, eucaliptol, aceite de neem, azufre orgánico, cocamidopropil betaína, timol, EDTA, vitamina E, emolientes, hidratantes y agua desionizada.',
     administration: 'Tópica.',
     indications: 'Indicado para dermatitis seborreica, atópica, micótica, piotraumática, heridas, eccemas, dermatofitosis, acné y pioderma.',
