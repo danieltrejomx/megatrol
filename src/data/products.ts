@@ -167,7 +167,7 @@ export const products: Product[] = [
     ],
     category: 'farmaceuticos',
     line: 'Grandes Especies',
-    presentation: 'Frasco polvo estéril 6,000,000 U.I. con diluyente 24 mL',
+    presentation: 'Frasco polvo estéril 6.000.000 U.I. con diluyente 24 mL',
     formula: 'Penicilina G Procaínica, Penicilina G Sódica, Sulfato de estreptomicina; cada frasco con diluyente contiene Meloxicam.',
     administration: 'Intramuscular profunda.',
     indications: 'Tratamiento de infecciones del aparato digestivo, respiratorio, genitourinario y muscular de carácter infeccioso o traumático.',
