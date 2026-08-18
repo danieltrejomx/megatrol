@@ -79,7 +79,7 @@ export const products: Product[] = [
     },
     presentationPrices: {
       '250 mL': 249,
-      'Galón 4 L': 'pendiente'
+      'Galón 4 L': 1697
     },
     formula: 'Complejo nanoparticulado de extracto de neem, monoterpenos de extracción vegetal, ceramidas y vitamina E.',
     administration: 'Tópica en baño regular.',
