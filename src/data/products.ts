@@ -194,6 +194,18 @@ export const products: Product[] = [
     category: 'farmaceuticos',
     line: 'Grandes Especies',
     presentation: '50 mL, 100 mL, 250 mL y 500 mL',
+    presentationImages: {
+      '50 mL': '/images/promicilina-50ml.png',
+      '100 mL': '/images/promicilina-100ml.png',
+      '250 mL': '/images/promicilina-250ml.png',
+      '500 mL': '/images/promicilina-500ml.png'
+    },
+    presentationPrices: {
+      '50 mL': 'pendiente',
+      '100 mL': 'pendiente',
+      '250 mL': 'pendiente',
+      '500 mL': 340
+    },
     formula: 'Penicilina G Procaína, Sulfato de Dihidroestreptomicina y Vehículo c.b.p.',
     administration: 'Intramuscular profunda.',
     indications: 'Antibiótico de amplio espectro para el control de infecciones causadas por microorganismos sensibles a la penicilina.',
