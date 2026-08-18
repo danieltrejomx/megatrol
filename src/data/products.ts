@@ -65,7 +65,7 @@ export const products: Product[] = [
     price: 249,
     tag: 'Ecológico Sustentable',
     emoji: '🧴',
-    image: '/images/megatrol-shampoo-oficial.png',
+    image: '/images/megatrol-shampoo-portada.png',
     desc: 'Complejo nanoparticulado de neem, monoterpenos vegetales, ceramidas y vitamina E.',
     longDesc: 'El Shampoo Antipulgas Megatrol combina la higiene regular con el poder antiparasitario de su complejo nanoparticulado de extracto de neem y monoterpenos botánicos. Enriquecido con ceramidas y vitamina E para fortalecer la barrera dérmica y dejar el pelaje suave, brillante y protegido.',
     howToUse: 'Moja completamente el pelaje con agua tibia. Aplica shampoo dando masaje en círculos por todo el cuerpo. Deja actuar 5 minutos y enjuaga con abundante agua.',
@@ -73,6 +73,14 @@ export const products: Product[] = [
     category: 'limpieza',
     line: 'Línea Megatrol',
     presentation: '250 mL y Galón 4 L',
+    presentationImages: {
+      '250 mL': '/images/megatrol-shampoo-250ml.png',
+      'Galón 4 L': '/images/megatrol-shampoo-4l.png'
+    },
+    presentationPrices: {
+      '250 mL': 249,
+      'Galón 4 L': 'pendiente'
+    },
     formula: 'Complejo nanoparticulado de extracto de neem, monoterpenos de extracción vegetal, ceramidas y vitamina E.',
     administration: 'Tópica en baño regular.',
     indications: 'Está indicado para infestaciones leves, moderadas y graves por ectoparásitos como pulgas, piojos, garrapatas, ácaros, etc. Para uso regular en la higiene de la mascota.',
