@@ -544,6 +544,14 @@ export const products: Product[] = [
     category: 'farmaceuticos',
     line: 'Grandes Especies',
     presentation: '30 mL y 100 mL',
+    presentationImages: {
+      '30 mL': '/images/doxiline-forte-30ml.png',
+      '100 mL': '/images/doxiline-forte-100ml.png'
+    },
+    presentationPrices: {
+      '30 mL': 'pendiente',
+      '100 mL': 410
+    },
     formula: 'Doxiciclina Hiclato, Aceturato de diminaceno, Hidroxocobalamina acetato (B12), Acetaminofeno, Piroxicam y Vehículo c.b.p.',
     administration: 'Intramuscular.',
     indications: 'Para el tratamiento de anaplasmosis y piroplasmosis en bovinos. Regeneración de glóbulos rojos.',
