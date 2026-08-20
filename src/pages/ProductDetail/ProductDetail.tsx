@@ -49,8 +49,9 @@ const ProductDetail = () => {
     product.image;
 
   const isNoImagePresentation =
-    selectedPresentation.toLowerCase().includes('galón') ||
-    selectedPresentation.toLowerCase().includes('galon');
+    (!product.presentationImages || !product.presentationImages[selectedPresentation]) &&
+    (selectedPresentation.toLowerCase().includes('galón') ||
+     selectedPresentation.toLowerCase().includes('galon'));
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
