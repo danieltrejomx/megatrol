@@ -846,7 +846,7 @@ export const products: Product[] = [
     ],
     category: 'dermocosmeticos',
     line: 'Pequeñas Especies',
-    presentation: 'Tarro de 60 g',
+    presentation: 'Stick de 30 g',
     formula: 'Manteca de Karité, vaselina grado USP, vitamina E, D-pantenol, cera de soya, aceite de coco.',
     administration: 'Vía tópica cutánea.',
     indications: 'Para zona nasal o podal afectada, cojinetes, arrugas, uñas, callosidades y puntos de presión.',
