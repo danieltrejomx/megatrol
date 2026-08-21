@@ -257,9 +257,10 @@ export const products: Product[] = [
     ],
     category: 'garrapaticidas',
     line: 'Grandes Especies',
-    presentation: '40 mL, 100 mL, 250 mL y 1 L',
+    presentation: '20 mL, 100 mL, 250 mL y 1 L',
     presentationImages: {
-      '40 mL': '/images/ecovet-line-40ml.png',
+      '20 mL': '/images/ecovet-line-20ml.png',
+      '40 mL': '/images/ecovet-line-20ml.png',
       '100 mL': '/images/ecovet-line-100ml.png',
       '250 mL': '/images/ecovet-line-250ml.png',
       '1 L': '/images/ecovet-line-1l.png'
