@@ -258,6 +258,12 @@ export const products: Product[] = [
     category: 'garrapaticidas',
     line: 'Grandes Especies',
     presentation: '40 mL, 100 mL, 250 mL y 1 L',
+    presentationImages: {
+      '40 mL': '/images/ecovet-line-40ml.png',
+      '100 mL': '/images/ecovet-line-100ml.png',
+      '250 mL': '/images/ecovet-line-250ml.png',
+      '1 L': '/images/ecovet-line-1l.png'
+    },
     formula: 'Terpenos y aceites botánicos de Cymbopogon citratus, Eucaliptus melliodora, Azadirachta indica, Citrus spp y Thymus vulgaris.',
     administration: 'Tópica por baño de aspersión y en instalaciones.',
     indications: 'Concentrado soluble para el control de ectoparásitos, garrapatas e insectos con efecto sobre la fecundidad.',
