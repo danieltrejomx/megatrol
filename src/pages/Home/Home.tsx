@@ -29,14 +29,14 @@ const testimonials = [
   },
   {
     id: 2,
-    name: 'Ing. Roberto Garza',
-    role: 'Ganadero • Rancho Santa Elena',
-    city: 'Jalisco',
-    avatar: '🤠',
-    product: '🐂 Bioultimatum Pour On',
+    name: 'Sofía Navarro',
+    role: 'Dueña de 3 Gatos Persa',
+    city: 'Guadalajara',
+    avatar: '🐱',
+    product: '🧴 Shampoo Antipulgas Megatrol',
     stars: 5,
-    title: 'Excelente contra garrapatas',
-    text: 'Manejamos más de 200 cabezas de ganado bovino. Con Bioultimatum logramos derribo inmediato de garrapatas y moscas sin riesgos de toxicidad.',
+    title: 'Suave y seguro para mis gatitos',
+    text: 'Siempre me daba miedo bañar a mis gatos con productos comerciales por temor a intoxicación. Megatrol es 100% natural, les dejó el pelo impecable y cero pulgas.',
     date: 'Compra Verificada • Hace 4 días'
   },
   {
@@ -53,14 +53,14 @@ const testimonials = [
   },
   {
     id: 4,
-    name: 'Don Aurelio Morales',
-    role: 'Criadero y Granja Avícola',
+    name: 'MVZ. Andrea Salgado',
+    role: 'Especialista en Medicina Felina y Canina',
     city: 'Querétaro',
-    avatar: '🐓',
-    product: '🪶 Megallo Talco Aves',
+    avatar: '🩺',
+    product: '💊 Megadoxi & Megastrin',
     stars: 5,
-    title: 'Erradicó ácaros y corucos',
-    text: 'El talco con nanotecnología de neem es una maravilla. Protege el plumón de los gallos de combate sin apelmazar las plumas y no estresa al ave.',
+    title: 'Excelente respuesta clínica',
+    text: 'La palatabilidad de las suspensiones orales facilita mucho la dosificación tanto en perros como en gatos renuentes. Muy recomendable.',
     date: 'Compra Verificada • Hace 1 semana'
   },
   {
@@ -77,26 +77,26 @@ const testimonials = [
   },
   {
     id: 6,
-    name: 'Lic. Fernando Soto',
-    role: 'Administrador Restaurantero',
-    city: 'Guadalajara',
-    avatar: '🏢',
-    product: '🪳 Plagatrol Pasta',
+    name: 'Karla Vivanco',
+    role: 'Estilista Profesional Canina',
+    city: 'Puebla',
+    avatar: '🐩',
+    product: '🌸 Shower Shampoo Aromas',
     stars: 5,
-    title: 'Efecto dominó en cocina',
-    text: 'Aplicamos la jeringa en hendiduras y zoclos de la cocina. En 48 horas se acabaron las cucarachas. Seguro y sin contaminar alimentos.',
+    title: 'Aroma duradero y pelo sedoso',
+    text: 'En la estética canina usamos los diferentes aromas. El acondicionador deja los nudos fáciles de desenredar y a los clientes les fascina el perfume.',
     date: 'Compra Verificada • Hace 2 semanas'
   },
   {
     id: 7,
-    name: 'Claudia Echeverría',
-    role: 'Propietaria de Cuadra Ecuestre',
+    name: 'Rodrigo Albarrán',
+    role: 'Dueño de Bulldog Francés',
     city: 'Estado de México',
-    avatar: '🐴',
-    product: '🧴 Shower Horse',
+    avatar: '🐾',
+    product: '🐾 Bálsamo SilkPaw',
     stars: 5,
-    title: 'Crin y cola sedosas al instante',
-    text: 'Ahorramos muchísimo tiempo en el baño de los caballos. La manteca de karité y el neem desenredan al instante y dejan un brillo imponente.',
+    title: 'Almohadillas y trufa hidratadas',
+    text: 'Mi bulldog tenía la nariz muy reseca y grietas en las almohadillas por el pavimento. En una semana de aplicar SilkPaw sanó por completo.',
     date: 'Compra Verificada • Hace 3 semanas'
   },
   {
@@ -115,12 +115,8 @@ const testimonials = [
 
 const homeLines = [
   { key: 'all', label: '⭐ Destacados' },
-  { key: 'Línea Megatrol', label: '🌿 Línea Megatrol' },
-  { key: 'Grandes Especies', label: '🐄 Grandes Especies' },
-  { key: 'Pequeñas Especies', label: '🐕 Pequeñas Especies' },
-  { key: 'Línea Aves', label: '🐓 Línea Aves' },
-  { key: 'Línea Urbanidad', label: '✨ Control de Plagas' },
-  { key: 'Higiene y Salud', label: '👑 Higiene & Salud' },
+  { key: 'Línea Megatrol', label: '🌿 Línea Megatrol (Antiparasitarios)' },
+  { key: 'Pequeñas Especies', label: '🐕 Pequeñas Especies (Salud y Cuidado)' },
 ];
 
 const Home = () => {
@@ -214,8 +210,8 @@ const Home = () => {
         <div className="container">
           <div className="section-header">
             <span className="section-label">Catálogo Destacado</span>
-            <h2>Nuestros Productos</h2>
-            <p>Soluciones naturales, veterinarias y sanitarias para grandes y pequeñas especies.</p>
+            <h2>Nuestros Productos para Mascotas</h2>
+            <p>Soluciones naturales, veterinarias y dermocosméticas formuladas especialmente para perros y gatos.</p>
           </div>
 
           {/* Line Filter Tabs */}
@@ -344,7 +340,7 @@ const Home = () => {
               <span className="section-label">¿Realmente</span>
               <h2>FUNCIONA? ✅</h2>
               <p className="reviews-subtitle">
-                Conoce la experiencia real de dueños de mascotas, veterinarios, ganaderos y profesionales en todo México.
+                Conoce la experiencia real de dueños de perros y gatos, médicos veterinarios y profesionales en todo México.
               </p>
             </div>
             <div className="reviews-nav-controls">
@@ -534,13 +530,12 @@ const Home = () => {
               <div className="form-group">
                 <label>Línea de Interés Principal</label>
                 <select name="lineaInteres" className="form-select">
-                  <option value="todas">⭐ Catálogo Completo (Todas las Líneas)</option>
-                  <option value="megatrol">🌿 Línea Megatrol (Antiparasitarios)</option>
-                  <option value="grandes">🐄 Grandes Especies (Ganadería & Equinos)</option>
-                  <option value="pequenas">🐕 Pequeñas Especies (Dermatología & Salud)</option>
-                  <option value="aves">🐓 Línea Aves (Aves de Corral y Combate)</option>
-                  <option value="urbanidad">✨ Línea Urbanidad (Control de Plagas)</option>
-                  <option value="higiene">👑 Higiene & Salud Médico-Quirúrgica</option>
+                  <option value="todas">⭐ Catálogo Completo (Perros y Gatos)</option>
+                  <option value="megatrol">🌿 Línea Megatrol (Antiparasitarios Naturales)</option>
+                  <option value="pequenas">🐕 Pequeñas Especies (Salud y Cuidado)</option>
+                  <option value="farmaceuticos">💊 Farmacéuticos y Antibióticos</option>
+                  <option value="multivitaminicos">🦴 Multivitamínicos y Suplementos</option>
+                  <option value="dermocosmeticos">🧴 Dermocosmética y Shampoos</option>
                 </select>
               </div>
 
