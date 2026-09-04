@@ -11,7 +11,7 @@
 }
 .about-hero h1 {
   font-size: 48px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 20px;
 }
 .about-hero p {
@@ -39,7 +39,7 @@
 }
 .history-text h2 {
   font-size: 32px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 24px;
 }
 .history-text p {
@@ -84,7 +84,7 @@
 }
 .about-values .section-header h2 {
   font-size: 32px;
-  color: #1b4332;
+  color: var(--color-heading);
 }
 
 .values-grid {
@@ -110,7 +110,7 @@
 }
 .value-card h3 {
   font-size: 20px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 12px;
 }
 .value-card p {
