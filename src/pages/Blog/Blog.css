@@ -7,7 +7,7 @@
 .blog-page-hero h1 {
   font-size: clamp(32px, 5vw, 52px);
   font-weight: 800;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 12px;
 }
 
