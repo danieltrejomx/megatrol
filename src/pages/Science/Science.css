@@ -3,7 +3,7 @@
 }
 
 .science-hero {
-  background: linear-gradient(135deg, #1b4332, #2d6a4f);
+  background: linear-gradient(135deg, #0c2b42, #164e73);
   color: white;
   padding: 80px 20px;
   text-align: center;
@@ -52,7 +52,7 @@
 }
 .science-text h2 {
   font-size: 32px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 24px;
 }
 .science-text p {
@@ -89,7 +89,7 @@
 }
 .mechanism-section .section-header h2 {
   font-size: 32px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 12px;
 }
 .mechanism-section .section-header p {
@@ -115,7 +115,7 @@
 }
 .mechanism-card h3 {
   font-size: 18px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 12px;
 }
 .mechanism-card p {
