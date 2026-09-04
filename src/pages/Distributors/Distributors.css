@@ -10,7 +10,7 @@
 }
 .distributors-hero h1 {
   font-size: 48px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 20px;
 }
 .distributors-hero p {
@@ -32,7 +32,7 @@
 }
 .distributors-info h2 {
   font-size: 32px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 32px;
 }
 
@@ -77,7 +77,7 @@
 }
 .contact-direct h3 {
   font-size: 20px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 12px;
 }
 .contact-direct p {
@@ -121,7 +121,7 @@
 
 .distributors-form h2 {
   font-size: 24px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 8px;
 }
 .distributors-form > p {
@@ -183,7 +183,7 @@
 }
 .success-message h3 {
   font-size: 24px;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 16px;
 }
 .success-message p {
