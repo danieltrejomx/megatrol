@@ -13,11 +13,76 @@
   height: 80px;
 }
 
-.logo h2 {
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-brand-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 132, 199, 0.28);
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.logo-link:hover .logo-brand-mark {
+  transform: scale(1.05);
+}
+
+.logo-letter {
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 900;
+  font-family: var(--font-sans);
+  font-style: italic;
+  line-height: 1;
+  margin-top: -2px;
+}
+
+.logo-accent-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--color-secondary) 0%, #9de255 100%);
+}
+
+.logo-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
   margin: 0;
-  color: var(--color-primary-dark);
+  font-family: var(--font-sans);
+  font-size: 27px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+}
+
+.logo-subline {
+  font-size: 9px;
   font-weight: 700;
-  font-size: 28px;
+  letter-spacing: 1.5px;
+  color: var(--color-secondary);
+  text-transform: uppercase;
 }
 
 .nav-links {
