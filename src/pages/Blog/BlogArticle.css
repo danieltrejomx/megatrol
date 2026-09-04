@@ -20,7 +20,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #1b4332;
+  color: var(--color-heading);
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
@@ -36,7 +36,7 @@
 .article-category-badge {
   display: inline-block;
   background: rgba(255,255,255,0.7);
-  color: #1b4332;
+  color: var(--color-heading);
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
@@ -50,7 +50,7 @@
 .article-hero-title {
   font-size: clamp(28px, 4vw, 48px);
   font-weight: 800;
-  color: #1b4332;
+  color: var(--color-heading);
   line-height: 1.2;
   margin-bottom: 20px;
 }
@@ -108,7 +108,7 @@
 .article-heading {
   font-size: 24px;
   font-weight: 800;
-  color: #1b4332;
+  color: var(--color-heading);
   margin: 40px 0 16px;
   padding-bottom: 10px;
   border-bottom: 2px solid #d1fae5;
@@ -196,7 +196,7 @@
 .article-product-cta-name {
   font-size: 20px;
   font-weight: 800;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 8px;
 }
 
@@ -248,7 +248,7 @@
 .article-author-name {
   font-size: 16px;
   font-weight: 700;
-  color: #1b4332;
+  color: var(--color-heading);
 }
 
 .article-author-role {
@@ -336,7 +336,7 @@
 .sidebar-card-title {
   font-size: 15px;
   font-weight: 700;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 16px;
 }
 
@@ -369,7 +369,7 @@
 .sidebar-article-title {
   font-size: 13px;
   font-weight: 600;
-  color: #1b4332;
+  color: var(--color-heading);
   line-height: 1.4;
   margin-bottom: 4px;
 }
@@ -381,7 +381,7 @@
 
 /* Sidebar CTA */
 .sidebar-cta {
-  background: linear-gradient(135deg, #1b4332, #2d6a4f);
+  background: linear-gradient(135deg, #0c2b42, #164e73);
   border-color: transparent;
   color: white;
 }
@@ -424,7 +424,7 @@
 .more-articles-title {
   font-size: 26px;
   font-weight: 800;
-  color: #1b4332;
+  color: var(--color-heading);
   margin-bottom: 32px;
 }
 
