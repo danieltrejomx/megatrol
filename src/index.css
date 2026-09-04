@@ -6,7 +6,6 @@
   --color-megatrol-green: #74c043;       /* Vibrant Lime Ribbon Green */
   --color-megatrol-green-dark: #388e3c;  /* Herbal / Botanical Green */
   --color-megatrol-green-light: #f1f8e9; /* Soft Eco-Green */
-  --color-megatrol-orange: #f58220;      /* Amber / Spray Accent */
 
   /* ── CORE DESIGN TOKENS ── */
   --color-primary: #0084c7;              /* Primary: Megatrol Cerulean Blue */
@@ -18,9 +17,9 @@
   --color-secondary-dark: #388e3c;       /* Botanical Deep Green */
   --color-secondary-light: #f4fbf0;      /* Ultra-light leaf tint */
 
-  --color-accent: #f58220;               /* Accent: Warm Amber / Orange (CTA) */
-  --color-accent-dark: #d96e11;
-  --color-accent-light: #fff7ed;
+  --color-accent: #74c043;               /* Accent: Megatrol Lime Ribbon (No orange) */
+  --color-accent-dark: #388e3c;
+  --color-accent-light: #f4fbf0;
 
   --color-heading: #0c2b42;              /* High-contrast Megatrol Deep Navy */
   --color-text: #1e293b;                 /* Modern crisp slate body text */
@@ -115,14 +114,14 @@ ul {
 }
 
 .btn-accent {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-dark) 100%);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(245, 130, 32, 0.25);
+  box-shadow: 0 4px 12px rgba(116, 192, 67, 0.25);
 }
 
 .btn-accent:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(245, 130, 32, 0.35);
+  box-shadow: 0 6px 18px rgba(116, 192, 67, 0.35);
 }
 
 .btn-green {
