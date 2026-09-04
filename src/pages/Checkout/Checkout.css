@@ -9,7 +9,7 @@
   font-size: 15px;
 }
 .step-done { color: var(--color-primary-dark); font-weight: 600; }
-.step-active { color: #1b4332; font-weight: 800; font-size: 17px; }
+.step-active { color: var(--color-heading); font-weight: 800; font-size: 17px; }
 .step-pending { color: var(--color-text-light); }
 .step-arrow { color: var(--color-border); }
 
@@ -24,7 +24,7 @@
   border-radius: 20px;
   padding: 28px;
 }
-.form-section h2 { font-size: 20px; color: #1b4332; margin-bottom: 20px; }
+.form-section h2 { font-size: 20px; color: var(--color-heading); margin-bottom: 20px; }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
@@ -79,7 +79,7 @@
   border-radius: 12px;
   padding: 16px 20px;
   font-size: 14px;
-  color: #1b4332;
+  color: var(--color-heading);
   line-height: 1.6;
 }
 
@@ -94,7 +94,7 @@
   position: sticky;
   top: 100px;
 }
-.checkout-summary h2 { font-size: 20px; color: #1b4332; margin-bottom: 20px; }
+.checkout-summary h2 { font-size: 20px; color: var(--color-heading); margin-bottom: 20px; }
 
 .checkout-items { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
 .checkout-item {
