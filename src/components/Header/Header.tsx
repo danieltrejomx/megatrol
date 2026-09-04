@@ -13,8 +13,15 @@ const Header = () => {
     <header className="header">
       <div className="container header-container">
         <div className="logo">
-          <Link to="/">
-            <h2>Megatrol</h2>
+          <Link to="/" className="logo-link">
+            <div className="logo-brand-mark">
+              <span className="logo-letter">M</span>
+              <div className="logo-accent-line"></div>
+            </div>
+            <div className="logo-text-group">
+              <h2 className="logo-title">Megatrol</h2>
+              <span className="logo-subline">LÍNEA VETERINARIA</span>
+            </div>
           </Link>
         </div>
 
