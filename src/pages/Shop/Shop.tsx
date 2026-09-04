@@ -4,44 +4,57 @@ import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import './Shop.css';
 
-const lines = [
-  { key: 'all', label: '🌟 Todos los Productos' },
+const filters = [
+  { key: 'all', label: '🐾 Todos los Productos' },
   { key: 'Línea Megatrol', label: '🌿 Línea Megatrol (Antiparasitarios)' },
-  { key: 'Grandes Especies', label: '🐄 Grandes Especies (Bovinos, Equinos)' },
-  { key: 'Pequeñas Especies', label: '🐕 Pequeñas Especies (Perros y Gatos)' },
-  { key: 'Línea Aves', label: '🐓 Línea Aves (Aves de Corral y Combate)' },
-  { key: 'Línea Urbanidad', label: '✨ Línea Urbanidad (Plagas y Sanitización)' },
-  { key: 'Higiene y Salud', label: '👑 Higiene & Salud (Personal y Médico)' },
+  { key: 'Pequeñas Especies', label: '🐕 Pequeñas Especies (Salud y Cuidado)' },
+  { key: 'farmaceuticos', label: '💊 Farmacéuticos y Salud' },
+  { key: 'multivitaminicos', label: '🦴 Vitaminas y Suplementos' },
+  { key: 'dermocosmeticos', label: '🧴 Shampoos y Dermocosmética' },
 ];
 
 const Shop = () => {
-  const [selectedLine, setSelectedLine] = useState('all');
+  const [selectedFilter, setSelectedFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
   const filteredProducts = products.filter(product => {
-    const matchesLine = selectedLine === 'all' || product.line === selectedLine;
+    const matchesFilter = selectedFilter === 'all' ||
+      product.line === selectedFilter ||
+      product.category === selectedFilter ||
+      (selectedFilter === 'dermocosmeticos' && (product.category === 'dermocosmeticos' || product.category === 'dermatologicos'));
     const matchesSearch = searchTerm.trim() === '' ||
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (product.species && product.species.toLowerCase().includes(searchTerm.toLowerCase()));
-    return matchesLine && matchesSearch;
+    return matchesFilter && matchesSearch;
   });
+
+  const getFilterCount = (key: string) => {
+    if (key === 'all') return products.length;
+    if (key === 'Línea Megatrol' || key === 'Pequeñas Especies') {
+      return products.filter(p => p.line === key).length;
+    }
+    if (key === 'dermocosmeticos') {
+      return products.filter(p => p.category === 'dermocosmeticos' || p.category === 'dermatologicos').length;
+    }
+    return products.filter(p => p.category === key).length;
+  };
 
   return (
     <div className="shop-page container">
       {/* Header Banner */}
       <div className="shop-header">
         <span className="shop-badge">Catálogo Oficial Inobazz Pharma</span>
-        <h1>Catálogo de Productos</h1>
-        <p>Soluciones ecológicas, nutricionales y farmacéuticas de grado veterinario para la salud y bienestar animal.</p>
+        <h1>Catálogo para Perros y Gatos</h1>
+        <p>Soluciones ecológicas, nutricionales y farmacéuticas de grado veterinario para la salud y bienestar de tu mascota.</p>
         
         {/* Search Bar */}
         <div className="shop-search-bar">
           <input
             type="text"
-            placeholder="Buscar por nombre, ingrediente o especie (ej. equinos, spray, neem)..."
+            placeholder="Buscar por nombre, beneficio o ingrediente (ej. spray, neem, shampoo, vitaminas)..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -55,19 +68,17 @@ const Shop = () => {
         {/* Sidebar Categories */}
         <aside className="shop-sidebar">
           <div className="sidebar-section">
-            <h3>Líneas de Producto</h3>
+            <h3>Categorías</h3>
             <div className="filter-buttons">
-              {lines.map((l) => (
+              {filters.map((f) => (
                 <button
-                  key={l.key}
-                  className={`filter-btn ${selectedLine === l.key ? 'active' : ''}`}
-                  onClick={() => setSelectedLine(l.key)}
+                  key={f.key}
+                  className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
+                  onClick={() => setSelectedFilter(f.key)}
                 >
-                  <span>{l.label}</span>
+                  <span>{f.label}</span>
                   <span className="count-badge">
-                    {l.key === 'all'
-                      ? products.length
-                      : products.filter(p => p.line === l.key).length}
+                    {getFilterCount(f.key)}
                   </span>
                 </button>
               ))}
@@ -85,8 +96,8 @@ const Shop = () => {
         <main className="shop-main">
           <div className="shop-results-header">
             <span>Mostrando <strong>{filteredProducts.length}</strong> de {products.length} productos</span>
-            {selectedLine !== 'all' && (
-              <button className="reset-filter-btn" onClick={() => setSelectedLine('all')}>
+            {selectedFilter !== 'all' && (
+              <button className="reset-filter-btn" onClick={() => setSelectedFilter('all')}>
                 Mostrar todos ✕
               </button>
             )}
@@ -97,7 +108,7 @@ const Shop = () => {
               <span className="no-products-icon">🔍</span>
               <h3>No se encontraron productos</h3>
               <p>Intenta con otro término de búsqueda o selecciona otra categoría.</p>
-              <button className="btn btn-primary" onClick={() => { setSelectedLine('all'); setSearchTerm(''); }}>
+              <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); }}>
                 Ver Todos los Productos
               </button>
             </div>
