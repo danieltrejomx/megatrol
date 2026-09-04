@@ -1,25 +1,45 @@
 :root {
-  --color-primary: #8bc34a; /* Vibrant Green */
-  --color-primary-dark: #689f38;
-  --color-primary-light: #dcedc8;
-  
-  --color-secondary: #009688; /* Teal / Nature Accent */
-  --color-accent: #ffb300; /* Amber for CTA */
-  
+  /* ── MEGATROL BRAND IDENTITY (From official logo & packaging) ── */
+  --color-megatrol-blue: #0084c7;        /* Signature Cerulean Blue */
+  --color-megatrol-blue-dark: #005f9e;   /* Deep Ocean Blue */
+  --color-megatrol-blue-light: #e0f2fe;  /* Fresh Ice Blue */
+  --color-megatrol-green: #74c043;       /* Vibrant Lime Ribbon Green */
+  --color-megatrol-green-dark: #388e3c;  /* Herbal / Botanical Green */
+  --color-megatrol-green-light: #f1f8e9; /* Soft Eco-Green */
+  --color-megatrol-orange: #f58220;      /* Amber / Spray Accent */
+
+  /* ── CORE DESIGN TOKENS ── */
+  --color-primary: #0084c7;              /* Primary: Megatrol Cerulean Blue */
+  --color-primary-dark: #005f9e;         /* Deep Cerulean */
+  --color-primary-light: #e0f2fe;        /* Clean Ice Blue */
+  --color-primary-hover: #0277bd;        /* Vibrant hover */
+
+  --color-secondary: #74c043;            /* Secondary: Megatrol Lime Ribbon */
+  --color-secondary-dark: #388e3c;       /* Botanical Deep Green */
+  --color-secondary-light: #f4fbf0;      /* Ultra-light leaf tint */
+
+  --color-accent: #f58220;               /* Accent: Warm Amber / Orange (CTA) */
+  --color-accent-dark: #d96e11;
+  --color-accent-light: #fff7ed;
+
+  --color-heading: #0c2b42;              /* High-contrast Megatrol Deep Navy */
+  --color-text: #1e293b;                 /* Modern crisp slate body text */
+  --color-text-light: #475569;           /* Secondary body text */
+  --color-text-muted: #64748b;
+
   --color-bg: #ffffff;
-  --color-bg-alt: #f9fbf9;
-  
-  --color-text: #333333;
-  --color-text-light: #666666;
-  
-  --color-border: #e0e0e0;
+  --color-bg-alt: #f0f7fb;               /* Clean clinical / veterinary background */
+  --color-bg-mint: #f4f9f1;              /* Soft botanical background */
+
+  --color-border: #d4e3eb;               /* Fresh border */
+  --color-border-light: #e6f0f5;
 
   --font-sans: 'Outfit', system-ui, -apple-system, sans-serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+  --shadow-sm: 0 1px 3px rgba(0, 78, 130, 0.06);
+  --shadow-md: 0 4px 14px rgba(0, 78, 130, 0.09);
+  --shadow-lg: 0 12px 28px rgba(0, 78, 130, 0.13);
 }
 
 body {
@@ -32,6 +52,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sans);
+  color: var(--color-heading);
   margin-top: 0;
 }
 
@@ -71,17 +92,46 @@ ul {
 }
 
 .btn-primary {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(0, 132, 199, 0.25);
 }
 
 .btn-primary:hover {
-  background-color: var(--color-primary-dark);
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, #004d80 100%);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 6px 18px rgba(0, 132, 199, 0.35);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
 }
 
 .btn-accent {
-  background-color: var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
   color: #fff;
+  box-shadow: 0 4px 12px rgba(245, 130, 32, 0.25);
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(245, 130, 32, 0.35);
+}
+
+.btn-green {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-dark) 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(116, 192, 67, 0.25);
+}
+
+.btn-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(116, 192, 67, 0.35);
 }
