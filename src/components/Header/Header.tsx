@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Menu, X, ArrowRight, MessageCircle } from 'lucide-react';
+import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import './Header.css';
@@ -76,23 +76,6 @@ const Header = () => {
           <NavLink to="/blog" onClick={() => handleNavClick('/blog')}>Blog</NavLink>
           <NavLink to="/nosotros" onClick={() => handleNavClick('/nosotros')}>Conoce a Inobazz</NavLink>
           <NavLink to="/distribuidores" onClick={() => handleNavClick('/distribuidores')}>Distribuidores</NavLink>
-
-          <div className="mobile-menu-footer">
-            <Link to="/tienda" className="btn btn-primary mobile-menu-cta" onClick={() => handleNavClick('/tienda')}>
-              <span>Ver Catálogo Completo</span>
-              <ArrowRight size={16} />
-            </Link>
-            <a 
-              href="https://wa.me/525536206854?text=Hola,%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20los%20productos%20Megatrol" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="mobile-menu-wa"
-              onClick={() => setMobileOpen(false)}
-            >
-              <MessageCircle size={16} />
-              <span>Atención por WhatsApp</span>
-            </a>
-          </div>
         </nav>
 
         <div className="header-actions">

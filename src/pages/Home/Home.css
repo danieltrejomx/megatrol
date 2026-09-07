@@ -1680,13 +1680,14 @@
     padding: 44px 36px 40px;
     background-image: 
       linear-gradient(180deg, 
-        rgba(255, 255, 255, 0.96) 0%, 
-        rgba(255, 255, 255, 0.90) 45%, 
-        rgba(255, 255, 255, 0.30) 70%,
+        rgba(255, 255, 255, 0.95) 0%, 
+        rgba(255, 255, 255, 0.88) 38%, 
+        rgba(255, 255, 255, 0.20) 65%,
         rgba(255, 255, 255, 0.0) 100%
       ),
-      url('/images/hero-banner-pets.jpg');
+      url('/images/hero-banner-pets-mobile.jpg');
     background-position: center bottom;
+    background-size: cover;
   }
   .hero-image-wrapper {
     margin-top: 20px;
@@ -1718,8 +1719,18 @@
     padding: 16px 0 16px;
   }
   .hero-card {
-    padding: 36px 20px 32px;
+    padding: 32px 18px 28px;
     border-radius: 24px;
+    background-image: 
+      linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.96) 0%, 
+        rgba(255, 255, 255, 0.86) 36%, 
+        rgba(255, 255, 255, 0.15) 60%,
+        rgba(255, 255, 255, 0.0) 100%
+      ),
+      url('/images/hero-banner-pets-mobile.jpg');
+    background-position: center bottom;
+    background-size: cover;
   }
   .hero-content h1 {
     font-size: 32px;

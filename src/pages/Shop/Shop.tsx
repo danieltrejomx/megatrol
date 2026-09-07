@@ -11,9 +11,11 @@ import {
   X, 
   ShoppingCart,
   ShieldCheck,
-  Zap
+  Zap,
+  ChevronDown,
+  Check
 } from 'lucide-react';
-import { products } from '../../data/products';
+import { products, type Product } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import './Shop.css';
 
@@ -30,6 +32,15 @@ const filters = [
 const Shop = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([
+    'Megatrol Shower',
+    'Megatrol Talco',
+    'Línea Megadoxi',
+    'Plagatrol',
+    'Línea Megatrol',
+    'Salud y Suplementos'
+  ]);
+  const [addedId, setAddedId] = useState<number | null>(null);
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
@@ -46,6 +57,72 @@ const Shop = () => {
     if (key === 'all') return products.length;
     return products.filter(p => p.line === key).length;
   };
+
+  const renderProductCard = (product: Product) => (
+    <div
+      key={product.id}
+      className="product-card"
+      onClick={() => navigate(`/producto/${product.slug}`)}
+    >
+      {product.tag && <span className="product-card-tag">{product.tag}</span>}
+      
+      <div className="product-card-image-wrap">
+        <img src={product.image} alt={product.name} className="product-card-img" />
+      </div>
+
+      <div className="product-card-body">
+        <div className="product-card-meta">
+          <span className="product-card-line">{product.line}</span>
+          {product.presentation && (
+            <span className="product-card-pres">{product.presentation}</span>
+          )}
+        </div>
+
+        <h3 className="product-card-title">{product.name}</h3>
+        <p className="product-card-desc">{product.desc}</p>
+
+        {product.species && (
+          <div className="product-card-species">
+            <PawPrint size={13} />
+            <span>{product.species}</span>
+          </div>
+        )}
+
+        <div className="product-card-bottom">
+          <div className="product-card-price">
+            <span className="price-label">Precio</span>
+            <span className="price-amount">${product.price.toFixed(2)} <small>MXN</small></span>
+          </div>
+
+          <div className="product-card-actions">
+            <button
+              type="button"
+              className="btn btn-primary btn-sm-view"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/producto/${product.slug}`);
+              }}
+            >
+              Ver Detalles
+            </button>
+            <button
+              type="button"
+              className={`btn btn-cart-quick ${addedId === product.id ? 'added' : ''}`}
+              title="Agregar al carrito"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(product);
+                setAddedId(product.id);
+                setTimeout(() => setAddedId(null), 1500);
+              }}
+            >
+              {addedId === product.id ? <Check size={16} /> : <ShoppingCart size={16} />}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="shop-page container">
@@ -72,27 +149,87 @@ const Shop = () => {
       </div>
 
       <div className="shop-layout">
-        {/* Sidebar Categories */}
+        {/* Sidebar Categories with Accordion Breakdown */}
         <aside className="shop-sidebar">
           <div className="sidebar-section">
             <h3>Categorías</h3>
             <div className="filter-buttons">
               {filters.map((f) => {
                 const Icon = f.icon;
+                const isAll = f.key === 'all';
+                const isExpanded = expandedCategories.includes(f.key);
+                const categoryProducts = isAll 
+                  ? [] 
+                  : products.filter(p => p.line === f.key);
+
                 return (
-                  <button
-                    key={f.key}
-                    className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
-                    onClick={() => setSelectedFilter(f.key)}
+                  <div 
+                    key={f.key} 
+                    className={`category-accordion-item ${isExpanded && !isAll ? 'is-expanded' : ''}`}
                   >
-                    <span className="filter-btn-label">
-                      <Icon size={15} />
-                      <span>{f.label}</span>
-                    </span>
-                    <span className="count-badge">
-                      {getFilterCount(f.key)}
-                    </span>
-                  </button>
+                    <button
+                      type="button"
+                      className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
+                      onClick={() => {
+                        setSelectedFilter(f.key);
+                        if (!isAll) {
+                          setExpandedCategories(prev => 
+                            prev.includes(f.key) 
+                              ? prev.filter(k => k !== f.key) 
+                              : [...prev, f.key]
+                          );
+                        }
+                      }}
+                    >
+                      <span className="filter-btn-label">
+                        <Icon size={15} />
+                        <span>{f.label}</span>
+                      </span>
+                      <span className="filter-btn-meta">
+                        <span className="count-badge">{getFilterCount(f.key)}</span>
+                        {!isAll && (
+                          <ChevronDown 
+                            size={14} 
+                            className={`accordion-arrow ${isExpanded ? 'open' : ''}`} 
+                          />
+                        )}
+                      </span>
+                    </button>
+
+                    {/* Desglose inmediato de productos en la categoría */}
+                    {!isAll && isExpanded && categoryProducts.length > 0 && (
+                      <div className="category-drawer-products">
+                        {categoryProducts.map((p) => (
+                          <div
+                            key={p.id}
+                            className="drawer-product-row"
+                            onClick={() => navigate(`/producto/${p.slug}`)}
+                            title={`Ver detalles de ${p.name}`}
+                          >
+                            <img src={p.image} alt={p.name} className="drawer-product-img" />
+                            <div className="drawer-product-details">
+                              <span className="drawer-product-title">{p.name}</span>
+                              <span className="drawer-product-price">${p.price.toFixed(2)} MXN</span>
+                            </div>
+                            <button
+                              type="button"
+                              className={`drawer-add-btn ${addedId === p.id ? 'added' : ''}`}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                addToCart(p);
+                                setAddedId(p.id);
+                                setTimeout(() => setAddedId(null), 1500);
+                              }}
+                              title="Agregar al carrito"
+                            >
+                              <ShoppingCart size={11} />
+                              <span>{addedId === p.id ? '✓' : 'Agregar'}</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -108,12 +245,24 @@ const Shop = () => {
           </div>
         </aside>
 
-        {/* Product Grid */}
+        {/* Product Grid / Category Breakdown */}
         <main className="shop-main">
           <div className="shop-results-header">
-            <span>Mostrando <strong>{filteredProducts.length}</strong> de {products.length} productos</span>
-            {selectedFilter !== 'all' && (
-              <button className="reset-filter-btn" onClick={() => setSelectedFilter('all')}>
+            <span>
+              {searchTerm.trim() ? (
+                <>Resultados para "<strong>{searchTerm}</strong>": <strong>{filteredProducts.length}</strong> productos</>
+              ) : selectedFilter === 'all' ? (
+                <>Mostrando <strong>{products.length}</strong> productos desglosados por categoría</>
+              ) : (
+                <>Mostrando <strong>{filteredProducts.length}</strong> productos en <strong>{selectedFilter}</strong></>
+              )}
+            </span>
+            {(selectedFilter !== 'all' || searchTerm.trim() !== '') && (
+              <button 
+                type="button" 
+                className="reset-filter-btn" 
+                onClick={() => { setSelectedFilter('all'); setSearchTerm(''); }}
+              >
                 <span>Mostrar todos</span>
                 <X size={14} />
               </button>
@@ -131,69 +280,38 @@ const Shop = () => {
                 Ver Todos los Productos
               </button>
             </div>
+          ) : selectedFilter === 'all' && searchTerm.trim() === '' ? (
+            /* Desglose completo por categoría con cabeceras */
+            <div className="shop-grouped-sections">
+              {filters
+                .filter(f => f.key !== 'all')
+                .map(cat => {
+                  const catProducts = products.filter(p => p.line === cat.key);
+                  if (catProducts.length === 0) return null;
+                  const Icon = cat.icon;
+                  return (
+                    <section key={cat.key} className="shop-category-block">
+                      <div className="shop-category-block-header">
+                        <div className="category-block-title">
+                          <div className="category-block-icon-wrap">
+                            <Icon size={18} />
+                          </div>
+                          <h2>{cat.label}</h2>
+                        </div>
+                        <span className="category-block-count">
+                          {catProducts.length} {catProducts.length === 1 ? 'producto' : 'productos'}
+                        </span>
+                      </div>
+                      <div className="product-grid">
+                        {catProducts.map(renderProductCard)}
+                      </div>
+                    </section>
+                  );
+                })}
+            </div>
           ) : (
             <div className="product-grid">
-              {filteredProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="product-card"
-                  onClick={() => navigate(`/producto/${product.slug}`)}
-                >
-                  {product.tag && <span className="product-card-tag">{product.tag}</span>}
-                  
-                  <div className="product-card-image-wrap">
-                    <img src={product.image} alt={product.name} className="product-card-img" />
-                  </div>
-
-                  <div className="product-card-body">
-                    <div className="product-card-meta">
-                      <span className="product-card-line">{product.line}</span>
-                      {product.presentation && (
-                        <span className="product-card-pres">{product.presentation}</span>
-                      )}
-                    </div>
-
-                    <h3 className="product-card-title">{product.name}</h3>
-                    <p className="product-card-desc">{product.desc}</p>
-
-                    {product.species && (
-                      <div className="product-card-species">
-                        <PawPrint size={13} />
-                        <span>{product.species}</span>
-                      </div>
-                    )}
-
-                    <div className="product-card-bottom">
-                      <div className="product-card-price">
-                        <span className="price-label">Precio</span>
-                        <span className="price-amount">${product.price.toFixed(2)} <small>MXN</small></span>
-                      </div>
-
-                      <div className="product-card-actions">
-                        <button
-                          className="btn btn-primary btn-sm-view"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/producto/${product.slug}`);
-                          }}
-                        >
-                          Ver Detalles
-                        </button>
-                        <button
-                          className="btn btn-cart-quick"
-                          title="Agregar al carrito"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addToCart(product);
-                          }}
-                        >
-                          <ShoppingCart size={16} />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
+              {filteredProducts.map(renderProductCard)}
             </div>
           )}
         </main>

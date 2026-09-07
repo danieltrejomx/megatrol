@@ -1,10 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Clock, Calendar } from 'lucide-react';
-import { blogArticles } from '../../data/blog';
+import { blogArticles, type BlogArticle } from '../../data/blog';
+import BlogModal from '../../components/BlogModal/BlogModal';
 import './Blog.css';
 
 const Blog = () => {
-  const navigate = useNavigate();
+  const [selectedArticle, setSelectedArticle] = useState<BlogArticle | null>(null);
 
   return (
     <div className="blog-page">
@@ -25,7 +26,7 @@ const Blog = () => {
               <article
                 key={article.id}
                 className="blog-card"
-                onClick={() => navigate(`/blog/${article.slug}`)}
+                onClick={() => setSelectedArticle(article)}
                 style={{ cursor: 'pointer' }}
               >
                 <div className="blog-image-wrap">
@@ -48,6 +49,9 @@ const Blog = () => {
           </div>
         </div>
       </section>
+
+      {/* Pantalla Emergente (Modal) con toda la información del artículo */}
+      <BlogModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />
     </div>
   );
 };

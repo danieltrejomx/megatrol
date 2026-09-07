@@ -16,12 +16,13 @@ import {
   TrendingUp,
   Package,
   Stethoscope,
-  MessageCircle,
   ShoppingCart,
   Award,
   Send
 } from 'lucide-react';
 import { products } from '../../data/products';
+import { blogArticles, type BlogArticle } from '../../data/blog';
+import BlogModal from '../../components/BlogModal/BlogModal';
 import { useCart } from '../../context/CartContext';
 import './Home.css';
 
@@ -217,6 +218,12 @@ const Home = () => {
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [formData, setFormData] = useState({ nombre: '', negocio: '', ciudad: '', telefono: '', comentarios: '' });
+  const [selectedArticle, setSelectedArticle] = useState<BlogArticle | null>(null);
+
+  const openArticle = (slug: string) => {
+    const art = blogArticles.find((a) => a.slug === slug);
+    if (art) setSelectedArticle(art);
+  };
   const reviewsCarouselRef = useRef<HTMLDivElement>(null);
 
   const nextVideo = () => {
@@ -774,16 +781,19 @@ const Home = () => {
             </div>
 
             <div className="distributor-contact-bar">
-              <a 
-                href="https://wa.me/525536206854?text=Hola,%20me%20interesa%20informaci%C3%B3n%20sobre%20precios%20de%20mayoreo%20y%20distribuci%C3%B3n%20de%20Megatrol%20e%20Inobazz%20Pharma" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="btn-whatsapp-b2b"
-              >
-                <MessageCircle size={18} />
-                <span>Chatear con Asesor por WhatsApp</span>
-              </a>
               <div className="social-cta">
+                <a 
+                  href="https://wa.me/525536206854?text=Hola,%20me%20interesa%20informaci%C3%B3n%20sobre%20precios%20de%20mayoreo%20y%20distribuci%C3%B3n%20de%20Megatrol%20e%20Inobazz%20Pharma" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="social-pill wa" 
+                  aria-label="WhatsApp de Inobazz Pharma"
+                  title="WhatsApp"
+                >
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.04 3.67M9.53 7.35C9.34 7.35 9.04 7.42 8.78 7.7C8.52 7.98 7.8 8.65 7.8 10.03C7.8 11.41 8.81 12.74 8.95 12.93C9.09 13.12 10.9 15.93 13.68 17.13C14.34 17.42 14.86 17.59 15.26 17.72C15.93 17.93 16.54 17.9 17.02 17.83C17.56 17.75 18.68 17.15 18.91 16.5C19.14 15.85 19.14 15.3 19.07 15.18C19 15.06 18.81 15 18.53 14.86C18.25 14.72 16.89 14.05 16.63 13.96C16.38 13.86 16.19 13.82 16 14.1C15.82 14.38 15.29 15 15.13 15.19C14.97 15.37 14.81 15.4 14.53 15.26C14.25 15.12 13.36 14.83 12.3 13.89C11.48 13.15 10.92 12.24 10.76 11.96C10.6 11.69 10.74 11.53 10.88 11.4C11.01 11.27 11.17 11.05 11.31 10.89C11.45 10.73 11.5 10.61 11.59 10.43C11.68 10.24 11.64 10.08 11.57 9.94C11.5 9.8 10.93 8.42 10.7 7.86C10.48 7.32 10.25 7.4 10.07 7.39C9.91 7.38 9.72 7.35 9.53 7.35Z"/>
+                  </svg>
+                </a>
                 <a 
                   href="https://facebook.com/Inobazzpharma" 
                   target="_blank" 
@@ -931,7 +941,7 @@ const Home = () => {
           </div>
 
           <div className="blog-grid">
-            <article className="blog-card" onClick={() => navigate('/blog/como-identificar-si-mi-perro-tiene-pulgas')} style={{ cursor: 'pointer' }}>
+            <article className="blog-card" onClick={() => openArticle('como-identificar-si-mi-perro-tiene-pulgas')} style={{ cursor: 'pointer' }}>
               <div className="blog-image-wrap">
                 <img src="/images/blog-perro-pulgas.jpg" alt="¿Cómo identificar si mi perro tiene pulgas?" className="blog-card-img" />
                 <span className="blog-card-category-badge">Salud Canina</span>
@@ -944,7 +954,7 @@ const Home = () => {
               </div>
             </article>
 
-            <article className="blog-card" onClick={() => navigate('/blog/el-poder-del-aceite-de-neem-en-veterinaria')} style={{ cursor: 'pointer' }}>
+            <article className="blog-card" onClick={() => openArticle('el-poder-del-aceite-de-neem-en-veterinaria')} style={{ cursor: 'pointer' }}>
               <div className="blog-image-wrap">
                 <img src="/images/blog-aceite-neem.jpg" alt="El poder del Aceite de Neem en veterinaria" className="blog-card-img" />
                 <span className="blog-card-category-badge">Ciencia & Naturaleza</span>
@@ -957,7 +967,7 @@ const Home = () => {
               </div>
             </article>
 
-            <article className="blog-card" onClick={() => navigate('/blog/protegiendo-a-tu-gato-lo-que-debes-saber')} style={{ cursor: 'pointer' }}>
+            <article className="blog-card" onClick={() => openArticle('protegiendo-a-tu-gato-lo-que-debes-saber')} style={{ cursor: 'pointer' }}>
               <div className="blog-image-wrap">
                 <img src="/images/blog-protegiendo-gato.jpg" alt="Protegiendo a tu gato: lo que debes saber" className="blog-card-img" />
                 <span className="blog-card-category-badge">Salud Felina</span>
@@ -976,6 +986,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Pantalla Emergente (Modal) con toda la información del artículo */}
+      <BlogModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />
 
     </div>
   );
