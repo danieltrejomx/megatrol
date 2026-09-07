@@ -1445,27 +1445,43 @@
 
 .social-cta {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  align-items: center;
 }
 
 .social-pill {
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 12.5px;
-  font-weight: 700;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  border: 1.5px solid rgba(0, 132, 199, 0.2);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  color: white;
-  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 78, 130, 0.06);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.social-pill svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
 }
 
 .social-pill:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.08);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 20px rgba(0, 132, 199, 0.28);
 }
 
-.social-pill.fb { background: #1877f2; }
-.social-pill.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-.social-pill.tk { background: #000000; }
+.social-pill:hover svg {
+  transform: scale(1.08);
+}
 
 /* ── FORM CARD WRAPPER ───────────────────────────────────────── */
 .distributor-form-wrapper {
