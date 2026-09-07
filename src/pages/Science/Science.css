@@ -35,39 +35,63 @@
 .science-image {
   flex: 1;
 }
-.image-placeholder {
-  background: var(--color-bg-alt);
+.science-image-card {
+  position: relative;
   border-radius: 24px;
-  aspect-ratio: 4/3;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--color-bg-alt);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.science-image-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 45px rgba(0, 132, 199, 0.14);
+}
+
+.science-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.science-image-card:hover .science-card-img {
+  transform: scale(1.03);
+}
+
+.science-card-caption {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 14px;
+  padding: 10px 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  font-weight: 600;
-  color: var(--color-primary-dark);
+  gap: 2px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.science-icon-large {
-  width: 90px;
-  height: 90px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(0, 132, 199, 0.12);
-}
-
-.science-icon-leaf {
-  background: linear-gradient(135deg, rgba(241, 248, 233, 0.95) 0%, rgba(200, 230, 201, 0.9) 100%);
-  border: 1.5px solid rgba(116, 192, 67, 0.3);
-  color: var(--color-secondary-dark);
-}
-
-.science-icon-shield {
-  background: linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(186, 230, 253, 0.9) 100%);
-  border: 1.5px solid rgba(0, 132, 199, 0.3);
+.science-caption-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
   color: var(--color-primary);
+}
+
+.science-caption-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-heading);
 }
 
 .mechanism-section {

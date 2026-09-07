@@ -1,4 +1,4 @@
-import { Leaf, ShieldCheck, Zap, FlaskConical, RefreshCw } from 'lucide-react';
+import { Zap, FlaskConical, RefreshCw } from 'lucide-react';
 import './Science.css';
 
 const Science = () => {
@@ -32,11 +32,16 @@ const Science = () => {
             </p>
           </div>
           <div className="science-image">
-            <div className="image-placeholder">
-              <div className="science-icon-large science-icon-leaf">
-                <Leaf size={56} strokeWidth={1.8} />
+            <div className="science-image-card">
+              <img 
+                src="/images/ciencia-monoterpenos.jpg" 
+                alt="Monoterpenos Cíclicos de origen botánico" 
+                className="science-card-img" 
+              />
+              <div className="science-card-caption">
+                <span className="science-caption-tag">Fitoterapia Veterinaria</span>
+                <strong className="science-caption-title">Monoterpenos Cíclicos</strong>
               </div>
-              <span>Monoterpenos Cíclicos</span>
             </div>
           </div>
         </section>
@@ -55,11 +60,16 @@ const Science = () => {
             </p>
           </div>
           <div className="science-image">
-            <div className="image-placeholder">
-              <div className="science-icon-large science-icon-shield">
-                <ShieldCheck size={56} strokeWidth={1.8} />
+            <div className="science-image-card">
+              <img 
+                src="/images/ciencia-aceite-neem.jpg" 
+                alt="Aceite de Neem Puro prensado en frío" 
+                className="science-card-img" 
+              />
+              <div className="science-card-caption">
+                <span className="science-caption-tag">Azadirachta indica</span>
+                <strong className="science-caption-title">Aceite de Neem Puro</strong>
               </div>
-              <span>Aceite de Neem Puro</span>
             </div>
           </div>
         </section>
