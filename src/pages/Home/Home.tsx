@@ -21,7 +21,8 @@ import {
   Award,
   Play,
   Send,
-  Sparkles
+  Sparkles,
+  ExternalLink
 } from 'lucide-react';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -154,7 +155,16 @@ const demoVideos = [
     shortTitle: 'Dermapet Shampoo',
     badge: 'Baño Medicado',
     desc: 'Ingredientes de origen natural y pH balanceado para calmar, hidratar y tratar afecciones en la piel.',
-    src: '/videos/video-demostracion-dermapet.mp4'
+    src: '/videos/video-demostracion-dermapet.mp4',
+    driveUrl: 'https://drive.google.com/file/d/1Vn73XXF6i6t6jjMwgIyH93ZSYXIDTMQH/view?usp=sharing',
+    products: [
+      {
+        slug: 'dermapet-shampoo',
+        name: 'Dermapet Shampoo Dermatológico',
+        price: 270,
+        image: '/images/dermapet-shampoo.png'
+      }
+    ]
   },
   {
     id: 'shower-shampoo',
@@ -162,7 +172,22 @@ const demoVideos = [
     shortTitle: 'Shower & Talco',
     badge: 'Limpieza y Protección',
     desc: 'Remueve impurezas y grasa con rico aroma a chicle, y protege con talco sin mojar a tu mascota.',
-    src: '/videos/video-demostracion-shower-shampoo.mp4'
+    src: '/videos/video-demostracion-shower-shampoo.mp4',
+    driveUrl: 'https://drive.google.com/file/d/1krn2iqeeCz4Nt0SnmewGTYX9c4Pf-blU/view?usp=sharing',
+    products: [
+      {
+        slug: 'shower-shampoo-aromas',
+        name: 'Shower Shampoo Aromas',
+        price: 210,
+        image: '/images/shower-shampoo-aromas.png'
+      },
+      {
+        slug: 'talco-ecologico',
+        name: 'Talco Ecológico Megatrol (80 g)',
+        price: 199,
+        image: '/images/megatrol-talco-80g.png'
+      }
+    ]
   },
   {
     id: 'jabon-talco',
@@ -170,7 +195,22 @@ const demoVideos = [
     shortTitle: 'Jabón & Talco',
     badge: 'Control Antipulgas',
     desc: 'Jabón antipulgas para control de ácaros, piojos y pulgas, sellado con talco para máxima protección.',
-    src: '/videos/video-demostracion-jabon-talco.mp4'
+    src: '/videos/video-demostracion-jabon-talco.mp4',
+    driveUrl: 'https://drive.google.com/file/d/1-EQbkf9TGtP-4DGzA5opgTscwL1EdWgg/view?usp=sharing',
+    products: [
+      {
+        slug: 'jabon-antipulgas',
+        name: 'Jabón Antipulgas Megatrol (120 g)',
+        price: 129,
+        image: '/images/megatrol-jabon-oficial.png'
+      },
+      {
+        slug: 'talco-ecologico',
+        name: 'Talco Ecológico Megatrol (80 g)',
+        price: 199,
+        image: '/images/megatrol-talco-80g.png'
+      }
+    ]
   }
 ];
 
@@ -181,6 +221,14 @@ const Home = () => {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [formData, setFormData] = useState({ nombre: '', negocio: '', ciudad: '', telefono: '', comentarios: '' });
   const reviewsCarouselRef = useRef<HTMLDivElement>(null);
+
+  const nextVideo = () => {
+    setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
+  };
+
+  const prevVideo = () => {
+    setSelectedVideoIndex((prev) => (prev - 1 + demoVideos.length) % demoVideos.length);
+  };
 
   const scrollReviews = (direction: 'left' | 'right') => {
     if (reviewsCarouselRef.current) {
@@ -474,15 +522,39 @@ const Home = () => {
           </div>
           <div className="how-works-image">
             <div className="video-showcase-container">
+              {/* Header with Roulette Controls */}
               <div className="video-player-header">
-                <span className="video-label-tag">
-                  <Sparkles size={13} /> Demostración de Uso
-                </span>
+                <div className="video-header-top">
+                  <span className="video-label-tag">
+                    <Sparkles size={13} /> Demostración en Ruleta
+                  </span>
+                  <div className="video-roulette-nav">
+                    <button 
+                      type="button" 
+                      onClick={prevVideo} 
+                      className="roulette-nav-btn" 
+                      aria-label="Video anterior"
+                      title="Video anterior"
+                    >
+                      <ChevronLeft size={18} />
+                    </button>
+                    <span className="roulette-counter">{selectedVideoIndex + 1} / {demoVideos.length}</span>
+                    <button 
+                      type="button" 
+                      onClick={nextVideo} 
+                      className="roulette-nav-btn" 
+                      aria-label="Video siguiente"
+                      title="Video siguiente"
+                    >
+                      <ChevronRight size={18} />
+                    </button>
+                  </div>
+                </div>
                 <h3 className="video-main-heading">¿Cómo usar MEGATROL?</h3>
-                <p className="video-sub-heading">3 demostraciones reales paso a paso con nuestros productos</p>
+                <p className="video-sub-heading">Observa la aplicación real y adquiere el producto directamente</p>
               </div>
 
-              {/* Video Player Frame */}
+              {/* Video Player Frame with side roulette arrows */}
               <div className="video-media-card">
                 <div className="video-screen-wrapper">
                   <video
@@ -493,19 +565,81 @@ const Home = () => {
                     preload="metadata"
                     className="video-element"
                   />
+                  <button 
+                    type="button" 
+                    className="roulette-side-arrow prev" 
+                    onClick={prevVideo}
+                    aria-label="Video anterior"
+                    title="Anterior"
+                  >
+                    <ChevronLeft size={22} />
+                  </button>
+                  <button 
+                    type="button" 
+                    className="roulette-side-arrow next" 
+                    onClick={nextVideo}
+                    aria-label="Video siguiente"
+                    title="Siguiente"
+                  >
+                    <ChevronRight size={22} />
+                  </button>
                 </div>
                 
                 <div className="video-info-box">
                   <div className="video-badge-row">
                     <span className="video-pill-badge">{demoVideos[selectedVideoIndex].badge}</span>
-                    <span className="video-counter-badge">Demo {selectedVideoIndex + 1} de {demoVideos.length}</span>
+                    <div className="roulette-dots">
+                      {demoVideos.map((_, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          className={`roulette-dot ${selectedVideoIndex === idx ? 'active' : ''}`}
+                          onClick={() => setSelectedVideoIndex(idx)}
+                          aria-label={`Ir al video ${idx + 1}`}
+                        />
+                      ))}
+                    </div>
                   </div>
                   <h4 className="video-item-title">{demoVideos[selectedVideoIndex].title}</h4>
                   <p className="video-item-desc">{demoVideos[selectedVideoIndex].desc}</p>
+
+                  {/* Direct Product CTAs */}
+                  <div className="video-products-section">
+                    <span className="video-products-title">
+                      <ShoppingCart size={14} /> Producto{demoVideos[selectedVideoIndex].products.length > 1 ? 's' : ''} en este video:
+                    </span>
+                    <div className="video-product-cards-list">
+                      {demoVideos[selectedVideoIndex].products.map((prod) => (
+                        <div key={prod.slug} className="video-product-tile">
+                          <img src={prod.image} alt={prod.name} className="video-prod-thumb" />
+                          <div className="video-prod-details">
+                            <strong className="video-prod-name">{prod.name}</strong>
+                            <span className="video-prod-price">${prod.price} MXN</span>
+                          </div>
+                          <Link to={`/producto/${prod.slug}`} className="btn-buy-from-video">
+                            <span>Ver Producto</span>
+                            <ChevronRight size={14} />
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="video-actions-row">
+                    <a
+                      href={demoVideos[selectedVideoIndex].driveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="video-drive-link"
+                    >
+                      <ExternalLink size={12} />
+                      <span>Ver carpeta de videos en Google Drive</span>
+                    </a>
+                  </div>
                 </div>
               </div>
 
-              {/* Video Selector Tabs */}
+              {/* Video Quick Selector Chips */}
               <div className="video-playlist-row">
                 {demoVideos.map((vid, idx) => (
                   <button
@@ -518,7 +652,7 @@ const Home = () => {
                       <Play size={11} fill={selectedVideoIndex === idx ? "currentColor" : "none"} />
                     </span>
                     <div className="video-tab-info">
-                      <span className="video-tab-step">Video 0{idx + 1}</span>
+                      <span className="video-tab-step">0{idx + 1}</span>
                       <strong className="video-tab-name">{vid.shortTitle}</strong>
                     </div>
                   </button>
