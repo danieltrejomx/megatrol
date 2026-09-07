@@ -239,6 +239,25 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [isPlaying, isHovered]);
 
+  const [addedSlug, setAddedSlug] = useState<string | null>(null);
+
+  const handleAddFromVideo = (slug: string) => {
+    const productObj = products.find((p) => p.slug === slug);
+    if (productObj) {
+      addToCart(productObj, 1);
+      setAddedSlug(slug);
+      setTimeout(() => setAddedSlug(null), 1800);
+    }
+  };
+
+  const handleBuyNowFromVideo = (slug: string) => {
+    const productObj = products.find((p) => p.slug === slug);
+    if (productObj) {
+      addToCart(productObj, 1);
+      navigate('/carrito');
+    }
+  };
+
   const scrollReviews = (direction: 'left' | 'right') => {
     if (reviewsCarouselRef.current) {
       const scrollAmount = reviewsCarouselRef.current.clientWidth * 0.8;
@@ -607,15 +626,48 @@ const Home = () => {
                     <div className="video-product-cards-list">
                       {demoVideos[selectedVideoIndex].products.map((prod) => (
                         <div key={prod.slug} className="video-product-tile">
-                          <img src={prod.image} alt={prod.name} className="video-prod-thumb" />
-                          <div className="video-prod-details">
-                            <strong className="video-prod-name">{prod.name}</strong>
-                            <span className="video-prod-price">${prod.price} MXN</span>
-                          </div>
-                          <Link to={`/producto/${prod.slug}`} className="btn-buy-from-video">
-                            <span>Ver Producto</span>
-                            <ChevronRight size={14} />
+                          <Link 
+                            to={`/producto/${prod.slug}`} 
+                            className="video-prod-main-link"
+                            title={`Ver detalles de ${prod.name}`}
+                          >
+                            <img src={prod.image} alt={prod.name} className="video-prod-thumb" />
+                            <div className="video-prod-details">
+                              <strong className="video-prod-name">{prod.name}</strong>
+                              <span className="video-prod-price">${prod.price} MXN</span>
+                            </div>
                           </Link>
+
+                          <div className="video-prod-actions">
+                            <button
+                              type="button"
+                              className={`btn-video-action btn-video-cart ${addedSlug === prod.slug ? 'added' : ''}`}
+                              onClick={() => handleAddFromVideo(prod.slug)}
+                              title="Agregar al carrito"
+                            >
+                              {addedSlug === prod.slug ? (
+                                <>
+                                  <CheckCircle size={13} />
+                                  <span>Agregado</span>
+                                </>
+                              ) : (
+                                <>
+                                  <ShoppingCart size={13} />
+                                  <span>+ Carrito</span>
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              type="button"
+                              className="btn-video-action btn-video-buy"
+                              onClick={() => handleBuyNowFromVideo(prod.slug)}
+                              title="Comprar ahora"
+                            >
+                              <Zap size={12} />
+                              <span>Comprar</span>
+                            </button>
+                          </div>
                         </div>
                       ))}
                     </div>
