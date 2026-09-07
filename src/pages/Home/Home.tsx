@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   ChevronLeft, 
@@ -219,16 +219,28 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const [formData, setFormData] = useState({ nombre: '', negocio: '', ciudad: '', telefono: '', comentarios: '' });
   const reviewsCarouselRef = useRef<HTMLDivElement>(null);
 
   const nextVideo = () => {
+    setIsPlaying(false);
     setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
   };
 
   const prevVideo = () => {
+    setIsPlaying(false);
     setSelectedVideoIndex((prev) => (prev - 1 + demoVideos.length) % demoVideos.length);
   };
+
+  useEffect(() => {
+    if (isPlaying || isHovered) return;
+    const timer = setInterval(() => {
+      setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
+    }, 6500);
+    return () => clearInterval(timer);
+  }, [isPlaying, isHovered]);
 
   const scrollReviews = (direction: 'left' | 'right') => {
     if (reviewsCarouselRef.current) {
@@ -521,7 +533,11 @@ const Home = () => {
             <Link to="/ciencia" className="btn btn-primary">Conoce Nuestra Ciencia</Link>
           </div>
           <div className="how-works-image">
-            <div className="video-showcase-container">
+            <div 
+              className="video-showcase-container"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
               {/* Header with Roulette Controls */}
               <div className="video-player-header">
                 <div className="video-header-top">
@@ -554,8 +570,8 @@ const Home = () => {
                 <p className="video-sub-heading">Observa la aplicación real y adquiere el producto directamente</p>
               </div>
 
-              {/* Video Player Frame with side roulette arrows */}
-              <div className="video-media-card">
+              {/* Video Player Frame with side roulette arrows and animated card */}
+              <div className="video-media-card" key={demoVideos[selectedVideoIndex].id}>
                 <div className="video-screen-wrapper">
                   <video
                     key={demoVideos[selectedVideoIndex].src}
@@ -564,6 +580,12 @@ const Home = () => {
                     playsInline
                     preload="metadata"
                     className="video-element"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => {
+                      setIsPlaying(false);
+                      nextVideo();
+                    }}
                   />
                   <button 
                     type="button" 
@@ -594,7 +616,10 @@ const Home = () => {
                           key={idx}
                           type="button"
                           className={`roulette-dot ${selectedVideoIndex === idx ? 'active' : ''}`}
-                          onClick={() => setSelectedVideoIndex(idx)}
+                          onClick={() => {
+                            setIsPlaying(false);
+                            setSelectedVideoIndex(idx);
+                          }}
                           aria-label={`Ir al video ${idx + 1}`}
                         />
                       ))}
@@ -646,7 +671,10 @@ const Home = () => {
                     key={vid.id}
                     type="button"
                     className={`video-nav-tab ${selectedVideoIndex === idx ? 'active' : ''}`}
-                    onClick={() => setSelectedVideoIndex(idx)}
+                    onClick={() => {
+                      setIsPlaying(false);
+                      setSelectedVideoIndex(idx);
+                    }}
                   >
                     <span className="video-tab-indicator">
                       <Play size={11} fill={selectedVideoIndex === idx ? "currentColor" : "none"} />
