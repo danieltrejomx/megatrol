@@ -30,11 +30,25 @@ const Header = () => {
     };
   }, [mobileOpen]);
 
+  const handleHomeClick = () => {
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    document.documentElement.scrollTo?.({ top: 0, left: 0, behavior: 'smooth' });
+  };
+
+  const handleNavClick = (path: string) => {
+    setMobileOpen(false);
+    if (window.location.pathname === path) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+      document.documentElement.scrollTo?.({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <header className="header">
       <div className="container header-container">
         <div className="logo">
-          <Link to="/" className="logo-link" onClick={() => setMobileOpen(false)}>
+          <Link to="/" className="logo-link" onClick={handleHomeClick}>
             <div className="logo-brand-mark">
               <span className="logo-letter">M</span>
               <div className="logo-accent-line"></div>
@@ -56,15 +70,15 @@ const Header = () => {
         )}
 
         <nav className={`nav-links ${mobileOpen ? 'open' : ''}`}>
-          <NavLink to="/" end onClick={() => setMobileOpen(false)}>Inicio</NavLink>
-          <NavLink to="/tienda" onClick={() => setMobileOpen(false)}>Tienda</NavLink>
-          <NavLink to="/ciencia" onClick={() => setMobileOpen(false)}>Nuestra Ciencia</NavLink>
-          <NavLink to="/blog" onClick={() => setMobileOpen(false)}>Blog</NavLink>
-          <NavLink to="/nosotros" onClick={() => setMobileOpen(false)}>Conoce a Inobazz</NavLink>
-          <NavLink to="/distribuidores" onClick={() => setMobileOpen(false)}>Distribuidores</NavLink>
+          <NavLink to="/" end onClick={handleHomeClick}>Inicio</NavLink>
+          <NavLink to="/tienda" onClick={() => handleNavClick('/tienda')}>Tienda</NavLink>
+          <NavLink to="/ciencia" onClick={() => handleNavClick('/ciencia')}>Nuestra Ciencia</NavLink>
+          <NavLink to="/blog" onClick={() => handleNavClick('/blog')}>Blog</NavLink>
+          <NavLink to="/nosotros" onClick={() => handleNavClick('/nosotros')}>Conoce a Inobazz</NavLink>
+          <NavLink to="/distribuidores" onClick={() => handleNavClick('/distribuidores')}>Distribuidores</NavLink>
 
           <div className="mobile-menu-footer">
-            <Link to="/tienda" className="btn btn-primary mobile-menu-cta" onClick={() => setMobileOpen(false)}>
+            <Link to="/tienda" className="btn btn-primary mobile-menu-cta" onClick={() => handleNavClick('/tienda')}>
               <span>Ver Catálogo Completo</span>
               <ArrowRight size={16} />
             </Link>

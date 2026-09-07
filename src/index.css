@@ -41,6 +41,10 @@
   --shadow-lg: 0 12px 28px rgba(0, 78, 130, 0.13);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
