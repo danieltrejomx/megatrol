@@ -28,6 +28,28 @@ export interface Product {
   presentationPrices?: Record<string, number | string>;
 }
 
+export const parsePresentations = (presentationStr?: string): string[] => {
+  if (!presentationStr) return [];
+  const items = presentationStr
+    .split(/,|\sy\s/gi)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return items.length > 0 ? items : [presentationStr];
+};
+
+export const getAromaEmoji = (aroma: string): string => {
+  const a = aroma.toLowerCase();
+  if (a.includes('durazno') || a.includes('peach')) return '🍑';
+  if (a.includes('baby')) return '🍼';
+  if (a.includes('fresa') || a.includes('strawberry')) return '🍓';
+  if (a.includes('chicle') || a.includes('bubblegum')) return '🍬';
+  if (a.includes('manzana')) return '🍏';
+  if (a.includes('vainilla')) return '🍦';
+  if (a.includes('lavanda')) return '💜';
+  if (a.includes('citrus') || a.includes('limon')) return '🍋';
+  return '✨';
+};
+
 export const products: Product[] = [
   // ── 1. LÍNEA MEGATROL (Antiparasitarios Naturales para Perros y Gatos) ─────────────
   {
@@ -341,6 +363,10 @@ export const products: Product[] = [
     category: 'dermocosmeticos',
     line: 'Megatrol Shower',
     presentation: '250 mL y Galón 4 L',
+    presentationPrices: {
+      '250 mL': 210,
+      'Galón 4 L': 1490
+    },
     formula: 'Agua desionizada, tensoactivos anfóteros de origen natural, extracto de aloe vera, avena, manteca de karité, fragancia.',
     administration: 'Tópica.',
     indications: 'Indicado para perros y gatos de cualquier raza y edad. No provoca irritaciones.',

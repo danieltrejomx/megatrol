@@ -5,13 +5,15 @@ import {
   Sparkles, 
   ShieldCheck, 
   CreditCard, 
-  Truck 
+  Truck,
+  Package 
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { parsePresentations, getAromaEmoji } from '../../data/products';
 import './Cart.css';
 
 const Cart = () => {
-  const { items, removeFromCart, updateQuantity, totalItems, totalPrice } = useCart();
+  const { items, removeFromCart, updateQuantity, updateItemVariant, totalItems, totalPrice } = useCart();
   const navigate = useNavigate();
 
   if (items.length === 0) {
@@ -36,32 +38,101 @@ const Cart = () => {
       <div className="cart-layout">
         {/* Items List */}
         <div className="cart-items">
-          {items.map(({ product, quantity }) => (
-            <div key={product.id} className="cart-item">
-              <div className="cart-item-image">
-                <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-              </div>
-              <div className="cart-item-info">
-                <h3>{product.name}</h3>
-                <p className="cart-item-desc">{product.desc}</p>
-                <div className="cart-item-actions">
-                  <div className="quantity-selector-sm">
-                    <button onClick={() => updateQuantity(product.id, quantity - 1)}>−</button>
-                    <span>{quantity}</span>
-                    <button onClick={() => updateQuantity(product.id, quantity + 1)}>+</button>
+          {items.map((item) => {
+            const { product, quantity, selectedPresentation, selectedAroma, unitPrice, activeImage } = item;
+            const presentations = parsePresentations(product.presentation);
+            const aromas = product.aromas || [];
+            const currentPres = selectedPresentation || presentations[0];
+            const currentAroma = selectedAroma || aromas[0];
+            const currentPrice = unitPrice ?? product.price;
+            const currentImg = activeImage || product.image;
+
+            return (
+              <div key={item.id} className="cart-item">
+                <div className="cart-item-image">
+                  <img
+                    src={currentImg}
+                    alt={product.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                  />
+                </div>
+                <div className="cart-item-info">
+                  <h3>{product.name}</h3>
+                  <p className="cart-item-desc">{product.desc}</p>
+
+                  {/* Selector de Aromas */}
+                  {aromas.length > 0 && (
+                    <div className="cart-variant-selector">
+                      <span className="cart-variant-label">
+                        <Sparkles size={13} />
+                        <span>Aroma:</span>
+                      </span>
+                      <div className="cart-variant-pills">
+                        {aromas.map((aroma) => {
+                          const isSelected = currentAroma === aroma;
+                          return (
+                            <button
+                              key={aroma}
+                              type="button"
+                              className={`cart-pill-btn ${isSelected ? 'active' : ''}`}
+                              onClick={() => updateItemVariant(item.id, currentPres, aroma)}
+                            >
+                              <span className="pill-emoji">{getAromaEmoji(aroma)}</span>
+                              <span>{aroma}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Selector de Presentaciones */}
+                  {presentations.length > 1 && (
+                    <div className="cart-variant-selector">
+                      <span className="cart-variant-label">
+                        <Package size={13} />
+                        <span>Presentación:</span>
+                      </span>
+                      <div className="cart-variant-pills">
+                        {presentations.map((pres) => {
+                          const isSelected = currentPres === pres;
+                          const presPrice = product.presentationPrices?.[pres];
+                          const priceText = typeof presPrice === 'number' ? ` ($${presPrice})` : '';
+                          return (
+                            <button
+                              key={pres}
+                              type="button"
+                              className={`cart-pill-btn ${isSelected ? 'active' : ''}`}
+                              onClick={() => updateItemVariant(item.id, pres, currentAroma)}
+                            >
+                              <span>{pres}</span>
+                              {priceText && <small className="pill-price-tag">{priceText}</small>}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="cart-item-actions">
+                    <div className="quantity-selector-sm">
+                      <button onClick={() => updateQuantity(item.id, quantity - 1)}>−</button>
+                      <span>{quantity}</span>
+                      <button onClick={() => updateQuantity(item.id, quantity + 1)}>+</button>
+                    </div>
+                    <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
+                      <Trash2 size={14} />
+                      <span>Eliminar</span>
+                    </button>
                   </div>
-                  <button className="remove-btn" onClick={() => removeFromCart(product.id)}>
-                    <Trash2 size={14} />
-                    <span>Eliminar</span>
-                  </button>
+                </div>
+                <div className="cart-item-price">
+                  <span className="item-total">${(currentPrice * quantity).toFixed(2)}</span>
+                  <span className="item-unit">${currentPrice.toFixed(2)} c/u</span>
                 </div>
               </div>
-              <div className="cart-item-price">
-                <span className="item-total">${(product.price * quantity).toFixed(2)}</span>
-                <span className="item-unit">${product.price.toFixed(2)} c/u</span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Order Summary */}
@@ -69,12 +140,21 @@ const Cart = () => {
           <h2>Resumen del Pedido</h2>
 
           <div className="summary-lines">
-            {items.map(({ product, quantity }) => (
-              <div key={product.id} className="summary-line">
-                <span>{product.name} × {quantity}</span>
-                <span>${(product.price * quantity).toFixed(2)}</span>
-              </div>
-            ))}
+            {items.map((item) => {
+              const variantTags = [item.selectedAroma, item.selectedPresentation].filter(Boolean);
+              const variantLabel = variantTags.length > 0 ? ` (${variantTags.join(' • ')})` : '';
+              const price = item.unitPrice ?? item.product.price;
+              return (
+                <div key={item.id} className="summary-line">
+                  <span>
+                    {item.product.name}
+                    {variantLabel && <small className="summary-variant-badge">{variantLabel}</small>}
+                    {' '}× {item.quantity}
+                  </span>
+                  <span>${(price * item.quantity).toFixed(2)}</span>
+                </div>
+              );
+            })}
           </div>
 
           <div className="summary-divider" />

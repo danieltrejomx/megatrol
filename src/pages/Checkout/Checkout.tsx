@@ -146,16 +146,23 @@ const Checkout = () => {
             <span>Tu Pedido</span>
           </h2>
           <div className="checkout-items">
-            {items.map(({ product, quantity }) => (
-              <div key={product.id} className="checkout-item">
-                <img src={product.image} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '6px' }} />
-                <div className="checkout-item-detail">
-                  <span>{product.name}</span>
-                  <span className="checkout-item-qty">× {quantity}</span>
+            {items.map((item) => {
+              const variantTags = [item.selectedAroma, item.selectedPresentation].filter(Boolean);
+              const variantLabel = variantTags.length > 0 ? variantTags.join(' • ') : null;
+              const price = item.unitPrice ?? item.product.price;
+              const img = item.activeImage || item.product.image;
+              return (
+                <div key={item.id} className="checkout-item">
+                  <img src={img} alt={item.product.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '6px' }} />
+                  <div className="checkout-item-detail">
+                    <span>{item.product.name}</span>
+                    {variantLabel && <small className="checkout-item-variant">{variantLabel}</small>}
+                    <span className="checkout-item-qty">× {item.quantity}</span>
+                  </div>
+                  <span className="checkout-item-price">${(price * item.quantity).toFixed(2)}</span>
                 </div>
-                <span className="checkout-item-price">${(product.price * quantity).toFixed(2)}</span>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="checkout-totals">

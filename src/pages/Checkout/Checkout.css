@@ -158,6 +158,7 @@
 .checkout-item-detail { flex: 1; }
 .checkout-item-detail span { display: block; color: var(--color-text); }
 .checkout-item-qty { font-size: 13px; color: var(--color-text-light); }
+.checkout-item-variant { display: block; font-size: 11.5px; color: var(--color-primary-dark); font-weight: 600; margin-top: 1px; }
 .checkout-item-price { font-weight: 700; color: var(--color-primary-dark); font-size: 15px; }
 
 .checkout-totals { border-top: 1px solid var(--color-border); padding-top: 16px; margin-bottom: 20px; }

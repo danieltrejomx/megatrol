@@ -20,18 +20,9 @@ import {
   Leaf,
   AlertCircle
 } from 'lucide-react';
-import { getProductBySlug } from '../../data/products';
+import { getProductBySlug, parsePresentations } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import './ProductDetail.css';
-
-const parsePresentations = (presentationStr?: string): string[] => {
-  if (!presentationStr) return [];
-  const items = presentationStr
-    .split(/,|\sy\s/gi)
-    .map((item) => item.trim())
-    .filter(Boolean);
-  return items.length > 0 ? items : [presentationStr];
-};
 
 const ProductDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -74,13 +65,13 @@ const ProductDetail = () => {
      selectedPresentation.toLowerCase().includes('galon'));
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart(product, quantity, selectedPresentation, selectedAroma);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity);
+    addToCart(product, quantity, selectedPresentation, selectedAroma);
     navigate('/carrito');
   };
   const currentPriceRaw =
