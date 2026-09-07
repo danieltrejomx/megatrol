@@ -465,7 +465,7 @@
 .section-header p { color: var(--color-text-light); font-size: 17px; max-width: 600px; margin: 0 auto; }
 
 /* ── BEST SELLERS CAROUSEL ───────────────────────────────────── */
-.best-sellers-section { padding: 80px 0; background: var(--color-bg-alt); }
+.best-sellers-section { padding: 80px 0; background: transparent; }
 
 .carousel-container { width: 100%; overflow: hidden; }
 .carousel {
@@ -608,17 +608,24 @@
 }
 
 /* ── BENEFITS ────────────────────────────────────────────────── */
-.benefits-section { padding: 80px 0; background: white; }
+.benefits-section { padding: 80px 0; background: transparent; }
 .benefits-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 16px; }
 .benefit-card {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
-  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 132, 199, 0.14);
+  border-radius: 18px;
   padding: 32px 24px;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 78, 130, 0.05);
 }
-.benefit-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+.benefit-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(0, 132, 199, 0.12);
+  border-color: rgba(0, 132, 199, 0.3);
+}
 .benefit-icon {
   width: 58px;
   height: 58px;
@@ -644,7 +651,11 @@
 /* ── HOW IT WORKS ────────────────────────────────────────────── */
 .how-works-section {
   padding: 80px 0;
-  background: linear-gradient(135deg, #0c2b42 0%, #164e73 100%);
+  background: 
+    linear-gradient(135deg, rgba(12, 43, 66, 0.95) 0%, rgba(22, 78, 115, 0.95) 100%),
+    url('/images/pet-pattern-light.svg');
+  background-repeat: repeat;
+  background-size: auto, 180px 180px;
   color: white;
 }
 .how-works-container { display: flex; gap: 60px; align-items: center; }
@@ -999,7 +1010,7 @@
 /* ── TESTIMONIALS (4 EN FILA / CAROUSEL) ──────────────── */
 .testimonials-section {
   padding: 80px 0;
-  background: linear-gradient(180deg, #f7faf8 0%, #edf5f0 100%);
+  background: transparent;
   position: relative;
   overflow: hidden;
 }
@@ -1302,7 +1313,7 @@
 /* ── DISTRIBUTOR / MAYOREO SECTION ──────────────────── */
 .distributor-section {
   padding: 90px 0;
-  background: linear-gradient(135deg, #ffffff 0%, #f4faf6 50%, #eaf5ee 100%);
+  background: transparent;
   position: relative;
   border-top: 1px solid rgba(45,106,79,0.08);
 }
@@ -1596,7 +1607,7 @@
 }
 
 /* ── BLOG ────────────────────────────────────────────────────── */
-.blog-section { padding: 80px 0; background: var(--color-bg-alt); }
+.blog-section { padding: 80px 0; background: transparent; }
 .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; margin-bottom: 40px; }
 .blog-card {
   background: white;
