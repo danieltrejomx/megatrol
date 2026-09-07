@@ -169,6 +169,12 @@
   color: var(--color-text);
 }
 
+.filter-btn-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .sidebar-promo {
   background: linear-gradient(135deg, #0c2b42, #164e73);
   color: white;
@@ -176,9 +182,17 @@
   padding: 24px;
 }
 
-.sidebar-promo h4 {
-  font-size: 16px;
+.sidebar-promo-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
+  color: #38bdf8;
+}
+
+.sidebar-promo-title h4 {
+  font-size: 16px;
+  margin: 0;
   color: #38bdf8;
 }
 
@@ -212,13 +226,16 @@
 
 .reset-filter-btn {
   background: none;
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 20px;
   padding: 4px 12px;
   font-size: 13px;
   color: #ef4444;
   cursor: pointer;
   transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .reset-filter-btn:hover {
@@ -336,13 +353,17 @@
 
 .product-card-species {
   font-size: 12px;
-  color: var(--color-primary);
-  background: var(--color-primary-light);
-  padding: 4px 8px;
+  color: var(--color-primary-dark);
+  background: rgba(0, 132, 199, 0.08);
+  border: 1px solid rgba(0, 132, 199, 0.14);
+  padding: 4px 10px;
   border-radius: 8px;
   margin-bottom: 16px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 600;
+  width: fit-content;
 }
 
 .product-card-bottom {
@@ -416,10 +437,16 @@
   border: 1px solid var(--color-border);
 }
 
-.no-products-icon {
-  font-size: 56px;
-  display: block;
-  margin-bottom: 16px;
+.no-products-icon-wrap {
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
+  background: rgba(0, 132, 199, 0.1);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px auto;
 }
 
 .no-products-found h3 {

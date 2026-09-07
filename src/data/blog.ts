@@ -4,6 +4,7 @@ export interface BlogArticle {
   date: string;
   category: string;
   emoji: string;
+  image: string;
   title: string;
   excerpt: string;
   readTime: string;
@@ -27,6 +28,7 @@ export const blogArticles: BlogArticle[] = [
     date: '15 Jul 2026',
     category: 'Salud Canina',
     emoji: '🐶',
+    image: '/images/blog-perro-pulgas.jpg',
     title: '¿Cómo identificar si mi perro tiene pulgas?',
     excerpt: 'Aprende las señales más comunes para detectar a tiempo una infestación y cómo tratarla rápidamente con soluciones naturales.',
     readTime: '5 min',
@@ -50,13 +52,13 @@ export const blogArticles: BlogArticle[] = [
       {
         type: 'list',
         items: [
-          '🔴 Rascado excesivo, especialmente en la cabeza, cuello y base de la cola',
-          '🔴 Mordisqueo constante de la piel o intentos de lamerse en zonas específicas',
-          '🔴 Pelaje con "puntitos negros" (heces de pulga, también llamadas "tierra de pulgas")',
-          '🔴 Costras o rojeces en la piel, especialmente en el abdomen',
-          '🔴 Pérdida de pelo en zonas localizadas',
-          '🔴 Inquietud, nerviosismo o agitación sin causa aparente',
-          '🔴 Anemia en cachorros o perros pequeños (encías pálidas)'
+          'Rascado excesivo, especialmente en la cabeza, cuello y base de la cola',
+          'Mordisqueo constante de la piel o intentos de lamerse en zonas específicas',
+          'Pelaje con "puntitos negros" (heces de pulga, también llamadas "tierra de pulgas")',
+          'Costras o rojeces en la piel, especialmente en el abdomen',
+          'Pérdida de pelo en zonas localizadas',
+          'Inquietud, nerviosismo o agitación sin causa aparente',
+          'Anemia en cachorros o perros pequeños (encías pálidas)'
         ]
       },
       {
@@ -69,7 +71,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         type: 'tip',
-        text: '💡 Tip de experta: Revisa especialmente detrás de las orejas, la ingle, la axila y la base de la cola. Son las zonas favoritas de las pulgas por ser cálidas y menos accesibles para que el perro se rasque.'
+        text: 'Tip de experta: Revisa especialmente detrás de las orejas, la ingle, la axila y la base de la cola. Son las zonas favoritas de las pulgas por ser cálidas y menos accesibles para que el perro se rasque.'
       },
       {
         type: 'heading',
@@ -90,17 +92,17 @@ export const blogArticles: BlogArticle[] = [
       {
         type: 'list',
         items: [
-          '✅ Aplica un spray antiparasitario de grado veterinario directamente sobre el pelaje',
-          '✅ Lava la cama, cojines y ropa de cama del perro con agua caliente',
-          '✅ Aspira alfombras, muebles y rincones de la casa',
-          '✅ Aplica un producto ambiental en tu hogar para eliminar huevos y larvas',
-          '✅ Repite el tratamiento a los 15 y 30 días para romper el ciclo biológico completo',
-          '✅ Consulta a tu veterinario si observas síntomas de alergia severa o anemia'
+          'Aplica un spray antiparasitario de grado veterinario directamente sobre el pelaje',
+          'Lava la cama, cojines y ropa de cama del perro con agua caliente',
+          'Aspira alfombras, muebles y rincones de la casa',
+          'Aplica un producto ambiental en tu hogar para eliminar huevos y larvas',
+          'Repite el tratamiento a los 15 y 30 días para romper el ciclo biológico completo',
+          'Consulta a tu veterinario si observas síntomas de alergia severa o anemia'
         ]
       },
       {
         type: 'warning',
-        text: '⚠️ Importante: Las pulgas pueden sobrevivir en tu hogar hasta 3 meses sin alimentarse. Tratar solo al perro sin desinfectar el ambiente puede generar reinfestaciones constantes. ¡Trata a la mascota y el entorno al mismo tiempo!'
+        text: 'Importante: Las pulgas pueden sobrevivir en tu hogar hasta 3 meses sin alimentarse. Tratar solo al perro sin desinfectar el ambiente puede generar reinfestaciones constantes. ¡Trata a la mascota y el entorno al mismo tiempo!'
       },
       {
         type: 'product-cta',
@@ -116,6 +118,7 @@ export const blogArticles: BlogArticle[] = [
     date: '02 Jul 2026',
     category: 'Ciencia & Naturaleza',
     emoji: '🌿',
+    image: '/images/blog-aceite-neem.jpg',
     title: 'El poder del Aceite de Neem en veterinaria',
     excerpt: 'Descubre por qué este extracto natural es la clave para la prevención ecológica contra parásitos en perros y gatos.',
     readTime: '6 min',
@@ -139,16 +142,16 @@ export const blogArticles: BlogArticle[] = [
       {
         type: 'list',
         items: [
-          '🌱 Inhibición de la ecdisona: bloquea la hormona que regula la muda de los insectos, impidiendo que huevos y larvas completen su desarrollo',
-          '🌱 Efecto antialimentario: las pulgas y garrapatas rechazan alimentarse en animales tratados con Neem',
-          '🌱 Esterilidad inducida: reduce la fertilidad de adultos que logran sobrevivir el contacto inicial',
-          '🌱 Repelencia: crea una barrera olfativa y cuticular que aleja nuevos parásitos',
-          '🌱 Acción antiinflamatoria: alivia la irritación de la piel producida por las picaduras'
+          'Inhibición de la ecdisona: bloquea la hormona que regula la muda de los insectos, impidiendo que huevos y larvas completen su desarrollo',
+          'Efecto antialimentario: las pulgas y garrapatas rechazan alimentarse en animales tratados con Neem',
+          'Esterilidad inducida: reduce la fertilidad de adultos que logran sobrevivir el contacto inicial',
+          'Repelencia: crea una barrera olfativa y cuticular que aleja nuevos parásitos',
+          'Acción antiinflamatoria: alivia la irritación de la piel producida por las picaduras'
         ]
       },
       {
         type: 'tip',
-        text: '🔬 Dato científico: La azadirachtina (principio activo del Neem) está clasificada en la categoría de riesgo más baja por la EPA (Agencia de Protección Ambiental de EE.UU.) y es biodegradable al 100%, sin dejar residuos tóxicos en el medioambiente.'
+        text: 'Dato científico: La azadirachtina (principio activo del Neem) está clasificada en la categoría de riesgo más baja por la EPA (Agencia de Protección Ambiental de EE.UU.) y es biodegradable al 100%, sin dejar residuos tóxicos en el medioambiente.'
       },
       {
         type: 'heading',
@@ -160,7 +163,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         type: 'warning',
-        text: '⚠️ Precaución: Los gatos son más sensibles a los terpenos. Si tienes felinos en casa, asegúrate de usar exclusivamente productos formulados y aprobados específicamente para gatos. Nunca apliques en gatos productos diseñados solo para perros.'
+        text: 'Precaución: Los gatos son más sensibles a los terpenos. Si tienes felinos en casa, asegúrate de usar exclusivamente productos formulados y aprobados específicamente para gatos. Nunca apliques en gatos productos diseñados solo para perros.'
       },
       {
         type: 'heading',
@@ -177,12 +180,12 @@ export const blogArticles: BlogArticle[] = [
       {
         type: 'list',
         items: [
-          '🎯 Pulgas (Ctenocephalides felis y C. canis) – adultos, huevos y larvas',
-          '🎯 Garrapatas (Rhipicephalus, Amblyomma, Dermacentor)',
-          '🎯 Piojos masticadores y chupadores',
-          '🎯 Ácaros de la sarna (Sarcoptes scabiei)',
-          '🎯 Mosca de los establos (Stomoxys calcitrans)',
-          '🎯 Mosquitos y jejenes (acción repelente)'
+          'Pulgas (Ctenocephalides felis y C. canis) – adultos, huevos y larvas',
+          'Garrapatas (Rhipicephalus, Amblyomma, Dermacentor)',
+          'Piojos masticadores y chupadores',
+          'Ácaros de la sarna (Sarcoptes scabiei)',
+          'Mosca de los establos (Stomoxys calcitrans)',
+          'Mosquitos y jejenes (acción repelente)'
         ]
       },
       {
@@ -199,6 +202,7 @@ export const blogArticles: BlogArticle[] = [
     date: '20 Jun 2026',
     category: 'Salud Felina',
     emoji: '🐱',
+    image: '/images/blog-protegiendo-gato.jpg',
     title: 'Protegiendo a tu gato: lo que debes saber',
     excerpt: 'Los gatos son más sensibles a ciertos químicos. Conoce cómo protegerlos de forma segura con la línea Megatrol.',
     readTime: '7 min',
@@ -221,7 +225,7 @@ export const blogArticles: BlogArticle[] = [
       },
       {
         type: 'warning',
-        text: '⚠️ NUNCA uses en gatos: productos con Permetrina (muy común en antiparasitarios caninos), aceite de árbol de té sin diluir, aceite de eucalipto, citronela en altas concentraciones, ni cualquier producto que no especifique expresamente "apto para gatos".'
+        text: 'Alerta crítica: NUNCA uses en gatos productos con Permetrina (muy común en antiparasitarios caninos), aceite de árbol de té sin diluir, aceite de eucalipto, citronela en altas concentraciones, ni cualquier producto que no especifique expresamente "apto para gatos".'
       },
       {
         type: 'heading',
@@ -234,18 +238,18 @@ export const blogArticles: BlogArticle[] = [
       {
         type: 'list',
         items: [
-          '🚨 Temblores musculares o convulsiones',
-          '🚨 Salivación excesiva o espuma en la boca',
-          '🚨 Dificultad para caminar o pérdida de coordinación',
-          '🚨 Dilatación de pupilas',
-          '🚨 Vómitos repetidos',
-          '🚨 Letargo extremo o pérdida de conciencia',
-          '🚨 Respiración dificultosa'
+          'Temblores musculares o convulsiones',
+          'Salivación excesiva o espuma en la boca',
+          'Dificultad para caminar o pérdida de coordinación',
+          'Dilatación de pupilas',
+          'Vómitos repetidos',
+          'Letargo extremo o pérdida de conciencia',
+          'Respiración dificultosa'
         ]
       },
       {
         type: 'tip',
-        text: '🆘 Si sospechas intoxicación: lava inmediatamente la zona con agua tibia y jabón neutro, SIN frotar. Lleva a tu gato al veterinario de emergencia. No induzcas el vómito sin supervisión veterinaria. El tiempo es crítico.'
+        text: 'Protocolo de emergencia: Si sospechas intoxicación, lava inmediatamente la zona con agua tibia y jabón neutro, SIN frotar. Lleva a tu gato al veterinario de emergencia de inmediato. No induzcas el vómito sin supervisión veterinaria. El tiempo es crítico.'
       },
       {
         type: 'heading',
@@ -258,12 +262,12 @@ export const blogArticles: BlogArticle[] = [
       {
         type: 'list',
         items: [
-          '✅ Usa solo productos etiquetados específicamente para gatos',
-          '✅ Consulta siempre a tu veterinario antes de cambiar de tratamiento',
-          '✅ Mantén al día las visitas preventivas y la revisión de parásitos',
-          '✅ Revisa regularmente el pelaje, especialmente detrás de orejas y axilas',
-          '✅ Desinfecta el entorno: camas, rascadores, transportadoras',
-          '✅ Si tienes perros y gatos, nunca uses el producto del perro en el gato'
+          'Usa solo productos etiquetados específicamente para gatos',
+          'Consulta siempre a tu veterinario antes de cambiar de tratamiento',
+          'Mantén al día las visitas preventivas y la revisión de parásitos',
+          'Revisa regularmente el pelaje, especialmente detrás de orejas y axilas',
+          'Desinfecta el entorno: camas, rascadores, transportadoras',
+          'Si tienes perros y gatos, nunca uses el producto del perro en el gato'
         ]
       },
       {

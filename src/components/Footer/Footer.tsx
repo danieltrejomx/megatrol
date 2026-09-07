@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowUp, ArrowRight } from 'lucide-react';
+import { ArrowUp, ArrowRight, MapPin, Phone, Globe } from 'lucide-react';
 import './Footer.css';
 
 const Footer = () => {
@@ -21,11 +21,20 @@ const Footer = () => {
           
           <div className="footer-about">
             <h4 className="footer-heading">Contacto Corporativo</h4>
-            <p style={{ lineHeight: '1.6', fontSize: '0.9rem' }}>
-              📍 <strong>Dirección:</strong> Bonanza 114, Col. Felipe Ángeles, C.P. 15310, Venustiano Carranza, CDMX, México.<br />
-              📞 <strong>Teléfono:</strong> (55) 3620 6854<br />
-              🌐 <strong>Web:</strong> <a href="https://www.inobazzpharma.com.mx" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary-light)' }}>www.inobazzpharma.com.mx</a>
-            </p>
+            <div className="footer-contact-list">
+              <div className="footer-contact-item">
+                <MapPin size={16} className="footer-contact-icon" />
+                <span><strong>Dirección:</strong> Bonanza 114, Col. Felipe Ángeles, C.P. 15310, Venustiano Carranza, CDMX, México.</span>
+              </div>
+              <div className="footer-contact-item">
+                <Phone size={16} className="footer-contact-icon" />
+                <span><strong>Teléfono:</strong> (55) 3620 6854</span>
+              </div>
+              <div className="footer-contact-item">
+                <Globe size={16} className="footer-contact-icon" />
+                <span><strong>Web:</strong> <a href="https://www.inobazzpharma.com.mx" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-primary-light)' }}>www.inobazzpharma.com.mx</a></span>
+              </div>
+            </div>
           </div>
 
           <div className="social-links">

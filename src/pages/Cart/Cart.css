@@ -6,7 +6,17 @@
   text-align: center;
   padding: 80px 20px;
 }
-.cart-empty-icon { font-size: 80px; display: block; margin-bottom: 20px; }
+.cart-empty-icon-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 28px;
+  background: rgba(0, 132, 199, 0.08);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px auto;
+}
 .cart-empty h2 { font-size: 28px; color: var(--color-heading); margin-bottom: 10px; }
 .cart-empty p { color: var(--color-text-light); margin-bottom: 28px; }
 
@@ -78,11 +88,14 @@
   background: none;
   border: none;
   color: #ef4444;
-  font-size: 14px;
+  font-size: 13.5px;
   cursor: pointer;
   padding: 6px 10px;
   border-radius: 6px;
   transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .remove-btn:hover { background: #fee2e2; }
 
@@ -106,13 +119,32 @@
 .summary-line { display: flex; justify-content: space-between; font-size: 15px; color: var(--color-text-light); }
 .summary-divider { border: none; border-top: 1px solid var(--color-border); margin: 16px 0; }
 .free-shipping { color: var(--color-primary-dark); font-weight: 700; }
-.shipping-note { font-size: 13px; color: var(--color-text-light); background: #f0fdf4; padding: 10px 12px; border-radius: 8px; margin-top: 8px; }
+.shipping-note { 
+  font-size: 13px; 
+  color: #166534; 
+  background: #f0fdf4; 
+  padding: 10px 14px; 
+  border-radius: 8px; 
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .total-line { font-size: 18px; font-weight: 800; color: var(--color-text); }
 
 .checkout-btn { width: 100%; margin-top: 20px; padding: 16px; font-size: 17px; }
 .continue-shopping { display: block; text-align: center; margin-top: 14px; font-size: 14px; color: var(--color-primary-dark); }
 .secure-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); }
-.secure-badges span { font-size: 12px; color: var(--color-text-light); background: var(--color-bg-alt); padding: 4px 10px; border-radius: 20px; }
+.secure-badges span { 
+  font-size: 12px; 
+  color: var(--color-text-light); 
+  background: var(--color-bg-alt); 
+  padding: 5px 12px; 
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 
 @media (max-width: 768px) {
   .cart-layout { flex-direction: column; }

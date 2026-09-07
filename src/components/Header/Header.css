@@ -96,8 +96,10 @@
   transition: color 0.3s ease;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
   color: var(--color-primary);
+  font-weight: 600;
 }
 
 .header-actions {

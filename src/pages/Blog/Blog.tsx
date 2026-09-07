@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Clock, Calendar } from 'lucide-react';
 import { blogArticles } from '../../data/blog';
 import './Blog.css';
 
@@ -8,13 +9,13 @@ const Blog = () => {
   return (
     <div className="blog-page">
       {/* ── HERO ── */}
-      <section className="blog-page-hero">
-        <div className="container">
-          <span className="section-label">Inobazz Pharma</span>
-          <h1>Blog y Consejos 📝</h1>
+      <div className="container page-banner-container">
+        <div className="page-banner-header">
+          <span className="page-banner-badge">Inobazz Pharma</span>
+          <h1>Blog y Consejos</h1>
           <p>Información veterinaria de confianza para el cuidado de tus mascotas y animales</p>
         </div>
-      </section>
+      </div>
 
       {/* ── ARTICLES ── */}
       <section className="blog-page-articles">
@@ -27,20 +28,17 @@ const Blog = () => {
                 onClick={() => navigate(`/blog/${article.slug}`)}
                 style={{ cursor: 'pointer' }}
               >
-                <div
-                  className="blog-image"
-                  style={{
-                    background: article.heroColor,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 80,
-                  }}
-                >
-                  {article.emoji}
+                <div className="blog-image-wrap">
+                  <img src={article.image} alt={article.title} className="blog-card-img" />
+                  <span className="blog-card-category-badge">{article.category}</span>
                 </div>
                 <div className="blog-content">
-                  <div className="blog-date">{article.date} · ⏱ {article.readTime}</div>
+                  <div className="blog-date">
+                    <Calendar size={13} style={{ marginRight: 4, verticalAlign: 'middle' }} />
+                    {article.date} · 
+                    <Clock size={13} style={{ marginLeft: 6, marginRight: 4, verticalAlign: 'middle' }} />
+                    {article.readTime}
+                  </div>
                   <h3>{article.title}</h3>
                   <p>{article.excerpt}</p>
                   <span className="read-more">Leer artículo completo →</span>

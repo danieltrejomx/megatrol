@@ -1,5 +1,17 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Check, 
+  FileText, 
+  ShieldCheck, 
+  Truck, 
+  CreditCard, 
+  Store, 
+  Building2, 
+  Receipt, 
+  Lock, 
+  CheckCircle2 
+} from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import './Checkout.css';
 
@@ -28,11 +40,11 @@ const Checkout = () => {
   return (
     <div className="checkout-page container">
       <div className="checkout-steps">
-        <span className="step-done">✅ Carrito</span>
+        <span className="step-done"><Check size={14} /> Carrito</span>
         <span className="step-arrow">→</span>
-        <span className="step-active">📋 Datos</span>
+        <span className="step-active"><FileText size={14} /> Datos</span>
         <span className="step-arrow">→</span>
-        <span className="step-pending">✔️ Confirmación</span>
+        <span className="step-pending"><ShieldCheck size={14} /> Confirmación</span>
       </div>
 
       <form className="checkout-layout" onSubmit={handleSubmit}>
@@ -40,7 +52,10 @@ const Checkout = () => {
         <div className="checkout-form">
           {/* Shipping */}
           <div className="form-section">
-            <h2>📦 Datos de Envío</h2>
+            <h2>
+              <Truck size={20} />
+              <span>Datos de Envío</span>
+            </h2>
             <div className="form-row">
               <input name="nombre" placeholder="Nombre *" required value={form.nombre} onChange={handleChange} />
               <input name="apellido" placeholder="Apellido *" required value={form.apellido} onChange={handleChange} />
@@ -63,27 +78,36 @@ const Checkout = () => {
 
           {/* Payment */}
           <div className="form-section">
-            <h2>💳 Método de Pago</h2>
+            <h2>
+              <CreditCard size={20} />
+              <span>Método de Pago</span>
+            </h2>
             <div className="payment-methods">
               {([
-                { key: 'card', label: '💳 Tarjeta de Crédito / Débito', sub: 'Visa, Mastercard, Amex' },
-                { key: 'oxxo', label: '🏪 Pago en OXXO', sub: 'Recibirás un código de referencia' },
-                { key: 'transfer', label: '🏦 Transferencia / SPEI', sub: 'Envío confirmado al recibir pago' },
-              ] as const).map(m => (
-                <label key={m.key} className={`payment-option ${paymentMethod === m.key ? 'selected' : ''}`}>
-                  <input
-                    type="radio"
-                    name="payment"
-                    value={m.key}
-                    checked={paymentMethod === m.key}
-                    onChange={() => setPaymentMethod(m.key)}
-                  />
-                  <div>
-                    <strong>{m.label}</strong>
-                    <span>{m.sub}</span>
-                  </div>
-                </label>
-              ))}
+                { key: 'card', label: 'Tarjeta de Crédito / Débito', sub: 'Visa, Mastercard, Amex', icon: CreditCard },
+                { key: 'oxxo', label: 'Pago en OXXO', sub: 'Recibirás un código de referencia', icon: Store },
+                { key: 'transfer', label: 'Transferencia / SPEI', sub: 'Envío confirmado al recibir pago', icon: Building2 },
+              ] as const).map(m => {
+                const Icon = m.icon;
+                return (
+                  <label key={m.key} className={`payment-option ${paymentMethod === m.key ? 'selected' : ''}`}>
+                    <input
+                      type="radio"
+                      name="payment"
+                      value={m.key}
+                      checked={paymentMethod === m.key}
+                      onChange={() => setPaymentMethod(m.key)}
+                    />
+                    <div className="payment-option-body">
+                      <div className="payment-option-title">
+                        <Icon size={18} />
+                        <strong>{m.label}</strong>
+                      </div>
+                      <span>{m.sub}</span>
+                    </div>
+                  </label>
+                );
+              })}
             </div>
 
             {paymentMethod === 'card' && (
@@ -98,12 +122,18 @@ const Checkout = () => {
             )}
             {paymentMethod === 'oxxo' && (
               <div className="oxxo-info">
-                <p>✅ Al confirmar tu pedido recibirás un <strong>código de pago</strong> en tu correo. Tienes <strong>48 horas</strong> para realizar el pago en cualquier OXXO.</p>
+                <p>
+                  <CheckCircle2 size={16} />
+                  <span>Al confirmar tu pedido recibirás un <strong>código de pago</strong> en tu correo. Tienes <strong>48 horas</strong> para realizar el pago en cualquier OXXO.</span>
+                </p>
               </div>
             )}
             {paymentMethod === 'transfer' && (
               <div className="oxxo-info">
-                <p>🏦 Al confirmar tu pedido te enviaremos los datos de la cuenta bancaria. Tu pedido se procesará una vez confirmado el pago.</p>
+                <p>
+                  <Building2 size={16} />
+                  <span>Al confirmar tu pedido te enviaremos los datos de la cuenta bancaria. Tu pedido se procesará una vez confirmado el pago.</span>
+                </p>
               </div>
             )}
           </div>
@@ -111,7 +141,10 @@ const Checkout = () => {
 
         {/* Right: Summary */}
         <div className="checkout-summary">
-          <h2>🧾 Tu Pedido</h2>
+          <h2>
+            <Receipt size={20} />
+            <span>Tu Pedido</span>
+          </h2>
           <div className="checkout-items">
             {items.map(({ product, quantity }) => (
               <div key={product.id} className="checkout-item">
@@ -139,9 +172,13 @@ const Checkout = () => {
           </div>
 
           <button type="submit" className="btn btn-primary confirm-btn">
-            ✅ Confirmar Pedido
+            <ShieldCheck size={18} />
+            <span>Confirmar Pedido</span>
           </button>
-          <p className="secure-text">🔒 Tus datos están protegidos con cifrado SSL</p>
+          <p className="secure-text">
+            <Lock size={14} />
+            <span>Tus datos están protegidos con cifrado SSL</span>
+          </p>
         </div>
       </form>
     </div>

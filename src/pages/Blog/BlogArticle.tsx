@@ -1,8 +1,24 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { 
+  Calendar, 
+  Clock, 
+  UserCheck, 
+  ShoppingCart, 
+  MessageCircle, 
+  Share2, 
+  BookOpen, 
+  Leaf, 
+  Lightbulb, 
+  AlertCircle 
+} from 'lucide-react';
 import { blogArticles } from '../../data/blog';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import './BlogArticle.css';
+
+const getInitials = (name: string) => {
+  return name.replace(/^(Dr\.|Dra\.|MVZ)\s+/i, '').split(' ').map(n => n[0]).slice(0, 2).join('');
+};
 
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,14 +47,23 @@ const BlogArticle = () => {
       <div className="article-hero" style={{ background: article.heroColor }}>
         <div className="container article-hero-inner">
           <Link to="/blog" className="article-back-link">← Volver al Blog</Link>
-          <div className="article-category-badge">{article.emoji} {article.category}</div>
+          <div className="article-category-badge">{article.category}</div>
           <h1 className="article-hero-title">{article.title}</h1>
           <div className="article-meta">
-            <span className="article-meta-item">📅 {article.date}</span>
+            <span className="article-meta-item">
+              <Calendar size={14} />
+              <span>{article.date}</span>
+            </span>
             <span className="article-meta-divider">·</span>
-            <span className="article-meta-item">⏱ {article.readTime} de lectura</span>
+            <span className="article-meta-item">
+              <Clock size={14} />
+              <span>{article.readTime} de lectura</span>
+            </span>
             <span className="article-meta-divider">·</span>
-            <span className="article-meta-item">{article.authorAvatar} {article.author}</span>
+            <span className="article-meta-item">
+              <UserCheck size={14} />
+              <span>{article.author}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -48,6 +73,9 @@ const BlogArticle = () => {
 
         {/* Main Content */}
         <article className="article-main-content">
+          <div className="article-featured-image-box">
+            <img src={article.image} alt={article.title} className="article-featured-image" />
+          </div>
           <p className="article-lead">{article.excerpt}</p>
 
           {article.content.map((block, i) => {
@@ -69,14 +97,16 @@ const BlogArticle = () => {
             if (block.type === 'tip') {
               return (
                 <div key={i} className="article-tip-box">
-                  {block.text}
+                  <Lightbulb size={20} className="article-tip-icon" />
+                  <div>{block.text}</div>
                 </div>
               );
             }
             if (block.type === 'warning') {
               return (
                 <div key={i} className="article-warning-box">
-                  {block.text}
+                  <AlertCircle size={20} className="article-warning-icon" />
+                  <div>{block.text}</div>
                 </div>
               );
             }
@@ -104,7 +134,8 @@ const BlogArticle = () => {
                       className="btn btn-secondary"
                       onClick={() => addToCart(p)}
                     >
-                      🛒 Agregar al Carrito
+                      <ShoppingCart size={16} />
+                      <span>Agregar al Carrito</span>
                     </button>
                   </div>
                 </div>
@@ -115,7 +146,7 @@ const BlogArticle = () => {
 
           {/* Author Box */}
           <div className="article-author-box">
-            <div className="article-author-avatar">{article.authorAvatar}</div>
+            <div className="article-author-avatar">{getInitials(article.author)}</div>
             <div className="article-author-info">
               <span className="article-author-name">Escrito por {article.author}</span>
               <span className="article-author-role">{article.authorRole}</span>
@@ -134,14 +165,16 @@ const BlogArticle = () => {
                 target="_blank" rel="noreferrer"
                 className="share-btn share-whatsapp"
               >
-                📲 WhatsApp
+                <MessageCircle size={16} />
+                <span>WhatsApp</span>
               </a>
               <a
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://megatrol.vercel.app/blog/' + article.slug)}`}
                 target="_blank" rel="noreferrer"
                 className="share-btn share-facebook"
               >
-                📘 Facebook
+                <Share2 size={16} />
+                <span>Compartir</span>
               </a>
             </div>
           </div>
@@ -150,11 +183,14 @@ const BlogArticle = () => {
         {/* Sidebar */}
         <aside className="article-sidebar">
           <div className="sidebar-card">
-            <h4 className="sidebar-card-title">📚 Artículos Relacionados</h4>
+            <h4 className="sidebar-card-title">
+              <BookOpen size={17} />
+              <span>Artículos Relacionados</span>
+            </h4>
             <div className="sidebar-articles">
               {related.map(r => (
                 <Link key={r.id} to={`/blog/${r.slug}`} className="sidebar-article-item">
-                  <span className="sidebar-article-emoji">{r.emoji}</span>
+                  <img src={r.image} alt={r.title} className="sidebar-article-thumb" />
                   <div>
                     <div className="sidebar-article-title">{r.title}</div>
                     <div className="sidebar-article-date">{r.date} · {r.readTime}</div>
@@ -165,7 +201,10 @@ const BlogArticle = () => {
           </div>
 
           <div className="sidebar-card sidebar-cta">
-            <span className="sidebar-cta-badge">🌿 Productos Naturales</span>
+            <span className="sidebar-cta-badge">
+              <Leaf size={14} />
+              <span>Productos Naturales</span>
+            </span>
             <h4>¿Listo para proteger a tu mascota?</h4>
             <p>Descubre el catálogo completo de Inobazz Pharma con soluciones botánicas de grado veterinario.</p>
             <Link to="/tienda" className="btn btn-primary sidebar-btn">Ver Catálogo →</Link>
@@ -180,8 +219,9 @@ const BlogArticle = () => {
           <div className="blog-grid">
             {related.map(r => (
               <article key={r.id} className="blog-card" onClick={() => navigate(`/blog/${r.slug}`)} style={{ cursor: 'pointer' }}>
-                <div className="blog-image" style={{ background: r.heroColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72 }}>
-                  {r.emoji}
+                <div className="blog-image-wrap">
+                  <img src={r.image} alt={r.title} className="blog-card-img" />
+                  <span className="blog-card-category-badge">{r.category}</span>
                 </div>
                 <div className="blog-content">
                   <div className="blog-date">{r.date}</div>

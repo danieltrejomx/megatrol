@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
@@ -26,11 +26,12 @@ const Header = () => {
         </div>
 
         <nav className={`nav-links ${mobileOpen ? 'open' : ''}`}>
-          <Link to="/tienda" onClick={() => setMobileOpen(false)}>Tienda</Link>
-          <Link to="/ciencia" onClick={() => setMobileOpen(false)}>Nuestra Ciencia</Link>
-          <Link to="/blog" onClick={() => setMobileOpen(false)}>Blog</Link>
-          <Link to="/nosotros" onClick={() => setMobileOpen(false)}>Conoce a Inobazz</Link>
-          <Link to="/distribuidores" onClick={() => setMobileOpen(false)}>Distribuidores</Link>
+          <NavLink to="/" end onClick={() => setMobileOpen(false)}>Inicio</NavLink>
+          <NavLink to="/tienda" onClick={() => setMobileOpen(false)}>Tienda</NavLink>
+          <NavLink to="/ciencia" onClick={() => setMobileOpen(false)}>Nuestra Ciencia</NavLink>
+          <NavLink to="/blog" onClick={() => setMobileOpen(false)}>Blog</NavLink>
+          <NavLink to="/nosotros" onClick={() => setMobileOpen(false)}>Conoce a Inobazz</NavLink>
+          <NavLink to="/distribuidores" onClick={() => setMobileOpen(false)}>Distribuidores</NavLink>
         </nav>
 
         <div className="header-actions">

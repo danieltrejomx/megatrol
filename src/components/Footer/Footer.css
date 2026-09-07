@@ -54,11 +54,26 @@
   color: #ffffff;
 }
 
-.footer-about p {
-  font-size: 15px;
-  line-height: 1.6;
+.footer-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 30px;
+}
+
+.footer-contact-icon {
+  color: #38bdf8;
+  flex-shrink: 0;
+  margin-top: 3px;
 }
 
 .social-links {

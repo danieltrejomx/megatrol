@@ -1,4 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { 
+  ShoppingCart, 
+  Trash2, 
+  Sparkles, 
+  ShieldCheck, 
+  CreditCard, 
+  Truck 
+} from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import './Cart.css';
 
@@ -9,7 +17,9 @@ const Cart = () => {
   if (items.length === 0) {
     return (
       <div className="cart-empty container">
-        <span className="cart-empty-icon">🛒</span>
+        <div className="cart-empty-icon-wrap">
+          <ShoppingCart size={54} strokeWidth={1.5} />
+        </div>
         <h2>Tu carrito está vacío</h2>
         <p>Agrega productos para comenzar tu compra.</p>
         <Link to="/tienda" className="btn btn-primary">Ver Productos</Link>
@@ -40,7 +50,10 @@ const Cart = () => {
                     <span>{quantity}</span>
                     <button onClick={() => updateQuantity(product.id, quantity + 1)}>+</button>
                   </div>
-                  <button className="remove-btn" onClick={() => removeFromCart(product.id)}>🗑️ Eliminar</button>
+                  <button className="remove-btn" onClick={() => removeFromCart(product.id)}>
+                    <Trash2 size={14} />
+                    <span>Eliminar</span>
+                  </button>
                 </div>
               </div>
               <div className="cart-item-price">
@@ -77,7 +90,10 @@ const Cart = () => {
             </span>
           </div>
           {shipping > 0 && (
-            <p className="shipping-note">Agrega ${(599 - totalPrice).toFixed(2)} más para envío gratis 🎁</p>
+            <p className="shipping-note">
+              <Sparkles size={14} />
+              <span>Agrega ${(599 - totalPrice).toFixed(2)} más para envío gratis</span>
+            </p>
           )}
 
           <div className="summary-divider" />
@@ -93,9 +109,9 @@ const Cart = () => {
           <Link to="/tienda" className="continue-shopping">← Seguir comprando</Link>
 
           <div className="secure-badges">
-            <span>🔒 Pago seguro</span>
-            <span>💳 Tarjeta / OXXO</span>
-            <span>📦 Envío rastreable</span>
+            <span><ShieldCheck size={14} /> Pago seguro</span>
+            <span><CreditCard size={14} /> Tarjeta / OXXO</span>
+            <span><Truck size={14} /> Envío rastreable</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,25 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import {
+  Package,
+  ShieldCheck,
+  PawPrint,
+  Star,
+  Clock,
+  Sparkles,
+  Syringe,
+  FlaskConical,
+  CheckCircle2,
+  MessageCircle,
+  ShoppingCart,
+  Zap,
+  CreditCard,
+  Store,
+  Truck,
+  FileText,
+  Leaf,
+  AlertCircle
+} from 'lucide-react';
 import { getProductBySlug } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import './ProductDetail.css';
@@ -88,7 +108,9 @@ const ProductDetail = () => {
             {product.tag && <span className="product-tag-lg">{product.tag}</span>}
             {isNoImagePresentation ? (
               <div className="no-image-placeholder">
-                <span className="no-image-icon">📦</span>
+                <div className="no-image-icon-wrap">
+                  <Package size={44} />
+                </div>
                 <p className="no-image-title">{product.name}</p>
                 <p className="no-image-subtitle">Presentación: <strong>{selectedPresentation}</strong></p>
                 <small className="no-image-note">Sin imagen disponible para esta presentación</small>
@@ -116,27 +138,42 @@ const ProductDetail = () => {
             )}
           </div>
           
-          <p className="product-image-note">🔒 Compra 100% segura · Envío garantizado a toda la República</p>
+          <p className="product-image-note">
+            <ShieldCheck size={16} />
+            <span>Compra 100% segura · Envío garantizado a toda la República</span>
+          </p>
         </div>
 
         {/* Right: Info */}
         <div className="product-info-section">
           <div className="product-header-badges">
             <span className="product-category-label">{product.line}</span>
-            {product.species && <span className="species-pill">🐾 {product.species}</span>}
+            {product.species && (
+              <span className="species-pill">
+                <PawPrint size={13} />
+                <span>{product.species}</span>
+              </span>
+            )}
           </div>
 
           <h1>{product.name}</h1>
 
           <div className="product-rating">
-            {'⭐'.repeat(5)}
+            <div className="stars-group">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={16} fill="#f59e0b" color="#f59e0b" />
+              ))}
+            </div>
             <span>(48 reseñas verificadas)</span>
           </div>
 
           <div className="product-price-display">
             {isPricePending ? (
               <div className="pending-price-tag">
-                <span className="current-price text-pending">⏳ Precio Pendiente</span>
+                <span className="current-price text-pending">
+                  <Clock size={22} />
+                  <span>Precio Pendiente</span>
+                </span>
                 <span className="pending-badge">Próximamente</span>
               </div>
             ) : (
@@ -155,7 +192,10 @@ const ProductDetail = () => {
           {/* Interactive Presentation Selector */}
           {presentations.length > 1 && (
             <div className="presentation-selector-block">
-              <span className="presentation-selector-label">📦 Elige la Presentación:</span>
+              <span className="presentation-selector-label">
+                <Package size={15} />
+                <span>Elige la Presentación:</span>
+              </span>
               <div className="presentation-buttons-group">
                 {presentations.map((pres) => {
                   const isSelected = selectedPresentation === pres;
@@ -178,7 +218,10 @@ const ProductDetail = () => {
           {/* Interactive Aroma Selector */}
           {aromas.length > 0 && (
             <div className="aroma-selector-block">
-              <span className="aroma-selector-label">🌸 Elige el Aroma / Fragancia:</span>
+              <span className="aroma-selector-label">
+                <Sparkles size={15} />
+                <span>Elige el Aroma / Fragancia:</span>
+              </span>
               <div className="aroma-buttons-group">
                 {aromas.map((aroma) => {
                   const isSelected = selectedAroma === aroma;
@@ -201,19 +244,28 @@ const ProductDetail = () => {
           <div className="product-technical-specs">
             {product.presentation && (
               <div className="tech-spec-row">
-                <span className="tech-spec-label">📦 Presentaciones:</span>
+                <span className="tech-spec-label">
+                  <Package size={14} />
+                  <span>Presentaciones:</span>
+                </span>
                 <span className="tech-spec-val">{product.presentation}</span>
               </div>
             )}
             {product.administration && (
               <div className="tech-spec-row">
-                <span className="tech-spec-label">💉 Vía de Administración:</span>
+                <span className="tech-spec-label">
+                  <Syringe size={14} />
+                  <span>Vía de Administración:</span>
+                </span>
                 <span className="tech-spec-val">{product.administration}</span>
               </div>
             )}
             {product.formula && (
               <div className="tech-spec-row">
-                <span className="tech-spec-label">🔬 Fórmula Activa:</span>
+                <span className="tech-spec-label">
+                  <FlaskConical size={14} />
+                  <span>Fórmula Activa:</span>
+                </span>
                 <span className="tech-spec-val">{product.formula}</span>
               </div>
             )}
@@ -225,7 +277,10 @@ const ProductDetail = () => {
               <h3>Beneficios y Propiedades Clave</h3>
               <ul>
                 {product.benefits.map((b, i) => (
-                  <li key={i}><span className="check">✅</span> {b}</li>
+                  <li key={i}>
+                    <CheckCircle2 size={16} className="benefit-check-icon" />
+                    <span>{b}</span>
+                  </li>
                 ))}
               </ul>
             </div>
@@ -235,7 +290,10 @@ const ProductDetail = () => {
           {isPricePending ? (
             <div className="product-actions pending-actions">
               <div className="pending-notice-box">
-                <p><strong>⚠️ Precio pendiente para {selectedPresentation}</strong></p>
+                <p>
+                  <AlertCircle size={16} />
+                  <strong>Precio pendiente para {selectedPresentation}</strong>
+                </p>
                 <small>El precio de esta presentación aún está por confirmarse. Puedes cotizar o consultar disponibilidad por WhatsApp.</small>
               </div>
               <a
@@ -244,7 +302,8 @@ const ProductDetail = () => {
                 rel="noopener noreferrer"
                 className="btn-whatsapp-inquire"
               >
-                💬 Consultar en WhatsApp
+                <MessageCircle size={18} />
+                <span>Consultar en WhatsApp</span>
               </a>
             </div>
           ) : (
@@ -259,21 +318,44 @@ const ProductDetail = () => {
                 className={`btn btn-outline-primary add-to-cart-btn ${added ? 'added' : ''}`}
                 onClick={handleAddToCart}
               >
-                {added ? '✅ ¡Agregado al Carrito!' : '🛒 Agregar al Carrito'}
+                {added ? (
+                  <>
+                    <CheckCircle2 size={18} />
+                    <span>¡Agregado al Carrito!</span>
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart size={18} />
+                    <span>Agregar al Carrito</span>
+                  </>
+                )}
               </button>
 
               <button className="btn btn-primary buy-now-btn" onClick={handleBuyNow}>
-                ⚡ Comprar Ahora
+                <Zap size={18} />
+                <span>Comprar Ahora</span>
               </button>
             </div>
           )}
 
           {/* Payment Info */}
           <div className="payment-info">
-            <div className="payment-item">💳 Tarjetas de crédito / débito / SPEI</div>
-            <div className="payment-item">🏪 Pago en OXXO Pay</div>
-            <div className="payment-item">📦 Envío nacional 3-5 días hábiles</div>
-            <div className="payment-item">🚚 Envío Gratis en pedidos desde $599</div>
+            <div className="payment-item">
+              <CreditCard size={16} />
+              <span>Tarjetas de crédito / débito / SPEI</span>
+            </div>
+            <div className="payment-item">
+              <Store size={16} />
+              <span>Pago en OXXO Pay</span>
+            </div>
+            <div className="payment-item">
+              <Package size={16} />
+              <span>Envío nacional 3-5 días hábiles</span>
+            </div>
+            <div className="payment-item">
+              <Truck size={16} />
+              <span>Envío Gratis en pedidos desde $599</span>
+            </div>
           </div>
         </div>
       </div>
@@ -283,17 +365,26 @@ const ProductDetail = () => {
         <div className="container technical-details-grid">
           {product.indications && (
             <div className="tech-detail-card">
-              <h2>📋 Indicaciones Terapéuticas</h2>
+              <h2>
+                <FileText size={22} />
+                <span>Indicaciones Terapéuticas</span>
+              </h2>
               <p>{product.indications}</p>
             </div>
           )}
           <div className="tech-detail-card">
-            <h2>🧪 Modo de Uso y Dosificación</h2>
+            <h2>
+              <FlaskConical size={22} />
+              <span>Modo de Uso y Dosificación</span>
+            </h2>
             <p>{product.howToUse}</p>
           </div>
           {product.formula && (
             <div className="tech-detail-card full-width">
-              <h2>🌿 Composición y Fórmula Completa</h2>
+              <h2>
+                <Leaf size={22} />
+                <span>Composición y Fórmula Completa</span>
+              </h2>
               <p>{product.formula}</p>
             </div>
           )}

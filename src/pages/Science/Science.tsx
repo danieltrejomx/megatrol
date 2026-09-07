@@ -1,11 +1,12 @@
+import { Leaf, ShieldCheck, Zap, FlaskConical, RefreshCw } from 'lucide-react';
 import './Science.css';
 
 const Science = () => {
   return (
     <div className="science-page">
-      <div className="science-hero">
-        <div className="container">
-          <span className="science-label">INNOVACIÓN NATURAL</span>
+      <div className="container page-banner-container">
+        <div className="page-banner-header">
+          <span className="page-banner-badge">Innovación Natural</span>
           <h1>Nuestra Ciencia</h1>
           <p>
             Descubre cómo Megatrol combina el poder de la naturaleza con el rigor científico
@@ -32,8 +33,10 @@ const Science = () => {
           </div>
           <div className="science-image">
             <div className="image-placeholder">
-              <span style={{ fontSize: '64px' }}>🌿</span>
-              <span>Monoterpenos</span>
+              <div className="science-icon-large science-icon-leaf">
+                <Leaf size={56} strokeWidth={1.8} />
+              </div>
+              <span>Monoterpenos Cíclicos</span>
             </div>
           </div>
         </section>
@@ -53,8 +56,10 @@ const Science = () => {
           </div>
           <div className="science-image">
             <div className="image-placeholder">
-              <span style={{ fontSize: '64px' }}>🛡️</span>
-              <span>Neem</span>
+              <div className="science-icon-large science-icon-shield">
+                <ShieldCheck size={56} strokeWidth={1.8} />
+              </div>
+              <span>Aceite de Neem Puro</span>
             </div>
           </div>
         </section>
@@ -66,18 +71,24 @@ const Science = () => {
           </div>
           <div className="mechanism-grid">
             <div className="mechanism-card">
-              <div className="mechanism-icon">1️⃣</div>
-              <h3>Parálisis Inmediata</h3>
+              <div className="mechanism-icon step-1">
+                <Zap size={26} />
+              </div>
+              <h3>1. Parálisis Inmediata</h3>
               <p>Los activos penetran el exoesqueleto del parásito adulto, causando un colapso en su sistema respiratorio y nervioso.</p>
             </div>
             <div className="mechanism-card">
-              <div className="mechanism-icon">2️⃣</div>
-              <h3>Bloqueo Hormonal</h3>
+              <div className="mechanism-icon step-2">
+                <FlaskConical size={26} />
+              </div>
+              <h3>2. Bloqueo Hormonal</h3>
               <p>La azadiractina imita a la hormona ecdisona, impidiendo que las larvas muden y maduren al siguiente estado.</p>
             </div>
             <div className="mechanism-card">
-              <div className="mechanism-icon">3️⃣</div>
-              <h3>Inhibición de Huevos</h3>
+              <div className="mechanism-icon step-3">
+                <RefreshCw size={26} />
+              </div>
+              <h3>3. Inhibición de Huevos</h3>
               <p>Interrumpe la reproducción y esteriliza a las hembras, cortando el ciclo de reinfestación de raíz.</p>
             </div>
           </div>

@@ -1,10 +1,12 @@
+import { FlaskConical, PawPrint, Leaf } from 'lucide-react';
 import './About.css';
 
 const About = () => {
   return (
     <div className="about-page">
-      <div className="about-hero">
-        <div className="container">
+      <div className="container page-banner-container">
+        <div className="page-banner-header">
+          <span className="page-banner-badge">Laboratorio Farmacéutico Veterinario</span>
           <h1>Conoce a Inobazz</h1>
           <p>
             Somos un laboratorio mexicano comprometido con la salud y el bienestar de las mascotas,
@@ -51,17 +53,23 @@ const About = () => {
           </div>
           <div className="values-grid">
             <div className="value-card">
-              <div className="value-icon">🔬</div>
+              <div className="value-icon">
+                <FlaskConical size={30} />
+              </div>
               <h3>Rigor Científico</h3>
               <p>Nuestras formulaciones botánicas pasan por los mismos controles de calidad y eficacia que los productos alopáticos.</p>
             </div>
             <div className="value-card">
-              <div className="value-icon">🐾</div>
+              <div className="value-icon">
+                <PawPrint size={30} />
+              </div>
               <h3>Bienestar Animal</h3>
               <p>La seguridad y confort de tu mascota es nuestra prioridad número uno. Formulamos sin sulfatos agresivos ni tóxicos.</p>
             </div>
             <div className="value-card">
-              <div className="value-icon">🌍</div>
+              <div className="value-icon">
+                <Leaf size={30} />
+              </div>
               <h3>Sustentabilidad</h3>
               <p>Utilizamos ingredientes biodegradables que no contaminan los mantos acuíferos ni dañan el medio ambiente.</p>
             </div>

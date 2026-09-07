@@ -59,8 +59,20 @@
   padding: 16px 20px;
 }
 
-.next-step span { font-size: 28px; flex-shrink: 0; }
-.next-step p { font-size: 14px; color: var(--color-primary-dark); line-height: 1.5; margin: 0; }
+.next-step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid rgba(0, 132, 199, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+.next-step p { font-size: 14px; color: var(--color-primary-dark); line-height: 1.5; margin: 0; flex: 1; }
 
 .confirmed-actions {
   display: flex;

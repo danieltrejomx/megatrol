@@ -601,5 +601,123 @@
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35);
 }
 
+/* No image placeholder */
+.no-image-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  background: var(--color-bg-alt);
+  border-radius: 20px;
+  border: 1.5px dashed var(--color-border);
+  min-height: 280px;
+  width: 100%;
+}
+
+.no-image-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: rgba(0, 132, 199, 0.08);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.no-image-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 6px;
+}
+
+.no-image-subtitle {
+  font-size: 14px;
+  color: var(--color-text);
+  margin-bottom: 8px;
+}
+
+.no-image-note {
+  font-size: 12px;
+  color: var(--color-text-light);
+}
+
+.product-image-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-primary-dark);
+  font-weight: 500;
+}
+
+.species-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stars-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.benefit-check-icon {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.product-benefits ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.presentation-selector-label,
+.aroma-selector-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-spec-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tech-detail-card h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-to-cart-btn,
+.buy-now-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.payment-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pending-notice-box p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
 
 

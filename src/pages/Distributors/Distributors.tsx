@@ -1,4 +1,13 @@
 import { useState } from 'react';
+import { 
+  TrendingUp, 
+  Package, 
+  Truck, 
+  Handshake, 
+  Mail, 
+  MessageCircle, 
+  CheckCircle2 
+} from 'lucide-react';
 import './Distributors.css';
 
 const Distributors = () => {
@@ -18,8 +27,9 @@ const Distributors = () => {
 
   return (
     <div className="distributors-page">
-      <div className="distributors-hero">
-        <div className="container">
+      <div className="container page-banner-container">
+        <div className="page-banner-header">
+          <span className="page-banner-badge">Ventas al Mayoreo</span>
           <h1>Únete a la Red Megatrol</h1>
           <p>
             Ventas al mayoreo para veterinarias, estéticas caninas, pet shops y distribuidores independientes.
@@ -34,28 +44,36 @@ const Distributors = () => {
             <h2>Beneficios de ser Distribuidor</h2>
             <ul className="benefits-list">
               <li>
-                <span className="icon">📈</span>
+                <div className="icon dist-icon-trending">
+                  <TrendingUp size={24} />
+                </div>
                 <div>
                   <strong>Altos Márgenes de Ganancia</strong>
                   <p>Precios preferenciales escalonados según volumen de compra. Retorno de inversión atractivo.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">📦</span>
+                <div className="icon dist-icon-package">
+                  <Package size={24} />
+                </div>
                 <div>
                   <strong>Material de Apoyo</strong>
                   <p>Te proporcionamos displays, folletos informativos y material digital para tus redes sociales.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">🚚</span>
+                <div className="icon dist-icon-truck">
+                  <Truck size={24} />
+                </div>
                 <div>
                   <strong>Envíos a Todo México</strong>
                   <p>Logística eficiente para que nunca te quedes sin stock en tu negocio.</p>
                 </div>
               </li>
               <li>
-                <span className="icon">🤝</span>
+                <div className="icon dist-icon-handshake">
+                  <Handshake size={24} />
+                </div>
                 <div>
                   <strong>Capacitación Constante</strong>
                   <p>Asesoría directa sobre el mecanismo de acción de nuestros productos para que puedas orientar a tus clientes.</p>
@@ -68,10 +86,12 @@ const Distributors = () => {
               <p>También puedes comunicarte con nuestro equipo de ventas mayoristas:</p>
               <div className="contact-methods">
                 <a href="mailto:distribuidores@megatrol.com.mx" className="contact-method">
-                  <span>✉️</span> distribuidores@megatrol.com.mx
+                  <Mail size={16} />
+                  <span>distribuidores@megatrol.com.mx</span>
                 </a>
                 <a href="https://wa.me/5211234567890" target="_blank" rel="noreferrer" className="contact-method">
-                  <span>💬</span> WhatsApp: +52 112 345 6789
+                  <MessageCircle size={16} />
+                  <span>WhatsApp: +52 112 345 6789</span>
                 </a>
               </div>
             </div>
@@ -80,7 +100,9 @@ const Distributors = () => {
           <div className="distributors-form-container">
             {submitted ? (
               <div className="success-message">
-                <span className="success-icon">✅</span>
+                <div className="success-icon-wrap">
+                  <CheckCircle2 size={48} color="var(--color-primary)" />
+                </div>
                 <h3>¡Solicitud Recibida!</h3>
                 <p>
                   Gracias por tu interés en Megatrol. Un asesor se comunicará contigo en las próximas 

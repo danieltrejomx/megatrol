@@ -1,16 +1,28 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { 
+  PawPrint, 
+  Leaf, 
+  Dog, 
+  Pill, 
+  Bone, 
+  Sparkles, 
+  Truck, 
+  Search, 
+  X, 
+  ShoppingCart 
+} from 'lucide-react';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import './Shop.css';
 
 const filters = [
-  { key: 'all', label: '🐾 Todos los Productos' },
-  { key: 'Línea Megatrol', label: '🌿 Línea Megatrol (Antiparasitarios)' },
-  { key: 'Pequeñas Especies', label: '🐕 Pequeñas Especies (Salud y Cuidado)' },
-  { key: 'farmaceuticos', label: '💊 Farmacéuticos y Salud' },
-  { key: 'multivitaminicos', label: '🦴 Vitaminas y Suplementos' },
-  { key: 'dermocosmeticos', label: '🧴 Shampoos y Dermocosmética' },
+  { key: 'all', label: 'Todos los Productos', icon: PawPrint },
+  { key: 'Línea Megatrol', label: 'Línea Megatrol', icon: Leaf },
+  { key: 'Pequeñas Especies', label: 'Pequeñas Especies', icon: Dog },
+  { key: 'farmaceuticos', label: 'Farmacéuticos y Salud', icon: Pill },
+  { key: 'multivitaminicos', label: 'Vitaminas y Suplementos', icon: Bone },
+  { key: 'dermocosmeticos', label: 'Shampoos y Dermocosmética', icon: Sparkles },
 ];
 
 const Shop = () => {
@@ -47,7 +59,7 @@ const Shop = () => {
       {/* Header Banner */}
       <div className="shop-header">
         <span className="shop-badge">Catálogo Oficial Inobazz Pharma</span>
-        <h1>Catálogo para Perros y Gatos</h1>
+        <h1>Catálogo</h1>
         <p>Soluciones ecológicas, nutricionales y farmacéuticas de grado veterinario para la salud y bienestar de tu mascota.</p>
         
         {/* Search Bar */}
@@ -59,7 +71,9 @@ const Shop = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           {searchTerm && (
-            <button className="clear-search-btn" onClick={() => setSearchTerm('')}>✕</button>
+            <button className="clear-search-btn" onClick={() => setSearchTerm('')} title="Limpiar búsqueda">
+              <X size={16} />
+            </button>
           )}
         </div>
       </div>
@@ -70,23 +84,32 @@ const Shop = () => {
           <div className="sidebar-section">
             <h3>Categorías</h3>
             <div className="filter-buttons">
-              {filters.map((f) => (
-                <button
-                  key={f.key}
-                  className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
-                  onClick={() => setSelectedFilter(f.key)}
-                >
-                  <span>{f.label}</span>
-                  <span className="count-badge">
-                    {getFilterCount(f.key)}
-                  </span>
-                </button>
-              ))}
+              {filters.map((f) => {
+                const Icon = f.icon;
+                return (
+                  <button
+                    key={f.key}
+                    className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
+                    onClick={() => setSelectedFilter(f.key)}
+                  >
+                    <span className="filter-btn-label">
+                      <Icon size={15} />
+                      <span>{f.label}</span>
+                    </span>
+                    <span className="count-badge">
+                      {getFilterCount(f.key)}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           <div className="sidebar-promo">
-            <h4>🚚 Envíos a todo México</h4>
+            <div className="sidebar-promo-title">
+              <Truck size={18} />
+              <h4>Envíos a todo México</h4>
+            </div>
             <p>Envío gratis en compras mayores a $599 MXN. Despacho en 24 a 48 horas.</p>
             <Link to="/distribuidores" className="distributor-link">¿Ventas por mayoreo? Solicita catálogo aquí →</Link>
           </div>
@@ -98,14 +121,17 @@ const Shop = () => {
             <span>Mostrando <strong>{filteredProducts.length}</strong> de {products.length} productos</span>
             {selectedFilter !== 'all' && (
               <button className="reset-filter-btn" onClick={() => setSelectedFilter('all')}>
-                Mostrar todos ✕
+                <span>Mostrar todos</span>
+                <X size={14} />
               </button>
             )}
           </div>
 
           {filteredProducts.length === 0 ? (
             <div className="no-products-found">
-              <span className="no-products-icon">🔍</span>
+              <div className="no-products-icon-wrap">
+                <Search size={36} />
+              </div>
               <h3>No se encontraron productos</h3>
               <p>Intenta con otro término de búsqueda o selecciona otra categoría.</p>
               <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); }}>
@@ -139,7 +165,8 @@ const Shop = () => {
 
                     {product.species && (
                       <div className="product-card-species">
-                        <span>🐾 {product.species}</span>
+                        <PawPrint size={13} />
+                        <span>{product.species}</span>
                       </div>
                     )}
 
@@ -167,7 +194,7 @@ const Shop = () => {
                             addToCart(product);
                           }}
                         >
-                          🛒
+                          <ShoppingCart size={16} />
                         </button>
                       </div>
                     </div>

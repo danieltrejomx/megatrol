@@ -2,36 +2,6 @@
   padding-bottom: 80px;
 }
 
-.science-hero {
-  background: linear-gradient(135deg, #0c2b42, #164e73);
-  color: white;
-  padding: 80px 20px;
-  text-align: center;
-  margin-bottom: 60px;
-}
-.science-hero .science-label {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  margin-bottom: 20px;
-}
-.science-hero h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-  color: #95d5b2;
-}
-.science-hero p {
-  font-size: 18px;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-}
-
 .science-content {
   display: flex;
   flex-direction: column;
@@ -78,6 +48,28 @@
   color: var(--color-primary-dark);
 }
 
+.science-icon-large {
+  width: 90px;
+  height: 90px;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 132, 199, 0.12);
+}
+
+.science-icon-leaf {
+  background: linear-gradient(135deg, rgba(241, 248, 233, 0.95) 0%, rgba(200, 230, 201, 0.9) 100%);
+  border: 1.5px solid rgba(116, 192, 67, 0.3);
+  color: var(--color-secondary-dark);
+}
+
+.science-icon-shield {
+  background: linear-gradient(135deg, rgba(224, 242, 254, 0.95) 0%, rgba(186, 230, 253, 0.9) 100%);
+  border: 1.5px solid rgba(0, 132, 199, 0.3);
+  color: var(--color-primary);
+}
+
 .mechanism-section {
   background: var(--color-bg-alt);
   padding: 60px 40px;
@@ -110,8 +102,29 @@
   text-align: center;
 }
 .mechanism-icon {
-  font-size: 40px;
-  margin-bottom: 20px;
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.mechanism-icon.step-1 {
+  background: rgba(245, 158, 11, 0.14);
+  color: #d97706;
+}
+
+.mechanism-icon.step-2 {
+  background: rgba(0, 132, 199, 0.12);
+  color: var(--color-primary);
+}
+
+.mechanism-icon.step-3 {
+  background: rgba(116, 192, 67, 0.16);
+  color: var(--color-secondary-dark);
 }
 .mechanism-card h3 {
   font-size: 18px;
