@@ -486,10 +486,16 @@ const Home = () => {
       {/* ── BENEFITS ──────────────────────────────────────────── */}
       <section className="benefits-section">
         <div className="container">
-          <div className="section-header">
-            <span className="section-label">Propuesta de Valor</span>
+          <div className="benefits-banner-header">
+            <span className="benefits-banner-badge">Propuesta de Valor</span>
             <h2>Beneficios Comprobados</h2>
             <p>Todo lo que Megatrol hace por tu mascota y tu hogar</p>
+            <div className="benefits-banner-tags">
+              <span className="benefits-tag">🌿 100% Vegetal</span>
+              <span className="benefits-tag">🔬 Grado Veterinario</span>
+              <span className="benefits-tag">🐾 Seguro para Mascotas</span>
+              <span className="benefits-tag">🛡️ Alta Eficacia</span>
+            </div>
           </div>
           <div className="benefits-grid">
             {benefits.map((b, i) => {
