@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   ChevronLeft, 
@@ -216,28 +216,16 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [formData, setFormData] = useState({ nombre: '', negocio: '', ciudad: '', telefono: '', comentarios: '' });
   const reviewsCarouselRef = useRef<HTMLDivElement>(null);
 
   const nextVideo = () => {
-    setIsPlaying(false);
     setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
   };
 
   const prevVideo = () => {
-    setIsPlaying(false);
     setSelectedVideoIndex((prev) => (prev - 1 + demoVideos.length) % demoVideos.length);
   };
-
-  useEffect(() => {
-    if (isPlaying || isHovered) return;
-    const timer = setInterval(() => {
-      setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
-    }, 6500);
-    return () => clearInterval(timer);
-  }, [isPlaying, isHovered]);
 
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
 
@@ -549,19 +537,15 @@ const Home = () => {
             <Link to="/ciencia" className="btn btn-primary">Conoce Nuestra Ciencia</Link>
           </div>
           <div className="how-works-image">
-            <div 
-              className="video-showcase-container"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
+            <div className="video-showcase-container">
               {/* Header */}
               <div className="video-player-header">
                 <h3 className="video-main-heading">¿Cómo usar MEGATROL?</h3>
                 <p className="video-sub-heading">Observa la aplicación real y adquiere el producto directamente</p>
               </div>
 
-              {/* Video Player Frame with side roulette arrows and animated card */}
-              <div className="video-media-card" key={demoVideos[selectedVideoIndex].id}>
+              {/* Video Player Frame with side roulette arrows */}
+              <div className="video-media-card">
                 <div className="video-screen-wrapper">
                   <video
                     key={demoVideos[selectedVideoIndex].src}
@@ -570,12 +554,6 @@ const Home = () => {
                     playsInline
                     preload="metadata"
                     className="video-element"
-                    onPlay={() => setIsPlaying(true)}
-                    onPause={() => setIsPlaying(false)}
-                    onEnded={() => {
-                      setIsPlaying(false);
-                      nextVideo();
-                    }}
                   />
                   <button 
                     type="button" 
@@ -606,10 +584,7 @@ const Home = () => {
                           key={idx}
                           type="button"
                           className={`roulette-dot ${selectedVideoIndex === idx ? 'active' : ''}`}
-                          onClick={() => {
-                            setIsPlaying(false);
-                            setSelectedVideoIndex(idx);
-                          }}
+                          onClick={() => setSelectedVideoIndex(idx)}
                           aria-label={`Ir al video ${idx + 1}`}
                         />
                       ))}
