@@ -16,7 +16,7 @@ export interface Product {
   howToUse: string;
   benefits: string[];
   category: 'control' | 'limpieza' | 'prevencion' | 'kit' | 'multivitaminicos' | 'garrapaticidas' | 'farmaceuticos' | 'dermocosmeticos' | 'dermatologicos' | 'urbanidad' | 'aves';
-  line: 'Línea Megatrol' | 'Grandes Especies' | 'Pequeñas Especies' | 'Línea Aves' | 'Línea Urbanidad' | 'Higiene y Salud';
+  line: 'Megatrol Shower' | 'Megatrol Talco' | 'Línea Megadoxi' | 'Plagatrol' | 'Línea Megatrol' | 'Salud y Suplementos' | 'Grandes Especies' | 'Pequeñas Especies' | 'Línea Aves' | 'Línea Urbanidad' | 'Higiene y Salud';
   presentation?: string;
   formula?: string;
   administration?: string;
@@ -71,7 +71,7 @@ export const products: Product[] = [
     howToUse: 'Moja completamente el pelaje con agua tibia. Aplica shampoo dando masaje en círculos por todo el cuerpo. Deja actuar 5 minutos y enjuaga con abundante agua.',
     benefits: ['Limpieza profunda y acción antiparasitaria en el acto', 'Enriquecido con Ceramidas y Vitamina E', 'Complejo nanoparticulado de extracto de Neem', 'Deja el pelaje suave, nutrido y con brillo sedoso', 'Apto para infestaciones leves, moderadas y graves'],
     category: 'limpieza',
-    line: 'Línea Megatrol',
+    line: 'Megatrol Shower',
     presentation: '250 mL y Galón 4 L',
     presentationImages: {
       '250 mL': '/images/megatrol-shampoo-250ml.png',
@@ -99,7 +99,7 @@ export const products: Product[] = [
     howToUse: 'Aplicar el talco directamente sobre el pelaje seco de tu mascota, distribuyéndolo desde la raíz hasta las puntas. Masajear suavemente para asegurar un cubrimiento uniforme.',
     benefits: ['Protección prolongada de larga duración', 'Ideal para cachorros y mascotas con aversión al agua', 'Con Nanopartículas de Azadirachtina en microesferas', 'Absorbe humedad y previene olores', 'Fácil de aplicar en seco'],
     category: 'prevencion',
-    line: 'Línea Megatrol',
+    line: 'Megatrol Talco',
     presentation: 'Bote talquera con 80 g',
     formula: 'Terpenoides cíclicos de extracción vegetal, aceites totales de neem (Azadirachtina en nanopartículas) formulado en microesferas sólidas.',
     administration: 'Tópica en seco.',
@@ -168,7 +168,7 @@ export const products: Product[] = [
       'Incluye jeringa graduada dosificadora'
     ],
     category: 'farmaceuticos',
-    line: 'Pequeñas Especies',
+    line: 'Línea Megadoxi',
     presentation: 'Frasco de 60 mL con jeringa dosificadora',
     formula: 'Cada mL contiene Doxiciclina 10 mg y excipientes c.b.p. 1 mL.',
     administration: 'Oral.',
@@ -194,7 +194,7 @@ export const products: Product[] = [
       'Fácil administración con jeringa graduada'
     ],
     category: 'farmaceuticos',
-    line: 'Pequeñas Especies',
+    line: 'Línea Megadoxi',
     presentation: 'Frasco de 60 mL con jeringa dosificadora',
     formula: 'Cada mL contiene Doxiciclina 10 mg, Bromhexina 1 mg, Excipiente c.b.p. 1 mL.',
     administration: 'Oral.',
@@ -220,7 +220,7 @@ export const products: Product[] = [
       'Enriquecido con Vitamina E y emolientes hidratantes'
     ],
     category: 'dermatologicos',
-    line: 'Pequeñas Especies',
+    line: 'Megatrol Shower',
     presentation: '250 mL y Galón 4 L',
     presentationImages: {
       '250 mL': '/images/dermapet-250ml.png',
@@ -254,7 +254,7 @@ export const products: Product[] = [
       'Incluye jeringa dosificadora para administración exacta'
     ],
     category: 'farmaceuticos',
-    line: 'Pequeñas Especies',
+    line: 'Salud y Suplementos',
     presentation: 'Frasco de 60 mL con jeringa dosificadora',
     formula: 'Cada mL contiene Gentamicina (base) 12 mg, Loperamida HCl 0.5 mg, Caolín 100 mg, Pectina 10 mg, Colistina (sulfato) 250,000 U.I. y Vehículo 1 mL.',
     administration: 'Oral.',
@@ -280,7 +280,7 @@ export const products: Product[] = [
       'Tabletas masticables de exquisito sabor cárnico'
     ],
     category: 'multivitaminicos',
-    line: 'Pequeñas Especies',
+    line: 'Salud y Suplementos',
     presentation: 'Frasco con 60 tabletas',
     formula: 'Vitamina A, D3, E, C, K, B1, B2, B3, B5, B6, B7, B9, B12, Colina, Hierro, Zinc, Cobalto, Magnesio, Selenio, Calcio, Sodio, Fósforo, Cobre, Omega 3 (EPA, DHA, DPA).',
     administration: 'Oral (solo o con alimento).',
@@ -306,7 +306,7 @@ export const products: Product[] = [
       'Refuerza defensas, vitalidad y brillo en el pelaje'
     ],
     category: 'multivitaminicos',
-    line: 'Pequeñas Especies',
+    line: 'Salud y Suplementos',
     presentation: 'Pasta Oral 120 g',
     formula: 'Vitamina A, D3, E, B1, B2, B3, B6, B9, B12, Minerales quelatados (I, Na, Co, Mg, Ca, Zn), 10 Aminoácidos, Colágeno bioactivo, Polifenoles.',
     administration: 'Oral.',
@@ -339,7 +339,7 @@ export const products: Product[] = [
       'Producto ecológico y sustentable'
     ],
     category: 'dermocosmeticos',
-    line: 'Pequeñas Especies',
+    line: 'Megatrol Shower',
     presentation: '250 mL y Galón 4 L',
     formula: 'Agua desionizada, tensoactivos anfóteros de origen natural, extracto de aloe vera, avena, manteca de karité, fragancia.',
     administration: 'Tópica.',
@@ -365,7 +365,7 @@ export const products: Product[] = [
       'Deja el pelaje fuerte, sedoso y brillante en un solo paso'
     ],
     category: 'dermocosmeticos',
-    line: 'Pequeñas Especies',
+    line: 'Megatrol Shower',
     presentation: '200 mL, 250 mL y Galón 4 L',
     formula: 'Base de microemulsión de tensioactivos anfotéricos naturales, manteca de karité, proteína de seda, vitamina E, germen de trigo.',
     administration: 'Tópica.',
@@ -391,7 +391,7 @@ export const products: Product[] = [
       'Ideal para mascotas activas o de campo'
     ],
     category: 'dermocosmeticos',
-    line: 'Pequeñas Especies',
+    line: 'Megatrol Shower',
     presentation: '60 mL, 200 mL, 250 mL y 1 L',
     formula: 'Agua desionizada, tensoactivas anfifílicas, nanoemulsión de terpenos, extracto de aloe vera, acondicionador y manteca de karité.',
     administration: 'Tópica. Uso ocasional.',
@@ -417,7 +417,7 @@ export const products: Product[] = [
       'Fórmula 100% no tóxica y segura para mascotas'
     ],
     category: 'dermocosmeticos',
-    line: 'Pequeñas Especies',
+    line: 'Salud y Suplementos',
     presentation: 'Stick de 30 g',
     formula: 'Manteca de Karité, vaselina grado USP, vitamina E, D-pantenol, cera de soya, aceite de coco.',
     administration: 'Vía tópica cutánea.',
@@ -443,7 +443,7 @@ export const products: Product[] = [
       'Alta pureza farmacéutica veterinaria'
     ],
     category: 'farmaceuticos',
-    line: 'Pequeñas Especies',
+    line: 'Línea Megadoxi',
     presentation: 'Frascos de 25 mL y 100 mL',
     formula: 'Cada mL contiene Doxiciclina 100 mg y vehículo c.b.p. 1 mL.',
     administration: 'Intramuscular y subcutánea.',
@@ -469,7 +469,7 @@ export const products: Product[] = [
       'Fórmula balanceada con complejo vitamínico completo'
     ],
     category: 'multivitaminicos',
-    line: 'Pequeñas Especies',
+    line: 'Salud y Suplementos',
     presentation: 'Frasco con 60 tabletas',
     formula: 'Vitamina A, D3, E, C, K, Complejo B, Minerales esenciales, Colágeno bioactivo, Polifenoles y 10 Aminoácidos.',
     administration: 'Oral.',
@@ -495,12 +495,126 @@ export const products: Product[] = [
       'Colágeno Bioactivo para alivio articular y movilidad'
     ],
     category: 'multivitaminicos',
-    line: 'Pequeñas Especies',
+    line: 'Salud y Suplementos',
     presentation: 'Frasco con 60 tabletas',
     formula: 'Vitamina A, E, C, Complejo B, Minerales, Colágeno bioactivo, Polifenoles, Silimarina, EPA, DHA, DPA, GLA, Probióticos, Papaína, Carnitina.',
     administration: 'Oral.',
     indications: 'Suplemento nutricional para mascotas adultas y mayores. Reduce desgaste por estrés y retarda envejecimiento.',
     species: 'Perros y Gatos Senior'
+  },
+
+  // ── 3. LÍNEA PLAGATROL (Control Ecológico de Plagas Domésticas) ────────────────
+  {
+    id: 40,
+    slug: 'plagatrol-cucarachas',
+    name: 'Pasta Plagatrol Cucarachas',
+    price: 180,
+    tag: 'Ecológico',
+    emoji: '🪳',
+    image: '/images/plagatrol-pasta.png',
+    desc: 'Cebo en pasta de formulación ecológica para el control y erradicación de cucarachas.',
+    longDesc: 'PASTA PLAGATROL CUCARACHAS es un cebo en gel formulado con atrayentes alimenticios y terpenoides botánicos de Neem. Su efecto dominó elimina no solo a las cucarachas que ingieren el cebo, sino a toda la colonia en el nido.',
+    howToUse: 'Aplicar pequeñas gotas de pasta en hendiduras, zoclos, detrás de electrodomésticos y zonas oscuras.',
+    benefits: [
+      'Efecto dominó que elimina todo el nido',
+      'No mancha ni despide olores desagradables',
+      'Formulación ecológica con extractos de Neem',
+      'Jeringa de fácil dosificación',
+      'Seguro para usar en cocinas y despensas'
+    ],
+    category: 'urbanidad',
+    line: 'Plagatrol',
+    presentation: 'Jeringa dosificadora con 10 g',
+    formula: 'Complejo de ácido bórico puro en surfactantes etoxilados 10%, Almidones y atrayentes 70%, Terpenoides cíclicos de Neem 20%.',
+    administration: 'Sobre superficies y grietas.',
+    indications: 'Para el control y prevención de cucarachas, hormigas, grillos, cochinillas entre otros insectos plaga.',
+    species: 'Hogar, Patios, Jardines, Restaurantes'
+  },
+  {
+    id: 41,
+    slug: 'plagatrol-hormigas',
+    name: 'Pasta Plagatrol Hormigas',
+    price: 180,
+    tag: 'Ecológico',
+    emoji: '🐜',
+    image: '/images/plagatrol-hormigas.png',
+    desc: 'Cebo en pasta especializado para erradicar hormigas en interiores, jardines y patios.',
+    longDesc: 'PLAGATROL HORMIGAS es un cebo en pasta de formulación botánica específico para la erradicación de colonias de hormigas. Su mezcla atrayente es transportada por las obreras al interior del hormiguero, eliminando a la reina.',
+    howToUse: 'Aplicar en forma de punta o gota cada 30 cm en ranuras, grietas, zoclos y caminos de hormigas.',
+    benefits: [
+      'Erradicación total de la colonia y la reina',
+      'Atrayente especializado para hormigas de interior y jardín',
+      'Fórmula ecológica con terpenoides cíclicos de Neem',
+      'Jeringa dosificadora de fácil aplicación sin ensuciar',
+      'Apto para uso en interiores, jardines, patios y macetas'
+    ],
+    category: 'urbanidad',
+    line: 'Plagatrol',
+    presentation: 'Jeringa dosificadora con 10 g',
+    formula: 'Terpenoides cíclicos de extracción vegetal, complejo de ácido bórico en surfactantes etoxilados, almidones y atrayentes coadyuvantes.',
+    administration: 'Sobre superficies y caminos de hormigas.',
+    indications: 'Para el control y prevención de hormigas en interiores, jardines, patios, etc.',
+    species: 'Hogar, Jardines, Patios y Comercios'
+  },
+  {
+    id: 42,
+    slug: 'plagatrol-spray',
+    name: 'Plagatrol Spray',
+    price: 260,
+    tag: 'Ecológico',
+    emoji: '🎯',
+    image: '/images/plagatrol-spray.png',
+    desc: 'Spray insecticida ecológico con monoterpenos vegetales contra insectos rastreros.',
+    longDesc: 'PLAGATROL SPRAY es un insecticida botánico de acción inmediata contra cucarachas, arañas, hormigas y plagas domésticas. Su fórmula con monoterpenos cíclicos paraliza y deshidrata al insecto sin dejar residuos tóxicos.',
+    howToUse: 'Rociar directamente sobre el insecto o sobre zoclos, marcos de puertas y lugares que frecuentan.',
+    benefits: [
+      'Acción fulminante por contacto directo',
+      'Fórmula 100% ecológica a base de extractos vegetales',
+      'Efecto repelente residual para evitar reingresos',
+      'No genera vapores tóxicos en el hogar',
+      'Presentación con pistola atomizadora ergonómica'
+    ],
+    category: 'urbanidad',
+    line: 'Plagatrol',
+    presentation: '155 mL y 500 mL',
+    presentationImages: {
+      '155 mL': '/images/plagatrol-spray-155ml.png',
+      '500 mL': '/images/plagatrol-spray-500ml.png'
+    },
+    presentationPrices: {
+      '155 mL': 260,
+      '500 mL': 390
+    },
+    formula: 'Agua, monoterpenos cíclicos de extracción vegetal, surfactantes activos etoxilados, alcohol hexahidroxílico, potenciador de penetrancia.',
+    administration: 'Sobre superficies y directo en la plaga.',
+    indications: 'Para el control de cucarachas y otros insectos rastreros.',
+    species: 'Hogar, Patios y Comercios'
+  },
+  {
+    id: 43,
+    slug: 'plagatrol-fumig',
+    name: 'Plagatrol Fumig',
+    price: 290,
+    tag: 'Fumígeno Desinfectante',
+    emoji: '💨',
+    image: '/images/plagatrol-fumig.png',
+    desc: 'Lata fumígena bactericida y fungicida con nanopartículas de Neem para desinfección de instalaciones.',
+    longDesc: 'PLAGATROL FUMIG es un fumígeno desinfectante de amplio espectro formulado con nanopartículas y hojas de Neem. Genera una densa niebla seca que desinfecta y elimina contaminaciones de origen fúngico y bacteriano en instalaciones.',
+    howToUse: 'Cerrar totalmente el lugar a tratar, destapar la lata y encender la mecha.',
+    benefits: [
+      'Doble acción: Bactericida y Fungicida de amplio espectro',
+      'Con Nanopartículas de Neem en microesferulitos',
+      'Desinfección profunda sin dejar humedad en paredes o maquinaria',
+      'Fácil encendido por mecha de combustión controlada',
+      'Ideal para bodegas, clínicas, cuartos de almacenamiento y granjas'
+    ],
+    category: 'urbanidad',
+    line: 'Plagatrol',
+    presentation: 'Bote metálico fumígeno con 80 g',
+    formula: 'Hojas de neem 3%, aceites totales de neem en microesferulitos, aceites esenciales 2%, agentes de formulación c.s.p. 100%.',
+    administration: 'En instalaciones (fumígeno por humo en seco).',
+    indications: 'Indicado para el control de contaminaciones de origen fúngico y bacteriano.',
+    species: 'Instalaciones, Bodegas, Almacenes y Cuartos'
   }
 ];
 

@@ -3,14 +3,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { 
   PawPrint, 
   Leaf, 
-  Dog, 
   Pill, 
   Bone, 
   Sparkles, 
   Truck, 
   Search, 
   X, 
-  ShoppingCart 
+  ShoppingCart,
+  ShieldCheck,
+  Zap
 } from 'lucide-react';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -18,11 +19,12 @@ import './Shop.css';
 
 const filters = [
   { key: 'all', label: 'Todos los Productos', icon: PawPrint },
-  { key: 'Línea Megatrol', label: 'Línea Megatrol', icon: Leaf },
-  { key: 'Pequeñas Especies', label: 'Pequeñas Especies', icon: Dog },
-  { key: 'farmaceuticos', label: 'Farmacéuticos y Salud', icon: Pill },
-  { key: 'multivitaminicos', label: 'Vitaminas y Suplementos', icon: Bone },
-  { key: 'dermocosmeticos', label: 'Shampoos y Dermocosmética', icon: Sparkles },
+  { key: 'Megatrol Shower', label: 'Megatrol Shower', icon: Sparkles },
+  { key: 'Megatrol Talco', label: 'Megatrol Talco', icon: Leaf },
+  { key: 'Línea Megadoxi', label: 'Línea Megadoxi', icon: Pill },
+  { key: 'Plagatrol', label: 'Plagatrol', icon: ShieldCheck },
+  { key: 'Línea Megatrol', label: 'Spray y Jabón Megatrol', icon: Zap },
+  { key: 'Salud y Suplementos', label: 'Salud y Suplementos', icon: Bone },
 ];
 
 const Shop = () => {
@@ -32,10 +34,7 @@ const Shop = () => {
   const navigate = useNavigate();
 
   const filteredProducts = products.filter(product => {
-    const matchesFilter = selectedFilter === 'all' ||
-      product.line === selectedFilter ||
-      product.category === selectedFilter ||
-      (selectedFilter === 'dermocosmeticos' && (product.category === 'dermocosmeticos' || product.category === 'dermatologicos'));
+    const matchesFilter = selectedFilter === 'all' || product.line === selectedFilter;
     const matchesSearch = searchTerm.trim() === '' ||
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.desc.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -45,13 +44,7 @@ const Shop = () => {
 
   const getFilterCount = (key: string) => {
     if (key === 'all') return products.length;
-    if (key === 'Línea Megatrol' || key === 'Pequeñas Especies') {
-      return products.filter(p => p.line === key).length;
-    }
-    if (key === 'dermocosmeticos') {
-      return products.filter(p => p.category === 'dermocosmeticos' || p.category === 'dermatologicos').length;
-    }
-    return products.filter(p => p.category === key).length;
+    return products.filter(p => p.line === key).length;
   };
 
   return (

@@ -20,7 +20,8 @@ import {
   ShoppingCart,
   Award,
   Play,
-  Send
+  Send,
+  Sparkles
 } from 'lucide-react';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -138,14 +139,46 @@ const testimonials = [
 
 const homeLines = [
   { key: 'all', label: 'Todos los Destacados' },
-  { key: 'Línea Megatrol', label: 'Línea Megatrol (Antiparasitarios)' },
-  { key: 'Pequeñas Especies', label: 'Pequeñas Especies (Salud y Cuidado)' },
+  { key: 'Megatrol Shower', label: 'Megatrol Shower' },
+  { key: 'Megatrol Talco', label: 'Megatrol Talco' },
+  { key: 'Línea Megadoxi', label: 'Línea Megadoxi' },
+  { key: 'Plagatrol', label: 'Plagatrol' },
+  { key: 'Línea Megatrol', label: 'Spray y Jabón Megatrol' },
+  { key: 'Salud y Suplementos', label: 'Salud y Suplementos' },
+];
+
+const demoVideos = [
+  {
+    id: 'dermapet',
+    title: 'Línea Dermatológica Dermapet',
+    shortTitle: 'Dermapet Shampoo',
+    badge: 'Baño Medicado',
+    desc: 'Ingredientes de origen natural y pH balanceado para calmar, hidratar y tratar afecciones en la piel.',
+    src: '/videos/video-demostracion-dermapet.mp4'
+  },
+  {
+    id: 'shower-shampoo',
+    title: 'Shower Shampoo & Talco Megatrol',
+    shortTitle: 'Shower & Talco',
+    badge: 'Limpieza y Protección',
+    desc: 'Remueve impurezas y grasa con rico aroma a chicle, y protege con talco sin mojar a tu mascota.',
+    src: '/videos/video-demostracion-shower-shampoo.mp4'
+  },
+  {
+    id: 'jabon-talco',
+    title: 'Combo Ganador: Jabón & Talco',
+    shortTitle: 'Jabón & Talco',
+    badge: 'Control Antipulgas',
+    desc: 'Jabón antipulgas para control de ácaros, piojos y pulgas, sellado con talco para máxima protección.',
+    src: '/videos/video-demostracion-jabon-talco.mp4'
+  }
 ];
 
 const Home = () => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [formData, setFormData] = useState({ nombre: '', negocio: '', ciudad: '', telefono: '', comentarios: '' });
   const reviewsCarouselRef = useRef<HTMLDivElement>(null);
 
@@ -440,10 +473,57 @@ const Home = () => {
             <Link to="/ciencia" className="btn btn-primary">Conoce Nuestra Ciencia</Link>
           </div>
           <div className="how-works-image">
-            <div className="video-placeholder">
-              <span className="play-btn"><Play size={24} fill="currentColor" /></span>
-              <p>¿Cómo usar MEGATROL?</p>
-              <span>Ver video demostración</span>
+            <div className="video-showcase-container">
+              <div className="video-player-header">
+                <span className="video-label-tag">
+                  <Sparkles size={13} /> Demostración de Uso
+                </span>
+                <h3 className="video-main-heading">¿Cómo usar MEGATROL?</h3>
+                <p className="video-sub-heading">3 demostraciones reales paso a paso con nuestros productos</p>
+              </div>
+
+              {/* Video Player Frame */}
+              <div className="video-media-card">
+                <div className="video-screen-wrapper">
+                  <video
+                    key={demoVideos[selectedVideoIndex].src}
+                    src={demoVideos[selectedVideoIndex].src}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="video-element"
+                  />
+                </div>
+                
+                <div className="video-info-box">
+                  <div className="video-badge-row">
+                    <span className="video-pill-badge">{demoVideos[selectedVideoIndex].badge}</span>
+                    <span className="video-counter-badge">Demo {selectedVideoIndex + 1} de {demoVideos.length}</span>
+                  </div>
+                  <h4 className="video-item-title">{demoVideos[selectedVideoIndex].title}</h4>
+                  <p className="video-item-desc">{demoVideos[selectedVideoIndex].desc}</p>
+                </div>
+              </div>
+
+              {/* Video Selector Tabs */}
+              <div className="video-playlist-row">
+                {demoVideos.map((vid, idx) => (
+                  <button
+                    key={vid.id}
+                    type="button"
+                    className={`video-nav-tab ${selectedVideoIndex === idx ? 'active' : ''}`}
+                    onClick={() => setSelectedVideoIndex(idx)}
+                  >
+                    <span className="video-tab-indicator">
+                      <Play size={11} fill={selectedVideoIndex === idx ? "currentColor" : "none"} />
+                    </span>
+                    <div className="video-tab-info">
+                      <span className="video-tab-step">Video 0{idx + 1}</span>
+                      <strong className="video-tab-name">{vid.shortTitle}</strong>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
