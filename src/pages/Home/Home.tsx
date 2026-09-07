@@ -19,10 +19,7 @@ import {
   MessageCircle,
   ShoppingCart,
   Award,
-  Play,
-  Send,
-  Sparkles,
-  ExternalLink
+  Send
 } from 'lucide-react';
 import { products } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -538,34 +535,8 @@ const Home = () => {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              {/* Header with Roulette Controls */}
+              {/* Header */}
               <div className="video-player-header">
-                <div className="video-header-top">
-                  <span className="video-label-tag">
-                    <Sparkles size={13} /> Demostración en Ruleta
-                  </span>
-                  <div className="video-roulette-nav">
-                    <button 
-                      type="button" 
-                      onClick={prevVideo} 
-                      className="roulette-nav-btn" 
-                      aria-label="Video anterior"
-                      title="Video anterior"
-                    >
-                      <ChevronLeft size={18} />
-                    </button>
-                    <span className="roulette-counter">{selectedVideoIndex + 1} / {demoVideos.length}</span>
-                    <button 
-                      type="button" 
-                      onClick={nextVideo} 
-                      className="roulette-nav-btn" 
-                      aria-label="Video siguiente"
-                      title="Video siguiente"
-                    >
-                      <ChevronRight size={18} />
-                    </button>
-                  </div>
-                </div>
                 <h3 className="video-main-heading">¿Cómo usar MEGATROL?</h3>
                 <p className="video-sub-heading">Observa la aplicación real y adquiere el producto directamente</p>
               </div>
@@ -649,42 +620,7 @@ const Home = () => {
                       ))}
                     </div>
                   </div>
-
-                  <div className="video-actions-row">
-                    <a
-                      href={demoVideos[selectedVideoIndex].driveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="video-drive-link"
-                    >
-                      <ExternalLink size={12} />
-                      <span>Ver carpeta de videos en Google Drive</span>
-                    </a>
-                  </div>
                 </div>
-              </div>
-
-              {/* Video Quick Selector Chips */}
-              <div className="video-playlist-row">
-                {demoVideos.map((vid, idx) => (
-                  <button
-                    key={vid.id}
-                    type="button"
-                    className={`video-nav-tab ${selectedVideoIndex === idx ? 'active' : ''}`}
-                    onClick={() => {
-                      setIsPlaying(false);
-                      setSelectedVideoIndex(idx);
-                    }}
-                  >
-                    <span className="video-tab-indicator">
-                      <Play size={11} fill={selectedVideoIndex === idx ? "currentColor" : "none"} />
-                    </span>
-                    <div className="video-tab-info">
-                      <span className="video-tab-step">0{idx + 1}</span>
-                      <strong className="video-tab-name">{vid.shortTitle}</strong>
-                    </div>
-                  </button>
-                ))}
               </div>
             </div>
           </div>
