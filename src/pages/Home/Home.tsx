@@ -263,7 +263,9 @@ const Home = () => {
   };
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const howWorksSectionRef = useRef<HTMLElement | null>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const [isSectionInView, setIsSectionInView] = useState(false);
 
   const nextVideo = () => {
     setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
@@ -278,12 +280,35 @@ const Home = () => {
       const newMuted = !videoRef.current.muted;
       videoRef.current.muted = newMuted;
       setIsVideoMuted(newMuted);
-      if (videoRef.current.paused) {
+      if (videoRef.current.paused && isSectionInView) {
         videoRef.current.play().catch(() => {});
       }
     }
   };
 
+  // Observador para reproducir automáticamente el video SÓLO al llegar a esta sección
+  useEffect(() => {
+    const sectionEl = howWorksSectionRef.current;
+    if (!sectionEl) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsSectionInView(entry.isIntersecting);
+        });
+      },
+      {
+        threshold: 0.2 // Se activa al llegar y tener el 20% de la sección visible
+      }
+    );
+
+    observer.observe(sectionEl);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Control de reproducción según la visibilidad de la sección
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -291,16 +316,22 @@ const Home = () => {
     video.muted = isVideoMuted;
     video.defaultMuted = isVideoMuted;
 
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Fallback to muted autoplay if browser policy restricts audio
-        video.muted = true;
-        setIsVideoMuted(true);
-        video.play().catch(() => {});
-      });
+    if (isSectionInView) {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Fallback a muted si la política del navegador lo requiere
+          video.muted = true;
+          setIsVideoMuted(true);
+          video.play().catch(() => {});
+        });
+      }
+    } else {
+      if (!video.paused) {
+        video.pause();
+      }
     }
-  }, [selectedVideoIndex]);
+  }, [isSectionInView, selectedVideoIndex]);
 
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [modalProduct, setModalProduct] = useState<Product | null>(null);
@@ -664,7 +695,7 @@ const Home = () => {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────── */}
-      <section className="how-works-section">
+      <section ref={howWorksSectionRef} className="how-works-section">
         <div className="container">
           <div className="how-works-banner">
             <div className="how-works-content">
@@ -719,7 +750,6 @@ const Home = () => {
                     ref={videoRef}
                     key={demoVideos[selectedVideoIndex].src}
                     src={demoVideos[selectedVideoIndex].src}
-                    autoPlay
                     muted={isVideoMuted}
                     playsInline
                     loop
