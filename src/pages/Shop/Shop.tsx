@@ -221,42 +221,28 @@ const Shop = () => {
                 const isAll = f.key === 'all';
                 const isExpanded = expandedCategories.includes(f.key);
                 const categoryProducts = isAll 
-                  ? [] 
+                  ? products 
                   : products.filter(p => p.line === f.key);
 
                 return (
                   <div 
                     key={f.key} 
-                    className={`category-accordion-item ${isMobile && isExpanded && !isAll ? 'is-expanded' : ''}`}
+                    className={`category-accordion-item ${isMobile && isExpanded ? 'is-expanded' : ''}`}
                   >
                     <button
                       type="button"
                       className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
                       onClick={() => {
-                        if (isAll) {
-                          setSelectedFilter('all');
-                          if (isMobile) {
-                            const allKeys = filters.filter(x => x.key !== 'all').map(x => x.key);
-                            if (expandedCategories.length === allKeys.length) {
-                              setExpandedCategories([]);
-                            } else {
-                              setExpandedCategories(allKeys);
-                            }
-                          } else {
-                            setExpandedCategories([]);
-                          }
+                        if (isMobile) {
+                          setSelectedFilter(f.key);
+                          setExpandedCategories(prev => 
+                            prev.includes(f.key) 
+                              ? prev.filter(k => k !== f.key) 
+                              : [...prev, f.key]
+                          );
                         } else {
-                          if (isMobile) {
-                            setSelectedFilter(f.key);
-                            setExpandedCategories(prev => 
-                              prev.includes(f.key) 
-                                ? prev.filter(k => k !== f.key) 
-                                : [...prev, f.key]
-                            );
-                          } else {
-                            setSelectedFilter(f.key);
-                            setExpandedCategories([]);
-                          }
+                          setSelectedFilter(f.key);
+                          setExpandedCategories([]);
                         }
                       }}
                     >
@@ -266,7 +252,7 @@ const Shop = () => {
                       </span>
                       <span className="filter-btn-meta">
                         <span className="count-badge">{getFilterCount(f.key)}</span>
-                        {isMobile && !isAll && (
+                        {isMobile && (
                           <ChevronDown 
                             size={14} 
                             className={`accordion-arrow ${isExpanded ? 'open' : ''}`} 
@@ -276,7 +262,7 @@ const Shop = () => {
                     </button>
 
                     {/* Desglose inmediato de productos en la categoría: ÚNICAMENTE EN MÓVIL */}
-                    {isMobile && !isAll && isExpanded && categoryProducts.length > 0 && (
+                    {isMobile && isExpanded && categoryProducts.length > 0 && (
                       <div className="category-drawer-products">
                         {categoryProducts.map((p) => (
                           <div
