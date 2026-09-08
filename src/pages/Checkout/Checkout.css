@@ -77,7 +77,14 @@
   background: white;
 }
 
-.payment-methods { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.payment-methods { display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px; }
+
+.payment-method-group {
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
 .payment-option {
   display: flex;
   align-items: center;
@@ -109,22 +116,37 @@
   color: var(--color-heading);
 }
 
-.card-fields { margin-top: 14px; }
+.payment-method-group .card-fields {
+  margin-top: 10px;
+  background: #f8fafc;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 14px;
+  padding: 20px 22px;
+  animation: paymentDrawerOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 132, 199, 0.08);
+}
 
-.oxxo-info {
-  background: var(--color-bg-alt);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
+.payment-method-group .card-fields input:last-child {
+  margin-bottom: 0;
+}
+
+.payment-method-group .oxxo-info {
+  margin-top: 10px;
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: 14px;
   padding: 16px 20px;
   font-size: 14px;
-  color: var(--color-heading);
+  color: #92400e;
   line-height: 1.6;
+  animation: paymentDrawerOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.oxxo-info p {
+.payment-method-group .oxxo-info p {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin: 0;
+  color: #78350f;
 }
 
 /* ── BANK TRANSFER DETAILS CARD ── */
@@ -137,8 +159,19 @@
   flex-direction: column;
   gap: 16px;
   box-shadow: 0 8px 24px rgba(0, 132, 199, 0.08);
-  animation: fadeIn 0.3s ease;
-  margin-top: 14px;
+  animation: paymentDrawerOpen 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 10px;
+}
+
+@keyframes paymentDrawerOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .bank-card-header {

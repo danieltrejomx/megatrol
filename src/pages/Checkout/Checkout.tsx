@@ -118,113 +118,149 @@ const Checkout = () => {
               <span>Método de Pago</span>
             </h2>
             <div className="payment-methods">
-              {([
-                { key: 'card', label: 'Tarjeta de Crédito / Débito', sub: 'Visa, Mastercard, Amex', icon: CreditCard },
-                { key: 'oxxo', label: 'Pago en OXXO', sub: 'Recibirás un código de referencia', icon: Store },
-                { key: 'transfer', label: 'Transferencia / SPEI', sub: 'Envío confirmado al recibir pago', icon: Building2 },
-              ] as const).map(m => {
-                const Icon = m.icon;
-                return (
-                  <label key={m.key} className={`payment-option ${paymentMethod === m.key ? 'selected' : ''}`}>
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={m.key}
-                      checked={paymentMethod === m.key}
-                      onChange={() => setPaymentMethod(m.key)}
-                    />
-                    <div className="payment-option-body">
-                      <div className="payment-option-title">
-                        <Icon size={18} />
-                        <strong>{m.label}</strong>
+              {/* Option 1: Tarjeta de Crédito / Débito */}
+              <div className={`payment-method-group ${paymentMethod === 'card' ? 'selected' : ''}`}>
+                <label className={`payment-option ${paymentMethod === 'card' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="card"
+                    checked={paymentMethod === 'card'}
+                    onChange={() => setPaymentMethod('card')}
+                  />
+                  <div className="payment-option-body">
+                    <div className="payment-option-title">
+                      <CreditCard size={18} />
+                      <strong>Tarjeta de Crédito / Débito</strong>
+                    </div>
+                    <span>Visa, Mastercard, Amex</span>
+                  </div>
+                </label>
+
+                {paymentMethod === 'card' && (
+                  <div className="card-fields">
+                    <input placeholder="Número de tarjeta *" maxLength={19} required />
+                    <div className="form-row">
+                      <input placeholder="MM/AA *" maxLength={5} required />
+                      <input placeholder="CVV *" maxLength={4} required />
+                    </div>
+                    <input placeholder="Nombre en la tarjeta *" required />
+                  </div>
+                )}
+              </div>
+
+              {/* Option 2: Pago en OXXO */}
+              <div className={`payment-method-group ${paymentMethod === 'oxxo' ? 'selected' : ''}`}>
+                <label className={`payment-option ${paymentMethod === 'oxxo' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="oxxo"
+                    checked={paymentMethod === 'oxxo'}
+                    onChange={() => setPaymentMethod('oxxo')}
+                  />
+                  <div className="payment-option-body">
+                    <div className="payment-option-title">
+                      <Store size={18} />
+                      <strong>Pago en OXXO</strong>
+                    </div>
+                    <span>Recibirás un código de referencia</span>
+                  </div>
+                </label>
+
+                {paymentMethod === 'oxxo' && (
+                  <div className="oxxo-info">
+                    <p>
+                      <CheckCircle2 size={16} />
+                      <span>Al confirmar tu pedido recibirás un <strong>código de pago</strong> en tu correo. Tienes <strong>48 horas</strong> para realizar el pago en cualquier OXXO.</span>
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Option 3: Transferencia / SPEI */}
+              <div className={`payment-method-group ${paymentMethod === 'transfer' ? 'selected' : ''}`}>
+                <label className={`payment-option ${paymentMethod === 'transfer' ? 'selected' : ''}`}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value="transfer"
+                    checked={paymentMethod === 'transfer'}
+                    onChange={() => setPaymentMethod('transfer')}
+                  />
+                  <div className="payment-option-body">
+                    <div className="payment-option-title">
+                      <Building2 size={18} />
+                      <strong>Transferencia / SPEI</strong>
+                    </div>
+                    <span>Envío confirmado al recibir pago</span>
+                  </div>
+                </label>
+
+                {paymentMethod === 'transfer' && (
+                  <div className="bank-transfer-details-card">
+                    <div className="bank-card-header">
+                      <div className="bank-header-badge">
+                        <Building2 size={20} />
+                        <span>Datos para Transferencia / SPEI</span>
                       </div>
-                      <span>{m.sub}</span>
+                      <span className="bank-guarantee-pill">Sin Comisiones · Inmediato</span>
                     </div>
-                  </label>
-                );
-              })}
+
+                    <div className="bank-details-box">
+                      <div className="bank-detail-row">
+                        <span className="bank-label">Beneficiario / Titular:</span>
+                        <strong className="bank-beneficiary-name">{MEGATROL_BANK_DETAILS.beneficiary}</strong>
+                      </div>
+
+                      <div className="bank-detail-row">
+                        <span className="bank-label">Banco Destino:</span>
+                        <strong className="bank-name-badge">{MEGATROL_BANK_DETAILS.bankName}</strong>
+                      </div>
+
+                      <div className="bank-detail-row clabe-row-highlight">
+                        <span className="bank-label">CLABE Interbancaria (18 dígitos):</span>
+                        <div className="clabe-code-container">
+                          <code className="clabe-digits">{MEGATROL_BANK_DETAILS.clabe}</code>
+                          <button
+                            type="button"
+                            className="btn-copy-clabe"
+                            onClick={handleCopyClabe}
+                            title="Copiar CLABE al portapapeles"
+                          >
+                            {copiedClabe ? <Check size={14} /> : <Copy size={14} />}
+                            <span>{copiedClabe ? '¡Copiada!' : 'Copiar CLABE'}</span>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="bank-detail-row">
+                        <span className="bank-label">Monto exacto a transferir:</span>
+                        <strong className="bank-amount-to-pay">${total.toFixed(2)} MXN</strong>
+                      </div>
+
+                      <div className="bank-detail-row">
+                        <span className="bank-label">Concepto sugerido:</span>
+                        <span className="bank-concept-hint">
+                          {form.nombre ? `Pago ${form.nombre.trim()}` : 'Tu Nombre o Teléfono'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="bank-instructions-note">
+                      <div className="bank-note-item">
+                        <CheckCircle2 size={16} className="bank-check-icon" />
+                        <span>Transfiere desde la app de tu banco favorito (BBVA, Banamex, Santander, Banorte, Mercado Pago, Nu, etc.).</span>
+                      </div>
+                      <div className="bank-note-item">
+                        <CheckCircle2 size={16} className="bank-check-icon" />
+                        <span>Al confirmar tu pedido obtendrás tu número de orden y botón directo para enviar tu comprobante por WhatsApp al <strong>(55) 3620 6854</strong>.</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-
-            {paymentMethod === 'card' && (
-              <div className="card-fields">
-                <input placeholder="Número de tarjeta *" maxLength={19} required />
-                <div className="form-row">
-                  <input placeholder="MM/AA *" maxLength={5} required />
-                  <input placeholder="CVV *" maxLength={4} required />
-                </div>
-                <input placeholder="Nombre en la tarjeta *" required />
-              </div>
-            )}
-            {paymentMethod === 'oxxo' && (
-              <div className="oxxo-info">
-                <p>
-                  <CheckCircle2 size={16} />
-                  <span>Al confirmar tu pedido recibirás un <strong>código de pago</strong> en tu correo. Tienes <strong>48 horas</strong> para realizar el pago en cualquier OXXO.</span>
-                </p>
-              </div>
-            )}
-            {paymentMethod === 'transfer' && (
-              <div className="bank-transfer-details-card">
-                <div className="bank-card-header">
-                  <div className="bank-header-badge">
-                    <Building2 size={20} />
-                    <span>Datos para Transferencia / SPEI</span>
-                  </div>
-                  <span className="bank-guarantee-pill">Sin Comisiones · Inmediato</span>
-                </div>
-
-                <div className="bank-details-box">
-                  <div className="bank-detail-row">
-                    <span className="bank-label">Beneficiario / Titular:</span>
-                    <strong className="bank-beneficiary-name">{MEGATROL_BANK_DETAILS.beneficiary}</strong>
-                  </div>
-
-                  <div className="bank-detail-row">
-                    <span className="bank-label">Banco Destino:</span>
-                    <strong className="bank-name-badge">{MEGATROL_BANK_DETAILS.bankName}</strong>
-                  </div>
-
-                  <div className="bank-detail-row clabe-row-highlight">
-                    <span className="bank-label">CLABE Interbancaria (18 dígitos):</span>
-                    <div className="clabe-code-container">
-                      <code className="clabe-digits">{MEGATROL_BANK_DETAILS.clabe}</code>
-                      <button
-                        type="button"
-                        className="btn-copy-clabe"
-                        onClick={handleCopyClabe}
-                        title="Copiar CLABE al portapapeles"
-                      >
-                        {copiedClabe ? <Check size={14} /> : <Copy size={14} />}
-                        <span>{copiedClabe ? '¡Copiada!' : 'Copiar CLABE'}</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="bank-detail-row">
-                    <span className="bank-label">Monto exacto a transferir:</span>
-                    <strong className="bank-amount-to-pay">${total.toFixed(2)} MXN</strong>
-                  </div>
-
-                  <div className="bank-detail-row">
-                    <span className="bank-label">Concepto sugerido:</span>
-                    <span className="bank-concept-hint">
-                      {form.nombre ? `Pago ${form.nombre.trim()}` : 'Tu Nombre o Teléfono'}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="bank-instructions-note">
-                  <div className="bank-note-item">
-                    <CheckCircle2 size={16} className="bank-check-icon" />
-                    <span>Transfiere desde la app de tu banco favorito (BBVA, Banamex, Santander, Banorte, Mercado Pago, Nu, etc.).</span>
-                  </div>
-                  <div className="bank-note-item">
-                    <CheckCircle2 size={16} className="bank-check-icon" />
-                    <span>Al confirmar tu pedido obtendrás tu número de orden y botón directo para enviar tu comprobante por WhatsApp al <strong>(55) 3620 6854</strong>.</span>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
