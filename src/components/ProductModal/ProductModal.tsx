@@ -20,10 +20,12 @@ import {
   Leaf,
   AlertCircle,
   Lock,
-  UserCheck
+  UserCheck,
+  Heart
 } from 'lucide-react';
 import { type Product, parsePresentations } from '../../data/products';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import {
   getReviewsForProduct,
   addReviewToProduct,
@@ -41,6 +43,7 @@ interface ProductModalProps {
 export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [selectedPresentation, setSelectedPresentation] = useState<string>('');
@@ -205,15 +208,26 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
       aria-labelledby="product-modal-title"
     >
       <div className="product-modal-card" onClick={(e) => e.stopPropagation()}>
-        {/* Close Button */}
-        <button 
-          className="product-modal-close" 
-          onClick={onClose} 
-          aria-label="Cerrar detalles del producto"
-          title="Cerrar (Esc)"
-        >
-          <X size={22} />
-        </button>
+        {/* Top Header Actions (Favorite & Close) */}
+        <div className="product-modal-top-actions">
+          <button
+            type="button"
+            className={`product-modal-fav-btn ${isFavorite(product.id) ? 'active' : ''}`}
+            onClick={() => toggleFavorite(product.id)}
+            aria-label={isFavorite(product.id) ? "Quitar de favoritos" : "Guardar en favoritos"}
+            title={isFavorite(product.id) ? "Quitar de favoritos" : "Guardar en favoritos"}
+          >
+            <Heart size={20} fill={isFavorite(product.id) ? "#f43f5e" : "none"} color={isFavorite(product.id) ? "#f43f5e" : "#475569"} />
+          </button>
+          <button 
+            className="product-modal-close" 
+            onClick={onClose} 
+            aria-label="Cerrar detalles del producto"
+            title="Cerrar (Esc)"
+          >
+            <X size={22} />
+          </button>
+        </div>
 
         {/* Modal Scrollable Content */}
         <div className="product-modal-body">

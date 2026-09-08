@@ -3,6 +3,7 @@ import { ShoppingCart, Menu, X, User as UserIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import { UserAvatar } from '../../data/avatars';
 import './Header.css';
 
 const Header = () => {
@@ -90,13 +91,7 @@ const Header = () => {
                 className="mobile-user-card"
                 onClick={handleAccountClick}
               >
-                {currentUser.avatar ? (
-                  <img src={currentUser.avatar} alt={currentUser.name} className="mobile-user-avatar" />
-                ) : (
-                  <div className="mobile-user-avatar-placeholder">
-                    {currentUser.name.slice(0, 1).toUpperCase()}
-                  </div>
-                )}
+                <UserAvatar avatarId={currentUser.avatar} name={currentUser.name} size={42} />
                 <div className="mobile-user-details">
                   <strong>{currentUser.name}</strong>
                   <span>Ver mis pedidos y perfil →</span>
@@ -133,13 +128,7 @@ const Header = () => {
           >
             {isAuthenticated && currentUser ? (
               <div className="header-user-pill">
-                {currentUser.avatar ? (
-                  <img src={currentUser.avatar} alt={currentUser.name} className="header-avatar-mini" />
-                ) : (
-                  <span className="header-avatar-initial">
-                    {currentUser.name.slice(0, 1).toUpperCase()}
-                  </span>
-                )}
+                <UserAvatar avatarId={currentUser.avatar} name={currentUser.name} size={28} />
                 <span className="header-username-text">{userFirstName}</span>
               </div>
             ) : (

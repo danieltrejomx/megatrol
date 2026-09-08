@@ -23,13 +23,15 @@ import {
   Handshake,
   Mail,
   MessageCircle,
-  CheckCircle2
+  CheckCircle2,
+  Heart
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { blogArticles, type BlogArticle } from '../../data/blog';
 import BlogModal from '../../components/BlogModal/BlogModal';
 import { ProductModal } from '../../components/ProductModal/ProductModal';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import './Home.css';
 import '../Distributors/Distributors.css';
 
@@ -198,6 +200,7 @@ const demoVideos = [
 
 const Home = () => {
   const { addToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useAuth();
   const navigate = useNavigate();
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
@@ -597,6 +600,18 @@ const Home = () => {
                   {p.tag && <span className="product-tag">{p.tag}</span>}
                   <div className="carousel-image">
                     <img src={p.image} alt={p.name} className="carousel-product-img" />
+                    <button
+                      type="button"
+                      className={`carousel-fav-btn ${isFavorite(p.id) ? 'active' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(p.id);
+                      }}
+                      aria-label={isFavorite(p.id) ? "Quitar de favoritos" : "Guardar en favoritos"}
+                      title={isFavorite(p.id) ? "Quitar de favoritos" : "Guardar en favoritos"}
+                    >
+                      <Heart size={18} fill={isFavorite(p.id) ? "#f43f5e" : "none"} color={isFavorite(p.id) ? "#f43f5e" : "#64748b"} />
+                    </button>
                   </div>
                   <div className="carousel-info">
                     <div className="carousel-card-line-label">{p.line}</div>

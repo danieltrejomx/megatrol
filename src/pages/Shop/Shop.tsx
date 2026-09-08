@@ -13,10 +13,12 @@ import {
   ShieldCheck,
   Zap,
   ChevronDown,
-  CheckCircle2
+  CheckCircle2,
+  Heart
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import { ProductModal } from '../../components/ProductModal/ProductModal';
 import './Shop.css';
 
@@ -40,6 +42,7 @@ const Shop = () => {
     typeof window !== 'undefined' ? window.innerWidth <= 900 : false
   );
   const { addToCart } = useCart();
+  const { toggleFavorite, isFavorite } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -86,17 +89,31 @@ const Shop = () => {
     return products.filter(p => p.line === key).length;
   };
 
-  const renderProductCard = (product: Product) => (
-    <div
-      key={product.id}
-      className="product-card"
-      onClick={() => setModalProduct(product)}
-    >
-      {product.tag && <span className="product-card-tag">{product.tag}</span>}
-      
-      <div className="product-card-image-wrap">
-        <img src={product.image} alt={product.name} className="product-card-img" />
-      </div>
+  const renderProductCard = (product: Product) => {
+    const isFav = isFavorite(product.id);
+    return (
+      <div
+        key={product.id}
+        className="product-card"
+        onClick={() => setModalProduct(product)}
+      >
+        {product.tag && <span className="product-card-tag">{product.tag}</span>}
+        
+        <div className="product-card-image-wrap">
+          <img src={product.image} alt={product.name} className="product-card-img" />
+          <button
+            type="button"
+            className={`product-card-fav-btn ${isFav ? 'active' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleFavorite(product.id);
+            }}
+            aria-label={isFav ? "Quitar de favoritos" : "Guardar en favoritos"}
+            title={isFav ? "Quitar de favoritos" : "Guardar en favoritos"}
+          >
+            <Heart size={18} fill={isFav ? "#f43f5e" : "none"} color={isFav ? "#f43f5e" : "#64748b"} />
+          </button>
+        </div>
 
       <div className="product-card-body">
         <div className="product-card-meta">
@@ -168,6 +185,7 @@ const Shop = () => {
       </div>
     </div>
   );
+};
 
   return (
     <div className="shop-page container">

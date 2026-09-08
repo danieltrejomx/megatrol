@@ -7,16 +7,23 @@ import {
   LogOut, 
   CheckCircle2, 
   Truck, 
-  ExternalLink, 
+  ExternalLink,
   Calendar,
   CreditCard,
   Building2,
   Store,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Heart,
+  User,
+  Pencil,
+  Trash2,
+  Check
 } from 'lucide-react';
 import { useAuth, type UserAddress } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import { products } from '../../data/products';
+import { PRESET_AVATARS, UserAvatar } from '../../data/avatars';
 import { Link } from 'react-router-dom';
 import './AccountModal.css';
 
@@ -34,13 +41,16 @@ export const AccountModal = () => {
     isAccountModalOpen, 
     closeAccountModal, 
     logout, 
-    updateProfile 
+    updateProfile,
+    favorites,
+    toggleFavorite
   } = useAuth();
   
-  const { items, totalPrice, openCart } = useCart();
+  const { items, totalPrice, openCart, addToCart } = useCart();
   
-  const [activeTab, setActiveTab] = useState<'orders' | 'address' | 'cart'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'favorites' | 'profile' | 'address' | 'cart'>('orders');
   const [addressSavedToast, setAddressSavedToast] = useState(false);
+  const [profileSavedToast, setProfileSavedToast] = useState(false);
 
   // Address form state
   const [addressForm, setAddressForm] = useState<UserAddress>({
@@ -52,7 +62,12 @@ export const AccountModal = () => {
   });
   const [phone, setPhone] = useState('');
 
-  // Sync address form with user data
+  // Profile form state (name, phone, preset avatar)
+  const [editName, setEditName] = useState('');
+  const [editPhone, setEditPhone] = useState('');
+  const [editAvatar, setEditAvatar] = useState('dog');
+
+  // Sync address & profile form with user data
   useEffect(() => {
     if (currentUser) {
       if (currentUser.address) {
@@ -60,7 +75,10 @@ export const AccountModal = () => {
       }
       if (currentUser.phone) {
         setPhone(currentUser.phone);
+        setEditPhone(currentUser.phone);
       }
+      setEditName(currentUser.name || '');
+      setEditAvatar(currentUser.avatar || 'dog');
     }
   }, [currentUser]);
 
@@ -99,12 +117,16 @@ export const AccountModal = () => {
     setTimeout(() => setAddressSavedToast(false), 3000);
   };
 
-  const getInitials = (name: string) => {
-    const parts = name.trim().split(' ');
-    if (parts.length >= 2) {
-      return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-    }
-    return name.slice(0, 2).toUpperCase();
+  const handleProfileSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!editName.trim()) return;
+    updateProfile({
+      name: editName.trim(),
+      phone: editPhone.trim(),
+      avatar: editAvatar
+    });
+    setProfileSavedToast(true);
+    setTimeout(() => setProfileSavedToast(false), 3000);
   };
 
   const getPaymentMethodLabel = (method: 'card' | 'oxxo' | 'transfer') => {
@@ -117,6 +139,9 @@ export const AccountModal = () => {
         return { label: 'Transferencia Banamex SPEI', icon: <Building2 size={15} /> };
     }
   };
+
+  // Favorited products
+  const favoriteProducts = products.filter(p => favorites.includes(p.id));
 
   return (
     <div className="account-modal-backdrop" onClick={closeAccountModal} role="dialog" aria-modal="true">
@@ -134,13 +159,17 @@ export const AccountModal = () => {
         {/* User Card Header */}
         <div className="account-header">
           <div className="account-user-info">
-            {currentUser.avatar ? (
-              <img src={currentUser.avatar} alt={currentUser.name} className="account-avatar-img" />
-            ) : (
-              <div className="account-avatar-placeholder">
-                {getInitials(currentUser.name)}
-              </div>
-            )}
+            <div 
+              className="account-avatar-wrapper" 
+              onClick={() => setActiveTab('profile')} 
+              title="Haz clic para cambiar tu avatar de perfil"
+            >
+              <UserAvatar avatarId={currentUser.avatar} name={currentUser.name} size={68} />
+              <span className="account-avatar-edit-badge" aria-label="Editar foto de perfil">
+                <Pencil size={12} />
+              </span>
+            </div>
+
             <div className="account-user-meta">
               <div className="account-name-badge">
                 <h2 className="account-user-name">{currentUser.name}</h2>
@@ -153,15 +182,26 @@ export const AccountModal = () => {
             </div>
           </div>
 
-          <button 
-            type="button" 
-            className="account-logout-btn" 
-            onClick={logout}
-            title="Cerrar sesión de esta cuenta"
-          >
-            <LogOut size={16} />
-            <span>Cerrar Sesión</span>
-          </button>
+          <div className="account-header-actions">
+            <button
+              type="button"
+              className="account-header-edit-btn"
+              onClick={() => setActiveTab('profile')}
+              title="Editar nombre y foto de perfil"
+            >
+              <Pencil size={14} />
+              <span>Editar Perfil</span>
+            </button>
+            <button 
+              type="button" 
+              className="account-logout-btn" 
+              onClick={logout}
+              title="Cerrar sesión de esta cuenta"
+            >
+              <LogOut size={15} />
+              <span>Salir</span>
+            </button>
+          </div>
         </div>
 
         {/* Tab Navigation */}
@@ -171,7 +211,7 @@ export const AccountModal = () => {
             className={`account-tab-item ${activeTab === 'orders' ? 'active' : ''}`}
             onClick={() => setActiveTab('orders')}
           >
-            <Package size={18} />
+            <Package size={17} />
             <span>Mis Pedidos</span>
             {currentUser.orders?.length > 0 && (
               <span className="account-tab-badge">{currentUser.orders.length}</span>
@@ -180,11 +220,32 @@ export const AccountModal = () => {
 
           <button
             type="button"
+            className={`account-tab-item ${activeTab === 'favorites' ? 'active' : ''}`}
+            onClick={() => setActiveTab('favorites')}
+          >
+            <Heart size={17} />
+            <span>Favoritos</span>
+            {favorites.length > 0 && (
+              <span className="account-tab-badge fav-badge">{favorites.length}</span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            className={`account-tab-item ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            <User size={17} />
+            <span>Mi Perfil</span>
+          </button>
+
+          <button
+            type="button"
             className={`account-tab-item ${activeTab === 'address' ? 'active' : ''}`}
             onClick={() => setActiveTab('address')}
           >
-            <MapPin size={18} />
-            <span>Dirección de Envío</span>
+            <MapPin size={17} />
+            <span>Dirección</span>
           </button>
 
           <button
@@ -192,8 +253,8 @@ export const AccountModal = () => {
             className={`account-tab-item ${activeTab === 'cart' ? 'active' : ''}`}
             onClick={() => setActiveTab('cart')}
           >
-            <ShoppingCart size={18} />
-            <span>Carrito Guardado</span>
+            <ShoppingCart size={17} />
+            <span>Carrito</span>
             {items.length > 0 && (
               <span className="account-tab-badge">{items.length}</span>
             )}
@@ -309,7 +370,208 @@ export const AccountModal = () => {
             </div>
           )}
 
-          {/* TAB 2: MI DIRECCIÓN DE ENVÍO */}
+          {/* TAB 2: MIS FAVORITOS */}
+          {activeTab === 'favorites' && (
+            <div className="account-favorites-section">
+              <div className="favorites-header-bar">
+                <div className="favorites-header-text">
+                  <h3>Mis Productos Guardados</h3>
+                  <p>Guarda tus fórmulas Megatrol favoritas para tenerlas siempre a mano.</p>
+                </div>
+                <span className="favorites-counter-pill">
+                  {favoriteProducts.length} {favoriteProducts.length === 1 ? 'producto' : 'productos'}
+                </span>
+              </div>
+
+              {favoriteProducts.length === 0 ? (
+                <div className="account-empty-state">
+                  <div className="empty-icon-wrap fav-empty-wrap">
+                    <Heart size={40} />
+                  </div>
+                  <h3>Aún no tienes productos en favoritos</h3>
+                  <p>Explora nuestra tienda botánica y haz clic en el corazón de cualquier producto para guardarlo aquí.</p>
+                  <Link 
+                    to="/tienda" 
+                    className="account-primary-link" 
+                    onClick={closeAccountModal}
+                  >
+                    <span>Ir a la Tienda</span>
+                    <ChevronRight size={16} />
+                  </Link>
+                </div>
+              ) : (
+                <div className="account-favorites-grid">
+                  {favoriteProducts.map(prod => (
+                    <div key={prod.id} className="favorite-card">
+                      <div className="favorite-card-img-wrap">
+                        <img src={prod.image} alt={prod.name} className="favorite-card-img" />
+                        <button
+                          type="button"
+                          className="favorite-card-remove"
+                          onClick={() => toggleFavorite(prod.id)}
+                          title="Quitar de favoritos"
+                          aria-label="Quitar de favoritos"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+
+                      <div className="favorite-card-content">
+                        <span className="favorite-card-line">{prod.line}</span>
+                        <h4 className="favorite-card-title">{prod.name}</h4>
+                        {prod.presentation && (
+                          <span className="favorite-card-pres">{prod.presentation}</span>
+                        )}
+                        <div className="favorite-card-price">
+                          ${prod.price.toFixed(2)} <small>MXN</small>
+                        </div>
+
+                        <div className="favorite-card-actions">
+                          <button
+                            type="button"
+                            className="favorite-btn-add-cart"
+                            onClick={() => {
+                              addToCart(prod, 1);
+                              openCart();
+                              closeAccountModal();
+                            }}
+                          >
+                            <ShoppingCart size={14} />
+                            <span>Comprar</span>
+                          </button>
+                          <Link
+                            to={`/tienda?producto=${prod.slug}`}
+                            className="favorite-btn-details"
+                            onClick={closeAccountModal}
+                          >
+                            Ver Detalles
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* TAB 3: EDITAR MI PERFIL */}
+          {activeTab === 'profile' && (
+            <form className="account-profile-form" onSubmit={handleProfileSubmit}>
+              <div className="profile-edit-header">
+                <div className="profile-preview-card">
+                  <div className="profile-preview-avatar">
+                    <UserAvatar avatarId={editAvatar} name={editName || 'Usuario'} size={76} />
+                  </div>
+                  <div className="profile-preview-meta">
+                    <h4>{editName || 'Tu Nombre'}</h4>
+                    <p className="profile-preview-role">
+                      Avatar: <strong>{PRESET_AVATARS.find(a => a.id === editAvatar)?.name || 'Mis Iniciales'}</strong>
+                    </p>
+                    <span className="profile-preview-hint">Vista previa en tiempo real</span>
+                  </div>
+                </div>
+              </div>
+
+              {profileSavedToast && (
+                <div className="account-toast-success">
+                  <CheckCircle2 size={18} />
+                  <span>¡Tu perfil y avatar han sido guardados con éxito!</span>
+                </div>
+              )}
+
+              <div className="account-form-row">
+                <div className="account-field-half">
+                  <label htmlFor="edit-name">Nombre Completo *</label>
+                  <input
+                    id="edit-name"
+                    type="text"
+                    value={editName}
+                    onChange={e => setEditName(e.target.value)}
+                    placeholder="Tu nombre completo"
+                    required
+                  />
+                </div>
+                <div className="account-field-half">
+                  <label htmlFor="edit-phone">WhatsApp / Teléfono</label>
+                  <input
+                    id="edit-phone"
+                    type="tel"
+                    value={editPhone}
+                    onChange={e => setEditPhone(e.target.value)}
+                    placeholder="Ej. 55 1234 5678"
+                  />
+                </div>
+              </div>
+
+              <div className="account-field-full">
+                <label className="avatar-section-title">
+                  <Sparkles size={16} />
+                  <span>Elige tu Icono de Foto Predeterminado</span>
+                </label>
+                <p className="avatar-section-subtitle">
+                  Elige un icono oficial de Megatrol para tu perfil. Son lindos, profesionales y del mismo estilo:
+                </p>
+
+                <div className="preset-avatars-grid">
+                  {PRESET_AVATARS.map(avatar => {
+                    const isSelected = editAvatar === avatar.id;
+                    return (
+                      <button
+                        type="button"
+                        key={avatar.id}
+                        className={`preset-avatar-option ${isSelected ? 'selected' : ''}`}
+                        onClick={() => setEditAvatar(avatar.id)}
+                      >
+                        <div 
+                          className="preset-avatar-bubble"
+                          style={{ background: avatar.bg, borderColor: avatar.border }}
+                        >
+                          {avatar.icon(38)}
+                          {isSelected && (
+                            <span className="preset-avatar-check">
+                              <Check size={12} />
+                            </span>
+                          )}
+                        </div>
+                        <span className="preset-avatar-label">{avatar.name}</span>
+                      </button>
+                    );
+                  })}
+
+                  {/* Option: Initials */}
+                  <button
+                    type="button"
+                    className={`preset-avatar-option ${editAvatar === 'initials' || !editAvatar ? 'selected' : ''}`}
+                    onClick={() => setEditAvatar('initials')}
+                  >
+                    <div 
+                      className="preset-avatar-bubble"
+                      style={{ background: 'linear-gradient(135deg, #0084c7 0%, #0369a1 100%)', borderColor: '#0284c7' }}
+                    >
+                      <span style={{ color: '#fff', fontWeight: 800, fontSize: '18px' }}>
+                        {(editName.slice(0, 2) || 'ME').toUpperCase()}
+                      </span>
+                      {(editAvatar === 'initials' || !editAvatar) && (
+                        <span className="preset-avatar-check">
+                          <Check size={12} />
+                        </span>
+                      )}
+                    </div>
+                    <span className="preset-avatar-label">Mis Iniciales</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="account-form-actions">
+                <button type="submit" className="account-save-btn">
+                  Guardar Cambios de Perfil
+                </button>
+              </div>
+            </form>
+          )}
+
+          {/* TAB 4: DIRECCIÓN DE ENVÍO */}
           {activeTab === 'address' && (
             <form className="account-address-form" onSubmit={handleAddressSubmit}>
               <div className="address-banner">

@@ -38,6 +38,7 @@ export interface User {
   provider?: 'email' | 'whatsapp' | 'local';
   address?: UserAddress;
   orders: OrderRecord[];
+  favorites?: number[];
   createdAt: string;
 }
 
@@ -47,6 +48,9 @@ interface AuthContextType {
   isAuthModalOpen: boolean;
   isAccountModalOpen: boolean;
   authModalTab: 'login' | 'register';
+  favorites: number[];
+  toggleFavorite: (productId: number) => void;
+  isFavorite: (productId: number) => boolean;
   openAuthModal: (tab?: 'login' | 'register') => void;
   closeAuthModal: () => void;
   openAccountModal: () => void;
@@ -54,12 +58,13 @@ interface AuthContextType {
   login: (identifier: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   register: (name: string, email: string, phone: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
-  updateProfile: (data: Partial<Pick<User, 'name' | 'phone' | 'address'>>) => void;
+  updateProfile: (data: Partial<Pick<User, 'name' | 'phone' | 'email' | 'avatar' | 'address' | 'favorites'>>) => void;
   addOrder: (order: OrderRecord) => void;
 }
 
 const STORAGE_KEY_AUTH = 'megatrol_auth_user';
 const STORAGE_KEY_USERS = 'megatrol_registered_users';
+const STORAGE_KEY_FAVORITES = 'megatrol_favorites';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -76,6 +81,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
+
+  // Favorites state (persisted locally & synced with user account)
+  const [favorites, setFavorites] = useState<number[]>(() => {
+    try {
+      const savedFavs = localStorage.getItem(STORAGE_KEY_FAVORITES);
+      if (savedFavs) return JSON.parse(savedFavs);
+    } catch {}
+    return [];
+  });
 
   // Load registered users array from localStorage
   const getUsersDb = (): User[] => {
@@ -242,15 +256,48 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { success: true };
   };
 
+  // Sync favorites when currentUser loads or has saved favorites
+  useEffect(() => {
+    if (currentUser?.favorites && currentUser.favorites.length > 0) {
+      setFavorites(prev => {
+        const merged = Array.from(new Set([...prev, ...(currentUser.favorites || [])]));
+        return merged;
+      });
+    }
+  }, [currentUser?.id]);
+
+  const toggleFavorite = (productId: number) => {
+    setFavorites(prev => {
+      const exists = prev.includes(productId);
+      const next = exists ? prev.filter(id => id !== productId) : [...prev, productId];
+      try {
+        localStorage.setItem(STORAGE_KEY_FAVORITES, JSON.stringify(next));
+      } catch {}
+
+      if (currentUser) {
+        const updatedUser: User = {
+          ...currentUser,
+          favorites: next
+        };
+        setCurrentUser(updatedUser);
+      }
+      return next;
+    });
+  };
+
+  const isFavorite = (productId: number) => {
+    return favorites.includes(productId);
+  };
+
   const logout = () => {
     setCurrentUser(null);
     setIsAccountModalOpen(false);
     localStorage.removeItem(STORAGE_KEY_AUTH);
   };
 
-  const updateProfile = (data: Partial<Pick<User, 'name' | 'phone' | 'address'>>) => {
+  const updateProfile = (data: Partial<Pick<User, 'name' | 'phone' | 'email' | 'avatar' | 'address' | 'favorites'>>) => {
     if (!currentUser) return;
-    const updated = {
+    const updated: User = {
       ...currentUser,
       ...data,
       address: data.address ? { ...currentUser.address, ...data.address } as UserAddress : currentUser.address
@@ -276,6 +323,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthModalOpen,
         isAccountModalOpen,
         authModalTab,
+        favorites,
+        toggleFavorite,
+        isFavorite,
         openAuthModal,
         closeAuthModal,
         openAccountModal,

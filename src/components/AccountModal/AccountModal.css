@@ -740,15 +740,431 @@
   transform: translateY(-1px);
 }
 
+/* Avatar Wrapper & Edit Badge in Header */
+.account-avatar-wrapper {
+  position: relative;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.account-avatar-wrapper:hover {
+  transform: scale(1.05);
+}
+
+.account-avatar-edit-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #0084c7;
+  border: 2px solid #0c2b42;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.account-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.account-header-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 0.48rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.account-header-edit-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.account-tab-badge.fav-badge {
+  background: #f43f5e;
+}
+
+/* ── TAB FAVORITOS ────────────────────────────────────────── */
+.account-favorites-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.favorites-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.favorites-header-text h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.2rem 0;
+}
+
+.favorites-header-text p {
+  font-size: 0.84rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.favorites-counter-pill {
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: #fff1f2;
+  color: #e11d48;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid #fecdd3;
+  white-space: nowrap;
+}
+
+.empty-icon-wrap.fav-empty-wrap {
+  color: #f43f5e;
+  background: #fff1f2;
+}
+
+.account-favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.favorite-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.favorite-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 20px rgba(0, 132, 199, 0.1);
+}
+
+.favorite-card-img-wrap {
+  position: relative;
+  background: #f8fafc;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  overflow: hidden;
+}
+
+.favorite-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.favorite-card:hover .favorite-card-img {
+  transform: scale(1.05);
+}
+
+.favorite-card-remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.favorite-card-remove:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.favorite-card-content {
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.favorite-card-line {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 800;
+  color: #0284c7;
+  margin-bottom: 0.2rem;
+}
+
+.favorite-card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.25;
+}
+
+.favorite-card-pres {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.favorite-card-price {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0284c7;
+  margin-top: auto;
+  margin-bottom: 0.75rem;
+}
+
+.favorite-card-price small {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.favorite-card-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.favorite-btn-add-cart {
+  flex: 1;
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.favorite-btn-add-cart:hover {
+  background: #0369a1;
+}
+
+.favorite-btn-details {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.favorite-btn-details:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* ── TAB EDITAR PERFIL & AVATARES ───────────────────────── */
+.account-profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.profile-edit-header {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.15rem;
+}
+
+.profile-preview-card {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+}
+
+.profile-preview-avatar {
+  flex-shrink: 0;
+}
+
+.profile-preview-meta h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.profile-preview-role {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.84rem;
+  color: #475569;
+}
+
+.profile-preview-role strong {
+  color: #0284c7;
+}
+
+.profile-preview-hint {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #10b981;
+  background: #ecfdf5;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+}
+
+.avatar-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.avatar-section-title svg {
+  color: #f59e0b;
+}
+
+.avatar-section-subtitle {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0 0 1rem 0;
+  line-height: 1.4;
+}
+
+.preset-avatars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+  gap: 0.75rem;
+}
+
+.preset-avatar-option {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 0.75rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preset-avatar-option:hover {
+  border-color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.08);
+}
+
+.preset-avatar-option.selected {
+  border-color: #0284c7;
+  background: #f0f9ff;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15), 0 4px 12px rgba(2, 132, 199, 0.12);
+  transform: translateY(-2px);
+}
+
+.preset-avatar-bubble {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+}
+
+.preset-avatar-check {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #0284c7;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.preset-avatar-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #334155;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.preset-avatar-option.selected .preset-avatar-label {
+  color: #0284c7;
+}
+
 @media (max-width: 600px) {
   .account-header {
-    padding: 1.5rem 1.25rem;
+    padding: 1.25rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .account-header-actions {
+    width: 100%;
+    justify-content: space-between;
   }
   .account-form-grid {
     grid-template-columns: 1fr;
   }
   .account-modal-body {
-    padding: 1.25rem;
+    padding: 1.15rem;
   }
   .account-cart-checkout-box {
     flex-direction: column;
@@ -756,5 +1172,16 @@
   }
   .account-cart-actions {
     flex-direction: column;
+  }
+  .preset-avatars-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  .preset-avatar-bubble {
+    width: 46px;
+    height: 46px;
+  }
+  .account-favorites-grid {
+    grid-template-columns: 1fr;
   }
 }
