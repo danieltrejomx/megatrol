@@ -11,7 +11,6 @@ type PetStatus = 'idle' | 'entering' | 'greeting' | 'leaving' | 'hidden';
 export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
   const location = useLocation();
   const [petStatus, setPetStatus] = useState<PetStatus>('hidden');
-  const [bubbleText, setBubbleText] = useState('¡Hola! 🐾');
   const [isInteracted, setIsInteracted] = useState(false);
 
   const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -24,7 +23,6 @@ export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
   const playGreetingSequence = (delay = 200) => {
     clearAllTimers();
     setIsInteracted(false);
-    setBubbleText('¡Hola! 🐾');
     setPetStatus('hidden');
 
     // 1. Sube y asoma al centro
@@ -83,7 +81,6 @@ export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
 
     // Interacción al tocarlos mientras saludan
     setIsInteracted(true);
-    setBubbleText('¡Guau! 🐶 ¡Miau! 🐱');
 
     clearAllTimers();
     setPetStatus('greeting');
@@ -124,12 +121,6 @@ export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
         title={petStatus !== 'hidden' ? '¡Tócame para saludar!' : undefined}
         aria-label="Perrito y gatito saludando"
       >
-        {/* Globito de saludo amigable */}
-        <div className="peeking-bubble">
-          <span className="bubble-sparkle">✨</span>
-          <span className="bubble-text">{bubbleText}</span>
-          <div className="bubble-tail"></div>
-        </div>
 
       {/* SVG Illustration */}
       <svg
