@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
   ChevronLeft, 
@@ -224,6 +224,57 @@ const Home = () => {
     if (art) setSelectedArticle(art);
   };
   const reviewsCarouselRef = useRef<HTMLDivElement>(null);
+  const catalogCarouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [addedCartId, setAddedCartId] = useState<number | null>(null);
+
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const dragMovedRef = useRef(false);
+
+  const updateScrollButtons = () => {
+    if (catalogCarouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = catalogCarouselRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+
+  const scrollCatalog = (direction: 'left' | 'right') => {
+    if (catalogCarouselRef.current) {
+      const cardWidth = 284;
+      const scrollAmount = direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+      catalogCarouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!catalogCarouselRef.current) return;
+    isDraggingRef.current = true;
+    dragMovedRef.current = false;
+    startXRef.current = e.pageX - catalogCarouselRef.current.offsetLeft;
+    scrollLeftRef.current = catalogCarouselRef.current.scrollLeft;
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !catalogCarouselRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - catalogCarouselRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 1.5;
+    if (Math.abs(walk) > 6) {
+      dragMovedRef.current = true;
+    }
+    catalogCarouselRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
+    setIsDragging(false);
+  };
 
   const nextVideo = () => {
     setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
@@ -265,6 +316,19 @@ const Home = () => {
   const homeFilteredProducts = selectedHomeLine === 'all'
     ? products
     : products.filter(p => p.line === selectedHomeLine);
+
+  useEffect(() => {
+    const el = catalogCarouselRef.current;
+    if (el) {
+      updateScrollButtons();
+      el.addEventListener('scroll', updateScrollButtons);
+      window.addEventListener('resize', updateScrollButtons);
+      return () => {
+        el.removeEventListener('scroll', updateScrollButtons);
+        window.removeEventListener('resize', updateScrollButtons);
+      };
+    }
+  }, [homeFilteredProducts]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -452,9 +516,34 @@ const Home = () => {
           </div>
 
           <div className="carousel-container">
-            <div className="carousel">
+            <button
+              type="button"
+              className={`carousel-arrow-btn prev ${!canScrollLeft ? 'disabled' : ''}`}
+              onClick={() => scrollCatalog('left')}
+              disabled={!canScrollLeft}
+              aria-label="Ver productos anteriores"
+              title="Anterior"
+            >
+              <ChevronLeft size={22} />
+            </button>
+
+            <div 
+              className={`carousel ${isDragging ? 'is-dragging' : ''}`}
+              ref={catalogCarouselRef}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUpOrLeave}
+              onMouseLeave={handleMouseUpOrLeave}
+            >
               {homeFilteredProducts.map((p) => (
-                <div key={p.id} className="carousel-card" onClick={() => navigate(`/producto/${p.slug}`)}>
+                <div 
+                  key={p.id} 
+                  className="carousel-card" 
+                  onClick={() => {
+                    if (dragMovedRef.current) return;
+                    navigate(`/producto/${p.slug}`);
+                  }}
+                >
                   {p.tag && <span className="product-tag">{p.tag}</span>}
                   <div className="carousel-image">
                     <img src={p.image} alt={p.name} className="carousel-product-img" />
@@ -466,23 +555,60 @@ const Home = () => {
                     <div className="price">${p.price.toFixed(2)} MXN</div>
                     <div className="carousel-card-actions">
                       <button
-                        className="btn btn-primary"
-                        onClick={(e) => { e.stopPropagation(); navigate(`/producto/${p.slug}`); }}
+                        type="button"
+                        className="btn btn-buy-now"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(p, 1);
+                          navigate('/carrito');
+                        }}
                       >
-                        Ver Producto
+                        <Zap size={14} />
+                        <span>Comprar Ahora</span>
                       </button>
+
                       <button
-                        className="btn btn-cart-sm"
-                        title="Agregar al carrito"
-                        onClick={(e) => { e.stopPropagation(); addToCart(p); }}
+                        type="button"
+                        className={`btn btn-add-cart ${addedCartId === p.id ? 'added' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(p, 1);
+                          setAddedCartId(p.id);
+                          setTimeout(() => setAddedCartId(null), 1800);
+                        }}
                       >
-                        <ShoppingCart size={17} />
+                        {addedCartId === p.id ? (
+                          <>
+                            <CheckCircle size={15} />
+                            <span>¡Agregado!</span>
+                          </>
+                        ) : (
+                          <>
+                            <ShoppingCart size={15} />
+                            <span>Agregar al Carrito</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+
+            <button
+              type="button"
+              className={`carousel-arrow-btn next ${!canScrollRight ? 'disabled' : ''}`}
+              onClick={() => scrollCatalog('right')}
+              disabled={!canScrollRight}
+              aria-label="Ver más productos"
+              title="Siguiente"
+            >
+              <ChevronRight size={22} />
+            </button>
+          </div>
+
+          <div className="carousel-swipe-hint">
+            <span>← Desliza o usa las flechas para explorar más productos →</span>
           </div>
         </div>
       </section>
