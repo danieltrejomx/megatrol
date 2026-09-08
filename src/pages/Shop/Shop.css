@@ -97,6 +97,7 @@
   display: flex;
   gap: 40px;
   align-items: flex-start;
+  scroll-margin-top: 95px;
 }
 
 /* Sidebar */

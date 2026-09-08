@@ -69,6 +69,10 @@ const Shop = () => {
   const scrollToProducts = (instant = false) => {
     if (shopLayoutRef.current) {
       const rect = shopLayoutRef.current.getBoundingClientRect();
+      // Si ya estamos posicionados en la sección de productos (entre 60px y 120px bajo el header), no saltar
+      if (rect.top >= 60 && rect.top <= 120) {
+        return;
+      }
       const offset = 90;
       const targetY = Math.max(0, rect.top + window.pageYOffset - offset);
       window.scrollTo({
@@ -77,6 +81,66 @@ const Shop = () => {
       });
     }
   };
+
+  const handleCategoryClick = (e: React.MouseEvent, key: string, slug: string) => {
+    // Previene que React Router desmonte y vuelva a montar la página, evitando saltos al banner
+    e.preventDefault();
+
+    setSelectedFilter(key);
+
+    if (isMobile) {
+      setExpandedCategories(prev => 
+        prev.includes(key) 
+          ? prev.filter(k => k !== key) 
+          : [...prev, key]
+      );
+    } else {
+      setExpandedCategories([]);
+    }
+
+    const targetUrl = key === 'all' ? '/tienda' : `/categoria/${slug}`;
+    window.history.pushState({ preventScroll: true }, '', targetUrl);
+
+    const found = filters.find(item => item.key === key);
+    document.title = key === 'all'
+      ? 'Tienda Oficial | Megatrol Pet Care'
+      : `${found?.label || key} - Catálogo Oficial | Megatrol`;
+
+    scrollToProducts(false);
+  };
+
+  const handleResetFilters = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    setSelectedFilter('all');
+    setSearchTerm('');
+    setExpandedCategories([]);
+    window.history.pushState({ preventScroll: true }, '', '/tienda');
+    document.title = 'Tienda Oficial | Megatrol Pet Care';
+    scrollToProducts(false);
+  };
+
+  // Soporte para botones Atrás/Adelante del navegador con URLs de categorías
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      const match = path.match(/\/categoria\/([^\/]+)/);
+      if (match && match[1]) {
+        const mapped = categorySlugMap[match[1].toLowerCase()];
+        if (mapped) {
+          setSelectedFilter(mapped);
+          const found = filters.find(item => item.key === mapped);
+          document.title = `${found?.label || mapped} - Catálogo Oficial | Megatrol`;
+          return;
+        }
+      }
+      if (path === '/tienda' || path === '/categoria') {
+        setSelectedFilter('all');
+        document.title = 'Tienda Oficial | Megatrol Pet Care';
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Sincroniza la categoría seleccionada a partir de la URL /categoria/:categorySlug o query ?categoria=...
   useEffect(() => {
@@ -89,7 +153,7 @@ const Shop = () => {
       } else {
         setSelectedFilter('all');
       }
-      setTimeout(() => scrollToProducts(false), 50);
+      setTimeout(() => scrollToProducts(false), 100);
     } else {
       const catParam = searchParams.get('categoria') || searchParams.get('cat');
       if (catParam) {
@@ -98,7 +162,7 @@ const Shop = () => {
           setSelectedFilter(mapped);
           const found = filters.find(item => item.key === mapped);
           document.title = `${found?.label || mapped} - Catálogo Oficial | Megatrol`;
-          setTimeout(() => scrollToProducts(false), 50);
+          setTimeout(() => scrollToProducts(false), 100);
           return;
         }
       }
@@ -298,21 +362,8 @@ const Shop = () => {
                   >
                     <Link
                       to={isAll ? '/tienda' : `/categoria/${f.slug}`}
-                      state={{ preventScroll: true }}
                       className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
-                      onClick={() => {
-                        setSelectedFilter(f.key);
-                        if (isMobile) {
-                          setExpandedCategories(prev => 
-                            prev.includes(f.key) 
-                              ? prev.filter(k => k !== f.key) 
-                              : [...prev, f.key]
-                          );
-                        } else {
-                          setExpandedCategories([]);
-                        }
-                        scrollToProducts(false);
-                      }}
+                      onClick={(e) => handleCategoryClick(e, f.key, f.slug)}
                       title={`Ver productos de ${f.label}`}
                     >
                       <span className="filter-btn-label">
@@ -395,13 +446,7 @@ const Shop = () => {
               <button 
                 type="button" 
                 className="reset-filter-btn" 
-                onClick={() => { 
-                  setSelectedFilter('all'); 
-                  setSearchTerm(''); 
-                  setExpandedCategories([]); 
-                  navigate('/tienda', { state: { preventScroll: true } }); 
-                  scrollToProducts(false);
-                }}
+                onClick={handleResetFilters}
               >
                 <span>Mostrar todos</span>
                 <X size={14} />
@@ -418,13 +463,7 @@ const Shop = () => {
               <p>Intenta con otro término de búsqueda o selecciona otra categoría.</p>
               <button 
                 className="btn btn-primary" 
-                onClick={() => { 
-                  setSelectedFilter('all'); 
-                  setSearchTerm(''); 
-                  setExpandedCategories([]); 
-                  navigate('/tienda', { state: { preventScroll: true } }); 
-                  scrollToProducts(false);
-                }}
+                onClick={handleResetFilters}
               >
                 Ver Todos los Productos
               </button>
