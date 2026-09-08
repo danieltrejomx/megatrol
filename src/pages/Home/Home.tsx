@@ -198,7 +198,7 @@ const demoVideos = [
   },
   {
     id: 'pug-megatrol',
-    title: 'Demostración de Baño: Shower Shampoo & Talco',
+    title: 'Shower Shampoo & Talco',
     shortTitle: 'Shower & Talco',
     badge: 'Higiene y Protección',
     desc: 'Observa el baño relajante con Shower Shampoo Aromas y la aplicación de Talco Ecológico para dejar a tu mascota limpia, fresca y protegida.',
