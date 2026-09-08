@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   X, 
   Calendar, 
@@ -59,7 +60,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({ article, onClose }) => {
 
   if (!article) return null;
 
-  return (
+  return createPortal(
     <div className="blog-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div className="blog-modal-card" onClick={(e) => e.stopPropagation()}>
         {/* Close Button */}
@@ -215,7 +216,8 @@ export const BlogModal: React.FC<BlogModalProps> = ({ article, onClose }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

@@ -1367,14 +1367,31 @@
 
 @media (max-width: 540px) {
   .product-modal-backdrop {
-    padding: 10px;
+    padding: 12px 8px;
+    align-items: center;
+    -webkit-overflow-scrolling: touch;
   }
   .product-modal-card {
-    border-radius: 20px;
-    max-height: 94vh;
+    border-radius: 22px;
+    max-height: 92vh;
+    margin: auto;
+  }
+  .product-modal-body {
+    padding: 20px 14px 32px 14px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .product-modal-top-actions {
+    top: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+  .product-modal-close,
+  .product-modal-fav-btn {
+    width: 36px;
+    height: 36px;
   }
   .product-modal-title {
-    font-size: 21px;
+    font-size: 20px;
   }
   .modal-purchase-controls {
     flex-direction: column;

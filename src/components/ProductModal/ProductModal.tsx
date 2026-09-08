@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
   X,
@@ -199,7 +200,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
     currentPriceRaw === null ||
     currentPriceRaw === 0;
 
-  return (
+  return createPortal(
     <div 
       className="product-modal-backdrop" 
       onClick={onClose} 
@@ -870,6 +871,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

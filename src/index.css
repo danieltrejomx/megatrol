@@ -363,19 +363,3 @@ ul {
     font-size: 14.5px;
   }
 }
-
-/* ── PAGE ENTRANCE ANIMATION ── */
-main > * {
-  animation: pageEntrance 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes pageEntrance {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
