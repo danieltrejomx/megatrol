@@ -237,14 +237,16 @@ const Shop = () => {
                           setSelectedFilter('all');
                           setExpandedCategories([]);
                         } else {
-                          setSelectedFilter(f.key);
                           if (isMobile) {
-                            setExpandedCategories(prev => 
-                              prev.includes(f.key) && selectedFilter === f.key 
-                                ? [] 
-                                : [f.key]
-                            );
+                            if (selectedFilter === f.key && expandedCategories.includes(f.key)) {
+                              setSelectedFilter('all');
+                              setExpandedCategories([]);
+                            } else {
+                              setSelectedFilter(f.key);
+                              setExpandedCategories([f.key]);
+                            }
                           } else {
+                            setSelectedFilter(f.key);
                             setExpandedCategories([]);
                           }
                         }
@@ -315,7 +317,7 @@ const Shop = () => {
         </aside>
 
         {/* Product Grid / Category Breakdown */}
-        <main className="shop-main">
+        <main className={`shop-main ${(selectedFilter !== 'all' || expandedCategories.length > 0) && !searchTerm.trim() ? 'mobile-hide-category-grid' : ''}`}>
           <div className="shop-results-header">
             <span>
               {searchTerm.trim() ? (

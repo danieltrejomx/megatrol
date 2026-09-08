@@ -818,6 +818,9 @@
   .shop-results-header {
     display: none;
   }
+  .shop-main.mobile-hide-category-grid {
+    display: none !important;
+  }
 }
 
 @media (max-width: 600px) {
