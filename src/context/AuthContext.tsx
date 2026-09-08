@@ -52,7 +52,7 @@ interface AuthContextType {
   openAccountModal: () => void;
   closeAccountModal: () => void;
   login: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
-  loginWithGoogle: () => Promise<{ success: boolean; error?: string }>;
+  loginWithGoogle: (customEmail?: string, customName?: string) => Promise<{ success: boolean; error?: string }>;
   loginAsDemo: () => Promise<{ success: boolean }>;
   register: (name: string, email: string, password?: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -221,72 +221,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { success: true };
   };
 
-  const loginWithGoogle = async (): Promise<{ success: boolean; error?: string }> => {
-    // Simulated Google OAuth login with high-fidelity experience
-    const googleUser: User = {
-      id: 'usr_google_772',
-      name: 'Dr. Alejandro Morales',
-      email: 'alejandro.morales.vet@gmail.com',
-      phone: '55 9876 5432',
-      provider: 'google',
-      avatar: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=150&auto=format&fit=crop&q=80',
-      address: {
-        calle: 'Av. Paseo de las Palmas 745',
-        colonia: 'Lomas de Chapultepec',
-        ciudad: 'Miguel Hidalgo',
-        estado: 'Ciudad de México',
-        cp: '11000'
-      },
-      orders: [
-        {
-          orderNumber: 'MEG-618490',
-          customerName: 'Dr. Alejandro Morales',
-          email: 'alejandro.morales.vet@gmail.com',
-          phone: '55 9876 5432',
-          total: 1280,
-          shipping: 0,
-          paymentMethod: 'card',
-          status: 'Entregado',
-          date: '28 de agosto de 2026',
-          items: [
-            {
-              name: 'Megatrol Jabón Barra 100g',
-              qty: 4,
-              price: 180,
-              variant: 'Aroma Original'
-            },
-            {
-              name: 'Megatrol Ungüento 250g',
-              qty: 1,
-              price: 560,
-              variant: 'Tarro 250g'
-            }
-          ],
-          address: {
-            calle: 'Av. Paseo de las Palmas 745',
-            colonia: 'Lomas de Chapultepec',
-            ciudad: 'Miguel Hidalgo',
-            estado: 'Ciudad de México',
-            cp: '11000'
-          }
-        }
-      ],
-      createdAt: '2026-08-01T12:00:00.000Z'
-    };
+  const loginWithGoogle = async (customEmail?: string, customName?: string): Promise<{ success: boolean; error?: string }> => {
+    const cleanEmail = customEmail?.trim().toLowerCase();
+    const cleanName = customName?.trim();
 
     const users = getUsersDb();
-    const existing = users.find(u => u.email === googleUser.email);
-    if (existing) {
-      setCurrentUser(existing);
-    } else {
-      users.push(googleUser);
-      saveUsersDb(users);
-      setCurrentUser(googleUser);
+
+    if (cleanEmail) {
+      const existing = users.find(u => u.email.toLowerCase() === cleanEmail);
+      if (existing) {
+        if (cleanName) existing.name = cleanName;
+        saveUsersDb(users);
+        setCurrentUser(existing);
+      } else {
+        const namePart = cleanName || (cleanEmail.split('@')[0].charAt(0).toUpperCase() + cleanEmail.split('@')[0].slice(1));
+        const newGoogleUser: User = {
+          id: `usr_g_${Date.now()}`,
+          name: namePart,
+          email: cleanEmail,
+          provider: 'google',
+          orders: [],
+          createdAt: new Date().toISOString()
+        };
+        users.push(newGoogleUser);
+        saveUsersDb(users);
+        setCurrentUser(newGoogleUser);
+      }
+      setIsAuthModalOpen(false);
+      setIsAccountModalOpen(true);
+      return { success: true };
     }
 
-    setIsAuthModalOpen(false);
-    setIsAccountModalOpen(true);
-    return { success: true };
+    return { success: false, error: 'Por favor ingresa tu correo de Gmail' };
   };
 
   const loginAsDemo = async (): Promise<{ success: boolean }> => {
