@@ -566,16 +566,83 @@
 .product-card-bottom {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(0, 132, 199, 0.12);
   padding-top: 14px;
   gap: 12px;
   margin-top: auto;
 }
 
-.product-card-price {
+.product-card-price-card {
+  background: linear-gradient(135deg, rgba(0, 132, 199, 0.05) 0%, rgba(116, 192, 67, 0.04) 100%);
+  border: 1px solid rgba(0, 132, 199, 0.15);
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.25s ease;
+}
+
+.product-card:hover .product-card-price-card {
+  background: linear-gradient(135deg, rgba(0, 132, 199, 0.09) 0%, rgba(116, 192, 67, 0.08) 100%);
+  border-color: rgba(0, 132, 199, 0.28);
+  box-shadow: 0 4px 14px rgba(0, 132, 199, 0.08);
+}
+
+.price-info-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.price-eyebrow {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: #64748b;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.price-value-row {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
+  gap: 2px;
+}
+
+.price-currency-sign {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.price-digits {
+  font-size: 21px;
+  font-weight: 900;
+  color: #0c2b42;
+  letter-spacing: -0.4px;
+  line-height: 1;
+}
+
+.price-currency-suffix {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  margin-left: 2px;
+}
+
+.price-meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  padding: 4px 9px;
+  border-radius: 8px;
+  white-space: nowrap;
 }
 
 .product-card-actions {

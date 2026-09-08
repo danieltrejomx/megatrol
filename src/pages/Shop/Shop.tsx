@@ -101,9 +101,19 @@ const Shop = () => {
         )}
 
         <div className="product-card-bottom">
-          <div className="product-card-price">
-            <span className="price-label">Precio</span>
-            <span className="price-amount">${product.price.toFixed(2)} <small>MXN</small></span>
+          <div className="product-card-price-card">
+            <div className="price-info-group">
+              <span className="price-eyebrow">Precio Oficial</span>
+              <div className="price-value-row">
+                <span className="price-currency-sign">$</span>
+                <span className="price-digits">{product.price.toFixed(2)}</span>
+                <span className="price-currency-suffix">MXN</span>
+              </div>
+            </div>
+            <div className="price-meta-badge">
+              <CheckCircle2 size={12} />
+              <span>En stock</span>
+            </div>
           </div>
 
           <div className="product-card-actions">
