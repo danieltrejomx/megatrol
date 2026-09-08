@@ -235,16 +235,24 @@ const Shop = () => {
                       onClick={() => {
                         if (isAll) {
                           setSelectedFilter('all');
-                          setExpandedCategories([]);
-                        } else {
                           if (isMobile) {
-                            if (selectedFilter === f.key && expandedCategories.includes(f.key)) {
-                              setSelectedFilter('all');
+                            const allKeys = filters.filter(x => x.key !== 'all').map(x => x.key);
+                            if (expandedCategories.length === allKeys.length) {
                               setExpandedCategories([]);
                             } else {
-                              setSelectedFilter(f.key);
-                              setExpandedCategories([f.key]);
+                              setExpandedCategories(allKeys);
                             }
+                          } else {
+                            setExpandedCategories([]);
+                          }
+                        } else {
+                          if (isMobile) {
+                            setSelectedFilter(f.key);
+                            setExpandedCategories(prev => 
+                              prev.includes(f.key) 
+                                ? prev.filter(k => k !== f.key) 
+                                : [...prev, f.key]
+                            );
                           } else {
                             setSelectedFilter(f.key);
                             setExpandedCategories([]);
@@ -317,7 +325,7 @@ const Shop = () => {
         </aside>
 
         {/* Product Grid / Category Breakdown */}
-        <main className={`shop-main ${(selectedFilter !== 'all' || expandedCategories.length > 0) && !searchTerm.trim() ? 'mobile-hide-category-grid' : ''}`}>
+        <main className={`shop-main ${searchTerm.trim() ? 'show-search-results' : ''}`}>
           <div className="shop-results-header">
             <span>
               {searchTerm.trim() ? (

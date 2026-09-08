@@ -818,7 +818,7 @@
   .shop-results-header {
     display: none;
   }
-  .shop-main.mobile-hide-category-grid {
+  .shop-main:not(.show-search-results) {
     display: none !important;
   }
 }
