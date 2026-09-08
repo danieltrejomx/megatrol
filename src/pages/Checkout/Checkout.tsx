@@ -13,6 +13,7 @@ import {
   CheckCircle2 
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { markProductsAsPurchased } from '../../data/reviews';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -33,6 +34,9 @@ const Checkout = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (items.length > 0) {
+      markProductsAsPurchased(items.map(i => i.product.id));
+    }
     clearCart();
     navigate('/orden-confirmada');
   };

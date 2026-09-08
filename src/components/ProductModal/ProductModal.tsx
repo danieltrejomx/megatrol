@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   X,
@@ -18,10 +18,19 @@ import {
   Truck,
   FileText,
   Leaf,
-  AlertCircle
+  AlertCircle,
+  Lock,
+  UserCheck
 } from 'lucide-react';
 import { type Product, parsePresentations } from '../../data/products';
 import { useCart } from '../../context/CartContext';
+import {
+  getReviewsForProduct,
+  addReviewToProduct,
+  hasUserPurchasedProduct,
+  verifyPastPurchase,
+  type Review
+} from '../../data/reviews';
 import './ProductModal.css';
 
 interface ProductModalProps {
@@ -37,6 +46,24 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
   const [selectedPresentation, setSelectedPresentation] = useState<string>('');
   const [selectedAroma, setSelectedAroma] = useState<string>('');
 
+  // Reviews and tab state
+  const [activeTab, setActiveTab] = useState<'specs' | 'reviews'>('specs');
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [hasPurchased, setHasPurchased] = useState<boolean>(false);
+  const [isWritingReview, setIsWritingReview] = useState<boolean>(false);
+  const [verifyCode, setVerifyCode] = useState('');
+  const [verifyError, setVerifyError] = useState('');
+  const [newRating, setNewRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [authorName, setAuthorName] = useState('');
+  const [authorCity, setAuthorCity] = useState('');
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [reviewComment, setReviewComment] = useState('');
+  const [reviewPresentation, setReviewPresentation] = useState('');
+  const [formSubmittedSuccess, setFormSubmittedSuccess] = useState(false);
+
+  const reviewsSectionRef = useRef<HTMLDivElement>(null);
+
   // Reset state when product changes
   useEffect(() => {
     if (product) {
@@ -46,6 +73,17 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
       setSelectedAroma(aromasList.length > 0 ? aromasList[0] : '');
       setQuantity(1);
       setAdded(false);
+
+      // Reviews & purchase status
+      const prodReviews = getReviewsForProduct(product.id);
+      setReviews(prodReviews);
+      setHasPurchased(hasUserPurchasedProduct(product.id));
+      setIsWritingReview(false);
+      setFormSubmittedSuccess(false);
+      setVerifyCode('');
+      setVerifyError('');
+      setReviewPresentation(presList.length > 0 ? presList[0] : '');
+      setActiveTab('specs');
     }
   }, [product]);
 
@@ -92,6 +130,60 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
     onClose();
     navigate('/carrito');
   };
+
+  const handleGoToReviews = () => {
+    setActiveTab('reviews');
+    setTimeout(() => {
+      reviewsSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 60);
+  };
+
+  const handleVerifyPurchase = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!product) return;
+    if (!verifyCode.trim()) {
+      setVerifyError('Por favor ingresa tu número de pedido o correo.');
+      return;
+    }
+    const success = verifyPastPurchase(verifyCode, product.id);
+    if (success) {
+      setHasPurchased(true);
+      setVerifyError('');
+      setIsWritingReview(true);
+    } else {
+      setVerifyError('Ingresa al menos 4 caracteres (ej. Nº de pedido MEG-1234 o tu correo registrado).');
+    }
+  };
+
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!product) return;
+    if (!authorName.trim() || !reviewTitle.trim() || !reviewComment.trim()) {
+      alert('Por favor completa tu nombre, título y comentario.');
+      return;
+    }
+
+    const created = addReviewToProduct(product.id, {
+      author: authorName,
+      city: authorCity,
+      rating: newRating,
+      title: reviewTitle,
+      comment: reviewComment,
+      presentation: reviewPresentation || selectedPresentation || undefined
+    });
+
+    setReviews([created, ...reviews]);
+    setFormSubmittedSuccess(true);
+    setIsWritingReview(false);
+    setAuthorName('');
+    setAuthorCity('');
+    setReviewTitle('');
+    setReviewComment('');
+  };
+
+  const avgRating = reviews.length > 0
+    ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1)
+    : '5.0';
 
   const currentPriceRaw =
     selectedPresentation && product.presentationPrices?.[selectedPresentation] !== undefined
@@ -185,15 +277,21 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
 
               <h2 id="product-modal-title" className="product-modal-title">{product.name}</h2>
 
-              {/* Stars & Social Proof */}
-              <div className="product-modal-rating">
+              {/* Stars & Social Proof - Clickable to open reviews */}
+              <button
+                type="button"
+                className="product-modal-rating clickable"
+                onClick={handleGoToReviews}
+                title="Ver las opiniones verificadas de este producto"
+              >
                 <div className="stars-row">
                   {[...Array(5)].map((_, i) => (
                     <Star key={i} size={15} fill="#f59e0b" color="#f59e0b" />
                   ))}
                 </div>
-                <span className="rating-count">(48 reseñas verificadas)</span>
-              </div>
+                <span className="rating-count">({reviews.length} reseñas verificadas)</span>
+                <span className="view-reviews-link">Ver opiniones ↓</span>
+              </button>
 
               {/* Price Banner */}
               <div className="product-modal-price-display">
@@ -353,87 +451,406 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
             </div>
           </div>
 
-          {/* Bottom Section: Full Technical & Veterinary Details */}
-          <div className="product-modal-extended-details">
-            <div className="modal-tabs-header">
-              <h3>Ficha Técnica e Indicaciones Veterinarias</h3>
-              <p>Información completa formulada por el equipo científico de Inobazz Pharma.</p>
+          {/* Bottom Section: Tabs for Technical Specs & Verified Reviews */}
+          <div className="product-modal-extended-details" ref={reviewsSectionRef}>
+            {/* Tabs Navigation */}
+            <div className="modal-tabs-navigation" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === 'specs'}
+                className={`modal-nav-tab ${activeTab === 'specs' ? 'active' : ''}`}
+                onClick={() => setActiveTab('specs')}
+              >
+                <FileText size={17} />
+                <span>Ficha Técnica e Indicaciones</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeTab === 'reviews'}
+                className={`modal-nav-tab ${activeTab === 'reviews' ? 'active' : ''}`}
+                onClick={() => setActiveTab('reviews')}
+              >
+                <Star size={17} className="star-tab-icon" />
+                <span>Reseñas Verificadas ({reviews.length})</span>
+                <span className="rating-pill-tab">{avgRating} ★</span>
+              </button>
             </div>
 
-            <div className="modal-specs-grid">
-              {/* Technical Attributes */}
-              <div className="modal-spec-card">
-                <div className="modal-spec-card-title">
-                  <Package size={18} />
-                  <h4>Especificaciones Básicas</h4>
+            {/* TAB 1: Specs & Veterinary Info */}
+            {activeTab === 'specs' && (
+              <div className="modal-tab-content-panel">
+                <div className="modal-tabs-header">
+                  <h3>Ficha Técnica e Indicaciones Veterinarias</h3>
+                  <p>Información completa formulada por el equipo científico de Inobazz Pharma.</p>
                 </div>
-                <ul className="modal-spec-list">
-                  {product.presentation && (
-                    <li><strong>Presentaciones:</strong> <span>{product.presentation}</span></li>
+
+                <div className="modal-specs-grid">
+                  {/* Technical Attributes */}
+                  <div className="modal-spec-card">
+                    <div className="modal-spec-card-title">
+                      <Package size={18} />
+                      <h4>Especificaciones Básicas</h4>
+                    </div>
+                    <ul className="modal-spec-list">
+                      {product.presentation && (
+                        <li><strong>Presentaciones:</strong> <span>{product.presentation}</span></li>
+                      )}
+                      {product.administration && (
+                        <li><strong>Vía de administración:</strong> <span>{product.administration}</span></li>
+                      )}
+                      {product.species && (
+                        <li><strong>Especies recomendadas:</strong> <span>{product.species}</span></li>
+                      )}
+                      {product.line && (
+                        <li><strong>Línea farmacéutica:</strong> <span>{product.line}</span></li>
+                      )}
+                    </ul>
+                  </div>
+
+                  {/* Benefits */}
+                  {product.benefits && product.benefits.length > 0 && (
+                    <div className="modal-spec-card">
+                      <div className="modal-spec-card-title">
+                        <CheckCircle2 size={18} />
+                        <h4>Beneficios y Propiedades</h4>
+                      </div>
+                      <ul className="modal-benefits-list">
+                        {product.benefits.map((b, i) => (
+                          <li key={i}>
+                            <CheckCircle2 size={14} className="benefit-check" />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   )}
-                  {product.administration && (
-                    <li><strong>Vía de administración:</strong> <span>{product.administration}</span></li>
+
+                  {/* Therapeutic Indications */}
+                  {product.indications && (
+                    <div className="modal-spec-card">
+                      <div className="modal-spec-card-title">
+                        <FileText size={18} />
+                        <h4>Indicaciones Terapéuticas</h4>
+                      </div>
+                      <p className="modal-spec-text">{product.indications}</p>
+                    </div>
                   )}
-                  {product.species && (
-                    <li><strong>Especies recomendadas:</strong> <span>{product.species}</span></li>
+
+                  {/* Mode of Use / Dosage */}
+                  {product.howToUse && (
+                    <div className="modal-spec-card">
+                      <div className="modal-spec-card-title">
+                        <FlaskConical size={18} />
+                        <h4>Modo de Uso y Dosificación</h4>
+                      </div>
+                      <p className="modal-spec-text">{product.howToUse}</p>
+                    </div>
                   )}
-                  {product.line && (
-                    <li><strong>Línea farmacéutica:</strong> <span>{product.line}</span></li>
+
+                  {/* Formula */}
+                  {product.formula && (
+                    <div className="modal-spec-card full-span">
+                      <div className="modal-spec-card-title">
+                        <Leaf size={18} />
+                        <h4>Composición y Fórmula Activa</h4>
+                      </div>
+                      <p className="modal-spec-text">{product.formula}</p>
+                    </div>
                   )}
-                </ul>
+                </div>
               </div>
+            )}
 
-              {/* Benefits */}
-              {product.benefits && product.benefits.length > 0 && (
-                <div className="modal-spec-card">
-                  <div className="modal-spec-card-title">
-                    <CheckCircle2 size={18} />
-                    <h4>Beneficios y Propiedades</h4>
+            {/* TAB 2: Verified Reviews & Purchase Verification */}
+            {activeTab === 'reviews' && (
+              <div className="modal-tab-content-panel reviews-tab-panel">
+                {/* Summary Score Card */}
+                <div className="reviews-summary-card">
+                  <div className="reviews-score-col">
+                    <span className="reviews-big-number">{avgRating}</span>
+                    <div className="stars-row big">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={18} fill="#f59e0b" color="#f59e0b" />
+                      ))}
+                    </div>
+                    <span className="reviews-summary-sub">
+                      Basado en {reviews.length} opiniones verificadas
+                    </span>
                   </div>
-                  <ul className="modal-benefits-list">
-                    {product.benefits.map((b, i) => (
-                      <li key={i}>
-                        <CheckCircle2 size={14} className="benefit-check" />
-                        <span>{b}</span>
-                      </li>
+
+                  <div className="reviews-trust-col">
+                    <div className="trust-badge-row">
+                      <ShieldCheck size={24} className="trust-icon" />
+                      <div>
+                        <strong>Sistema de Calificaciones 100% Auténticas</strong>
+                        <p>Solo clientes con compra confirmada pueden calificar y opinar sobre este producto.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="reviews-action-col">
+                    <button
+                      type="button"
+                      className="btn-open-review-form"
+                      onClick={() => setIsWritingReview(!isWritingReview)}
+                    >
+                      <Sparkles size={16} />
+                      <span>{isWritingReview ? 'Cerrar formulario' : 'Escribir una Reseña'}</span>
+                    </button>
+                  </div>
+                </div>
+
+                {formSubmittedSuccess && (
+                  <div className="review-success-banner">
+                    <CheckCircle2 size={22} />
+                    <div>
+                      <strong>¡Muchas gracias por tu reseña!</strong>
+                      <p>Tu opinión ha sido verificada y registrada correctamente.</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Form or Lock Card if writing review */}
+                {isWritingReview && (
+                  <div className="review-composer-wrapper">
+                    {hasPurchased ? (
+                      /* UNLOCKED: Review Form for verified buyers */
+                      <form className="review-write-form" onSubmit={handleSubmitReview}>
+                        <div className="review-form-header">
+                          <UserCheck size={22} className="text-emerald" />
+                          <div>
+                            <h4>Tu opinión como comprador verificado</h4>
+                            <p>Tu testimonio ayuda a otros tutores y veterinarios a proteger a sus animales.</p>
+                          </div>
+                        </div>
+
+                        <div className="form-group-rating">
+                          <label>Calificación general:</label>
+                          <div className="interactive-stars-row">
+                            {[1, 2, 3, 4, 5].map((star) => {
+                              const isFilled = (hoverRating || newRating) >= star;
+                              return (
+                                <button
+                                  key={star}
+                                  type="button"
+                                  className="star-btn"
+                                  onMouseEnter={() => setHoverRating(star)}
+                                  onMouseLeave={() => setHoverRating(0)}
+                                  onClick={() => setNewRating(star)}
+                                  aria-label={`Calificar con ${star} estrellas`}
+                                >
+                                  <Star
+                                    size={28}
+                                    fill={isFilled ? '#f59e0b' : 'none'}
+                                    color={isFilled ? '#f59e0b' : '#cbd5e1'}
+                                  />
+                                </button>
+                              );
+                            })}
+                            <span className="rating-verbal-score">
+                              {newRating === 5 && '¡Excelente, lo recomiendo totalmente!'}
+                              {newRating === 4 && 'Muy buen producto, efectivo'}
+                              {newRating === 3 && 'Bueno, cumple su función'}
+                              {newRating === 2 && 'Regular'}
+                              {newRating === 1 && 'No cumplió mis expectativas'}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="form-row-two-col">
+                          <div className="form-field">
+                            <label htmlFor="review-author">Nombre completo o alias *</label>
+                            <input
+                              id="review-author"
+                              type="text"
+                              required
+                              placeholder="Ej. Dra. Laura Pérez o Juan R."
+                              value={authorName}
+                              onChange={(e) => setAuthorName(e.target.value)}
+                            />
+                          </div>
+                          <div className="form-field">
+                            <label htmlFor="review-city">Ciudad / Estado (opcional)</label>
+                            <input
+                              id="review-city"
+                              type="text"
+                              placeholder="Ej. Guadalajara, Jal."
+                              value={authorCity}
+                              onChange={(e) => setAuthorCity(e.target.value)}
+                            />
+                          </div>
+                        </div>
+
+                        {presentations.length > 0 && (
+                          <div className="form-field">
+                            <label htmlFor="review-pres">Presentación utilizada</label>
+                            <select
+                              id="review-pres"
+                              value={reviewPresentation}
+                              onChange={(e) => setReviewPresentation(e.target.value)}
+                            >
+                              {presentations.map((p) => (
+                                <option key={p} value={p}>{p}</option>
+                              ))}
+                            </select>
+                          </div>
+                        )}
+
+                        <div className="form-field">
+                          <label htmlFor="review-title">Título de tu opinión *</label>
+                          <input
+                            id="review-title"
+                            type="text"
+                            required
+                            placeholder="Ej. Increíble efectividad en pocas horas"
+                            value={reviewTitle}
+                            onChange={(e) => setReviewTitle(e.target.value)}
+                          />
+                        </div>
+
+                        <div className="form-field">
+                          <label htmlFor="review-comment">Tu experiencia detallada *</label>
+                          <textarea
+                            id="review-comment"
+                            rows={4}
+                            required
+                            placeholder="¿Cómo reaccionó tu mascota? ¿En cuánto tiempo viste resultados? Comparte detalles para ayudar a otros tutores..."
+                            value={reviewComment}
+                            onChange={(e) => setReviewComment(e.target.value)}
+                          ></textarea>
+                        </div>
+
+                        <div className="review-form-actions">
+                          <button
+                            type="button"
+                            className="btn-review-cancel"
+                            onClick={() => setIsWritingReview(false)}
+                          >
+                            Cancelar
+                          </button>
+                          <button type="submit" className="btn-review-submit">
+                            <CheckCircle2 size={16} />
+                            <span>Publicar Reseña Verificada</span>
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      /* LOCKED: Non-buyer notice with verification */
+                      <div className="review-purchase-lock-card">
+                        <div className="lock-icon-circle">
+                          <Lock size={28} />
+                        </div>
+                        <div className="lock-content">
+                          <h4>Solo clientes que han comprado pueden dejar una reseña</h4>
+                          <p>
+                            En Megatrol garantizamos la veracidad absoluta de cada testimonio. Para evitar reseñas fraudulentas o no verificadas, únicamente los compradores con orden registrada pueden calificar.
+                          </p>
+                          
+                          <div className="lock-split-actions">
+                            {/* Option 1: Verify past order */}
+                            <div className="lock-action-box verify-box">
+                              <span className="lock-action-title">¿Ya compraste este producto anteriormente?</span>
+                              <p className="lock-action-sub">
+                                Ingresa tu Nº de Pedido (ej. <strong>MEG-12345</strong>) o el correo con el que realizaste tu compra:
+                              </p>
+                              <form onSubmit={handleVerifyPurchase} className="verify-input-row">
+                                <input
+                                  type="text"
+                                  placeholder="Nº Pedido o Correo..."
+                                  value={verifyCode}
+                                  onChange={(e) => setVerifyCode(e.target.value)}
+                                  className="verify-input"
+                                />
+                                <button type="submit" className="btn-verify-submit">
+                                  Verificar compra
+                                </button>
+                              </form>
+                              {verifyError && <p className="verify-error-msg">{verifyError}</p>}
+                            </div>
+
+                            {/* Option 2: Buy now */}
+                            <div className="lock-action-box buy-box">
+                              <span className="lock-action-title">¿Aún no lo pruebas?</span>
+                              <p className="lock-action-sub">
+                                Adquiere {product.name} hoy y experimenta el poder de la protección botánica de grado clínico.
+                              </p>
+                              <button
+                                type="button"
+                                className="btn-lock-buy-now"
+                                onClick={handleAddToCart}
+                              >
+                                <ShoppingCart size={16} />
+                                <span>Agregar al carrito y probar</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Reviews List */}
+                <div className="reviews-list-container">
+                  <h4 className="reviews-list-heading">
+                    Opiniones de clientes ({reviews.length})
+                  </h4>
+
+                  <div className="reviews-items-grid">
+                    {reviews.map((rev) => (
+                      <div key={rev.id} className="review-item-card">
+                        <div className="review-item-header">
+                          <div className="review-author-meta">
+                            <div className="review-avatar">
+                              {rev.avatarInitials || rev.author.slice(0, 2).toUpperCase()}
+                            </div>
+                            <div>
+                              <div className="review-author-name-row">
+                                <span className="review-author-name">{rev.author}</span>
+                                {rev.verifiedPurchase && (
+                                  <span className="review-verified-badge" title="Compra confirmada por el sistema">
+                                    <CheckCircle2 size={12} />
+                                    <span>Compra Verificada</span>
+                                  </span>
+                                )}
+                              </div>
+                              <div className="review-author-sub">
+                                {rev.role && <span className="author-role">{rev.role} · </span>}
+                                {rev.city && <span>{rev.city} · </span>}
+                                <span>{rev.date}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="review-rating-stars">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                size={14}
+                                fill={i < rev.rating ? '#f59e0b' : '#e2e8f0'}
+                                color={i < rev.rating ? '#f59e0b' : '#cbd5e1'}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        {rev.presentation && (
+                          <div className="review-presentation-tag">
+                            <Package size={12} />
+                            <span>Presentación: {rev.presentation}</span>
+                          </div>
+                        )}
+
+                        <h5 className="review-item-title">{rev.title}</h5>
+                        <p className="review-item-comment">{rev.comment}</p>
+                      </div>
                     ))}
-                  </ul>
-                </div>
-              )}
-
-              {/* Therapeutic Indications */}
-              {product.indications && (
-                <div className="modal-spec-card">
-                  <div className="modal-spec-card-title">
-                    <FileText size={18} />
-                    <h4>Indicaciones Terapéuticas</h4>
                   </div>
-                  <p className="modal-spec-text">{product.indications}</p>
                 </div>
-              )}
-
-              {/* Mode of Use / Dosage */}
-              {product.howToUse && (
-                <div className="modal-spec-card">
-                  <div className="modal-spec-card-title">
-                    <FlaskConical size={18} />
-                    <h4>Modo de Uso y Dosificación</h4>
-                  </div>
-                  <p className="modal-spec-text">{product.howToUse}</p>
-                </div>
-              )}
-
-              {/* Formula */}
-              {product.formula && (
-                <div className="modal-spec-card full-span">
-                  <div className="modal-spec-card-title">
-                    <Leaf size={18} />
-                    <h4>Composición y Fórmula Activa</h4>
-                  </div>
-                  <p className="modal-spec-text">{product.formula}</p>
-                </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
