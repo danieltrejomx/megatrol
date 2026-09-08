@@ -41,7 +41,7 @@ export const PRESET_AVATARS: AvatarOption[] = [
   },
   {
     id: 'cat',
-    name: 'Gatito Michi',
+    name: 'Gatito Megatrol',
     bg: 'linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)',
     border: '#ec4899',
     icon: (size = 32) => (

@@ -465,20 +465,6 @@ export const AccountModal = () => {
           {/* TAB 3: EDITAR MI PERFIL */}
           {activeTab === 'profile' && (
             <form className="account-profile-form" onSubmit={handleProfileSubmit}>
-              <div className="profile-edit-header">
-                <div className="profile-preview-card">
-                  <div className="profile-preview-avatar">
-                    <UserAvatar avatarId={editAvatar} name={editName || 'Usuario'} size={76} />
-                  </div>
-                  <div className="profile-preview-meta">
-                    <h4>{editName || 'Tu Nombre'}</h4>
-                    <p className="profile-preview-role">
-                      Avatar: <strong>{PRESET_AVATARS.find(a => a.id === editAvatar)?.name || 'Mis Iniciales'}</strong>
-                    </p>
-                    <span className="profile-preview-hint">Vista previa en tiempo real</span>
-                  </div>
-                </div>
-              </div>
 
               {profileSavedToast && (
                 <div className="account-toast-success">
