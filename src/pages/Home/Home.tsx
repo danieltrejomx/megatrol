@@ -147,23 +147,6 @@ const homeLines = [
 
 const demoVideos = [
   {
-    id: 'dermapet',
-    title: 'Línea Dermatológica Dermapet',
-    shortTitle: 'Dermapet Shampoo',
-    badge: 'Baño Medicado',
-    desc: 'Ingredientes de origen natural y pH balanceado para calmar, hidratar y tratar afecciones en la piel.',
-    src: '/videos/video-demostracion-dermapet.mp4',
-    driveUrl: 'https://drive.google.com/file/d/1Vn73XXF6i6t6jjMwgIyH93ZSYXIDTMQH/view?usp=sharing',
-    products: [
-      {
-        slug: 'dermapet-shampoo',
-        name: 'Dermapet Shampoo Dermatológico',
-        price: 270,
-        image: '/images/dermapet-shampoo.png'
-      }
-    ]
-  },
-  {
     id: 'shower-shampoo',
     title: 'Shower Shampoo & Talco Megatrol',
     shortTitle: 'Shower & Talco',
