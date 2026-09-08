@@ -3,6 +3,8 @@ import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { AuthModal } from './components/AuthModal/AuthModal';
 import { AccountModal } from './components/AccountModal/AccountModal';
+import { GuestFavoritesModal } from './components/GuestFavoritesModal/GuestFavoritesModal';
+import { Toast } from './components/Toast/Toast';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
@@ -28,6 +30,8 @@ function App() {
           <CartDrawer />
           <AuthModal />
           <AccountModal />
+          <GuestFavoritesModal />
+          <Toast />
           <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header />
           <main style={{ flex: 1 }}>

@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { ShoppingCart, Menu, X, User as UserIcon } from 'lucide-react';
+import { ShoppingCart, Menu, X, User as UserIcon, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -8,8 +8,24 @@ import './Header.css';
 
 const Header = () => {
   const { totalItems, openCart } = useCart();
-  const { currentUser, isAuthenticated, openAuthModal, openAccountModal } = useAuth();
+  const { 
+    currentUser, 
+    isAuthenticated, 
+    openAuthModal, 
+    openAccountModal, 
+    favorites, 
+    openGuestFavorites 
+  } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleFavoritesClick = () => {
+    setMobileOpen(false);
+    if (isAuthenticated) {
+      openAccountModal('favorites');
+    } else {
+      openGuestFavorites();
+    }
+  };
 
   // Close mobile menu on ESC key
   useEffect(() => {
@@ -107,6 +123,27 @@ const Header = () => {
                 <span>Iniciar Sesión / Crear Cuenta</span>
               </button>
             )}
+
+            {/* Mobile Favorites link */}
+            <button
+              type="button"
+              className="mobile-favorites-link"
+              onClick={handleFavoritesClick}
+            >
+              <div className="mobile-favorites-left">
+                <Heart 
+                  size={18} 
+                  fill={favorites.length > 0 ? "#f43f5e" : "none"} 
+                  color={favorites.length > 0 ? "#f43f5e" : "#64748b"} 
+                />
+                <span>{isAuthenticated ? 'Mis Favoritos' : 'Favoritos (Modo Invitado)'}</span>
+              </div>
+              {favorites.length > 0 ? (
+                <span className="mobile-favorites-count">{favorites.length}</span>
+              ) : (
+                <span className="mobile-favorites-empty-hint">0 guardados</span>
+              )}
+            </button>
           </div>
 
           <NavLink to="/" end onClick={handleHomeClick}>Inicio</NavLink>
@@ -137,6 +174,22 @@ const Header = () => {
                 <span className="header-guest-text">Iniciar Sesión</span>
               </div>
             )}
+          </button>
+
+          {/* Favorites Button */}
+          <button 
+            type="button"
+            className="header-fav-btn"
+            onClick={handleFavoritesClick}
+            aria-label={isAuthenticated ? "Mis Favoritos" : "Favoritos Guardados"}
+            title={isAuthenticated ? "Mis Favoritos" : "Favoritos Guardados (Modo Invitado)"}
+          >
+            <Heart 
+              size={23} 
+              fill={favorites.length > 0 ? "#f43f5e" : "none"} 
+              color={favorites.length > 0 ? "#f43f5e" : "currentColor"} 
+            />
+            {favorites.length > 0 && <span className="fav-header-badge">{favorites.length}</span>}
           </button>
 
           {/* Cart Button */}

@@ -41,7 +41,8 @@ export const AccountModal = () => {
     logout, 
     updateProfile,
     favorites,
-    toggleFavorite
+    toggleFavorite,
+    accountModalInitialTab
   } = useAuth();
   
   const { 
@@ -54,7 +55,15 @@ export const AccountModal = () => {
     updateItemVariant 
   } = useCart();
   
-  const [activeTab, setActiveTab] = useState<'orders' | 'favorites' | 'profile' | 'address' | 'cart'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'favorites' | 'profile' | 'address' | 'cart'>(accountModalInitialTab || 'orders');
+
+  // Sync tab with initial requested tab when opening modal
+  useEffect(() => {
+    if (isAccountModalOpen && accountModalInitialTab) {
+      setActiveTab(accountModalInitialTab);
+    }
+  }, [isAccountModalOpen, accountModalInitialTab]);
+
   const [addressSavedToast, setAddressSavedToast] = useState(false);
   const [profileSavedToast, setProfileSavedToast] = useState(false);
   const [headerSaved, setHeaderSaved] = useState(false);

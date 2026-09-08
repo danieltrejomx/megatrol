@@ -48,13 +48,20 @@ interface AuthContextType {
   isAuthModalOpen: boolean;
   isAccountModalOpen: boolean;
   authModalTab: 'login' | 'register';
+  accountModalInitialTab: 'orders' | 'favorites' | 'profile' | 'address' | 'cart';
+  isGuestFavoritesOpen: boolean;
   favorites: number[];
   toggleFavorite: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
   openAuthModal: (tab?: 'login' | 'register') => void;
   closeAuthModal: () => void;
-  openAccountModal: () => void;
+  openAccountModal: (tab?: 'orders' | 'favorites' | 'profile' | 'address' | 'cart') => void;
   closeAccountModal: () => void;
+  openGuestFavorites: () => void;
+  closeGuestFavorites: () => void;
+  toast: { message: string; actionLabel?: string; onAction?: () => void } | null;
+  showToast: (message: string, actionLabel?: string, onAction?: () => void) => void;
+  hideToast: () => void;
   login: (identifier: string, password?: string) => Promise<{ success: boolean; notRegistered?: boolean; error?: string }>;
   register: (name: string, email: string, phone: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
@@ -81,6 +88,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
+  const [accountModalInitialTab, setAccountModalInitialTab] = useState<'orders' | 'favorites' | 'profile' | 'address' | 'cart'>('orders');
+  const [isGuestFavoritesOpen, setIsGuestFavoritesOpen] = useState(false);
+  const [toast, setToast] = useState<{ message: string; actionLabel?: string; onAction?: () => void } | null>(null);
 
   // Favorites state (persisted locally & synced with user account)
   const [favorites, setFavorites] = useState<number[]>(() => {
@@ -90,6 +100,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch {}
     return [];
   });
+
+  const showToast = (message: string, actionLabel?: string, onAction?: () => void) => {
+    setToast({ message, actionLabel, onAction });
+  };
+
+  const hideToast = () => {
+    setToast(null);
+  };
 
   // Load registered users array from localStorage
   const getUsersDb = (): User[] => {
@@ -143,12 +161,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthModalOpen(false);
   };
 
-  const openAccountModal = () => {
+  const openAccountModal = (tab: 'orders' | 'favorites' | 'profile' | 'address' | 'cart' = 'orders') => {
+    setAccountModalInitialTab(tab);
     setIsAccountModalOpen(true);
   };
 
   const closeAccountModal = () => {
     setIsAccountModalOpen(false);
+  };
+
+  const openGuestFavorites = () => {
+    setIsGuestFavoritesOpen(true);
+  };
+
+  const closeGuestFavorites = () => {
+    setIsGuestFavoritesOpen(false);
   };
 
   const login = async (identifier: string, _password?: string): Promise<{ success: boolean; notRegistered?: boolean; error?: string }> => {
@@ -267,6 +294,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           favorites: next
         };
         setCurrentUser(updatedUser);
+        if (!exists) {
+          showToast('Guardado en tus Favoritos de cuenta', 'Ver Favoritos', () => openAccountModal('favorites'));
+        } else {
+          showToast('Eliminado de tus Favoritos');
+        }
+      } else {
+        if (!exists) {
+          showToast('Guardado en Favoritos (Modo Invitado)', 'Ver Lista', () => openGuestFavorites());
+        } else {
+          showToast('Eliminado de Favoritos (Modo Invitado)');
+        }
       }
       return next;
     });
@@ -310,6 +348,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         isAuthModalOpen,
         isAccountModalOpen,
         authModalTab,
+        accountModalInitialTab,
+        isGuestFavoritesOpen,
         favorites,
         toggleFavorite,
         isFavorite,
@@ -317,6 +357,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         closeAuthModal,
         openAccountModal,
         closeAccountModal,
+        openGuestFavorites,
+        closeGuestFavorites,
+        toast,
+        showToast,
+        hideToast,
         login,
         register,
         logout,
