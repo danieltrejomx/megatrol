@@ -32,14 +32,7 @@ const filters = [
 const Shop = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([
-    'Megatrol Shower',
-    'Megatrol Talco',
-    'Línea Megadoxi',
-    'Plagatrol',
-    'Línea Megatrol',
-    'Salud y Suplementos'
-  ]);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [addedId, setAddedId] = useState<number | null>(null);
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -171,12 +164,15 @@ const Shop = () => {
                       type="button"
                       className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
                       onClick={() => {
-                        setSelectedFilter(f.key);
-                        if (!isAll) {
+                        if (isAll) {
+                          setSelectedFilter('all');
+                          setExpandedCategories([]);
+                        } else {
+                          setSelectedFilter(f.key);
                           setExpandedCategories(prev => 
-                            prev.includes(f.key) 
-                              ? prev.filter(k => k !== f.key) 
-                              : [...prev, f.key]
+                            prev.includes(f.key) && selectedFilter === f.key 
+                              ? [] 
+                              : [f.key]
                           );
                         }
                       }}
@@ -261,7 +257,7 @@ const Shop = () => {
               <button 
                 type="button" 
                 className="reset-filter-btn" 
-                onClick={() => { setSelectedFilter('all'); setSearchTerm(''); }}
+                onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); }}
               >
                 <span>Mostrar todos</span>
                 <X size={14} />
@@ -276,7 +272,7 @@ const Shop = () => {
               </div>
               <h3>No se encontraron productos</h3>
               <p>Intenta con otro término de búsqueda o selecciona otra categoría.</p>
-              <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); }}>
+              <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); }}>
                 Ver Todos los Productos
               </button>
             </div>
