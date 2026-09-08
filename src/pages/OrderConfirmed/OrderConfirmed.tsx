@@ -65,7 +65,7 @@ const OrderConfirmed = () => {
   };
 
   const whatsappMessage = encodeURIComponent(
-    `Hola Mayela / Distribuidora de Megatrol, acabo de realizar la transferencia de $${orderTotal.toFixed(2)} MXN para el pedido ${orderNumber} de Megatrol. Adjunto mi comprobante:`
+    `Hola Distribuidora de Megatrol, acabo de realizar la transferencia de $${orderTotal.toFixed(2)} MXN para el pedido ${orderNumber} de Megatrol. Adjunto mi comprobante:`
   );
 
   return (
@@ -87,7 +87,7 @@ const OrderConfirmed = () => {
           Hemos registrado tu solicitud. Tu paquete será despachado de bodega en un plazo de <strong>1-2 días hábiles</strong> hacia tu domicilio.
         </p>
 
-        {/* Bank Transfer Instructions Card (Banamex - Mayela Guillén Chávez) */}
+        {/* Bank Transfer Instructions Card (Banamex - Distribuidora de Megatrol) */}
         {isTransfer && (
           <div className="confirmed-bank-card">
             <div className="confirmed-bank-header">
@@ -107,9 +107,8 @@ const OrderConfirmed = () => {
 
             <div className="confirmed-bank-grid">
               <div className="confirmed-bank-item">
-                <span className="c-bank-label">Beneficiario:</span>
+                <span className="c-bank-label">Beneficiario / Titular:</span>
                 <strong className="c-bank-value">{MEGATROL_BANK_DETAILS.beneficiary}</strong>
-                <small className="c-bank-sub">{MEGATROL_BANK_DETAILS.distributorName}</small>
               </div>
 
               <div className="confirmed-bank-item">

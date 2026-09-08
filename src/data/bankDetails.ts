@@ -1,6 +1,5 @@
-﻿export interface BankDetails {
+export interface BankDetails {
   beneficiary: string;
-  distributorName: string;
   bankName: string;
   bankCode: string;
   clabe: string;
@@ -10,8 +9,7 @@
 }
 
 export const MEGATROL_BANK_DETAILS: BankDetails = {
-  beneficiary: 'Mayela Guillén Chávez',
-  distributorName: 'Distribuidora de Megatrol',
+  beneficiary: 'Distribuidora de Megatrol',
   bankName: 'Banamex (Citibanamex)',
   bankCode: '002',
   clabe: '002180701855593251',

@@ -176,10 +176,7 @@ const Checkout = () => {
                 <div className="bank-details-box">
                   <div className="bank-detail-row">
                     <span className="bank-label">Beneficiario / Titular:</span>
-                    <div className="bank-value-group">
-                      <strong className="bank-beneficiary-name">{MEGATROL_BANK_DETAILS.beneficiary}</strong>
-                      <span className="bank-dist-tag">{MEGATROL_BANK_DETAILS.distributorName}</span>
-                    </div>
+                    <strong className="bank-beneficiary-name">{MEGATROL_BANK_DETAILS.beneficiary}</strong>
                   </div>
 
                   <div className="bank-detail-row">
