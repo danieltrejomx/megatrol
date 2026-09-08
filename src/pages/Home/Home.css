@@ -1473,59 +1473,130 @@
 
 /* ── DISTRIBUTOR / MAYOREO SECTION ──────────────────── */
 .distributor-section {
-  padding: 90px 0;
+  padding: 60px 0 80px;
   background: transparent;
   position: relative;
-  border-top: 1px solid rgba(45,106,79,0.08);
+}
+
+.distributor-banner-header {
+  position: relative;
+  background: 
+    linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
+    url('/images/shop-banner.jpg');
+  background-size: cover;
+  background-position: center 30%;
+  border-radius: 28px;
+  padding: 50px 36px 44px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(0, 50, 90, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.distributor-banner-badge {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.22);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 5px 16px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.distributor-banner-header h2 {
+  font-size: 38px;
+  color: #ffffff;
+  margin: 0 0 12px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.distributor-banner-header p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 660px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.distributor-banner-tags {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.distributor-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.distributor-tag:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 .distributor-container {
   display: flex;
-  gap: 50px;
-  align-items: center;
+  gap: 36px;
+  align-items: stretch;
 }
 
 .distributor-content {
   flex: 1.1;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 132, 199, 0.14);
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: 0 16px 40px rgba(0, 78, 130, 0.06);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.distributor-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  color: #065f46;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 6px 14px;
-  border-radius: 30px;
-  margin-bottom: 12px;
-}
-
-.distributor-content .section-label {
-  text-align: left;
-}
-
-.distributor-content h2 {
-  font-size: 40px;
+.distributor-perks-header h3 {
+  font-size: 22px;
+  font-weight: 800;
   color: var(--color-heading);
-  margin-bottom: 14px;
-  line-height: 1.2;
+  margin: 0 0 8px 0;
 }
 
-.distributor-lead {
-  font-size: 16px;
+.distributor-perks-header p {
+  font-size: 14px;
   color: var(--color-text-light);
-  line-height: 1.65;
-  margin-bottom: 28px;
+  margin: 0 0 22px 0;
+  line-height: 1.5;
 }
 
 .distributor-perks-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  margin-bottom: 32px;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
 .perk-card {
@@ -1578,9 +1649,18 @@
 
 .distributor-contact-bar {
   display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
   align-items: center;
+  justify-content: space-between;
+  padding-top: 18px;
+  border-top: 1px solid rgba(0, 132, 199, 0.12);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.distributor-contact-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-heading);
 }
 
 .btn-whatsapp-b2b {
@@ -2006,6 +2086,7 @@
   .catalog-banner-header,
   .benefits-banner-header,
   .reviews-banner-header,
+  .distributor-banner-header,
   .blog-banner-header {
     padding: 36px 20px 30px;
     border-radius: 20px;
@@ -2014,32 +2095,41 @@
   .catalog-banner-header h2,
   .benefits-banner-header h2,
   .reviews-banner-header h2,
+  .distributor-banner-header h2,
   .blog-banner-header h2 {
     font-size: 26px;
   }
   .catalog-banner-header p,
   .benefits-banner-header p,
   .reviews-banner-subtitle,
+  .distributor-banner-header p,
   .blog-banner-header p {
     font-size: 14px;
   }
   .catalog-banner-tags,
   .benefits-banner-tags,
+  .distributor-banner-tags,
   .blog-banner-tags {
     gap: 8px;
     margin-top: 14px;
   }
   .catalog-tag,
   .benefits-tag,
+  .distributor-tag,
   .blog-tag {
     font-size: 12px;
     padding: 5px 12px;
   }
+  .distributor-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .distributor-content {
+    padding: 24px;
+  }
   .benefits-grid { grid-template-columns: 1fr; }
   .blog-grid { grid-template-columns: 1fr; }
   .works-steps .section-label { text-align: center; }
-  .distributor-content .section-label { text-align: center; }
-  .distributor-content h2 { text-align: center; }
 }
 
 @media (max-width: 540px) {

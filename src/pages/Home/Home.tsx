@@ -17,7 +17,6 @@ import {
   Package,
   Stethoscope,
   ShoppingCart,
-  Award,
   Send
 } from 'lucide-react';
 import { products } from '../../data/products';
@@ -745,53 +744,64 @@ const Home = () => {
 
       {/* ── DISTRIBUTOR / MAYOREO SECTION ──────────────────── */}
       <section className="distributor-section">
-        <div className="container distributor-container">
-          {/* Left Column: Value Proposition & Benefits */}
-          <div className="distributor-content">
-            <div className="distributor-badge">
-              <Award size={15} />
-              <span>Distribución Directa de Laboratorio</span>
-            </div>
-            <span className="section-label">Programa Oficial</span>
+        <div className="container">
+          <div className="distributor-banner-header">
+            <span className="distributor-banner-badge">Distribución Directa de Laboratorio</span>
             <h2>Ventas al Mayoreo</h2>
-            <p className="distributor-lead">
+            <p>
               ¿Tienes una veterinaria, tienda de mascotas, forrajera, rancho o eres revendedor? 
-              Únete a la red nacional de distribuidores de <strong>Inobazz Pharma</strong> y obtén precios directos de fábrica.
+              Únete a la red nacional de distribuidores de Inobazz Pharma y obtén precios directos de fábrica.
             </p>
-
-            <div className="distributor-perks-grid">
-              <div className="perk-card">
-                <div className="perk-icon perk-icon-green"><TrendingUp size={22} /></div>
-                <div className="perk-info">
-                  <h4>Márgenes de 35% a 55%</h4>
-                  <p>Precios preferenciales por volumen y esquemas de descuento escalonados.</p>
-                </div>
-              </div>
-              <div className="perk-card">
-                <div className="perk-icon perk-icon-blue"><Truck size={22} /></div>
-                <div className="perk-info">
-                  <h4>Envíos a Todo México</h4>
-                  <p>Entregas seguras y aseguradas a cualquier estado y municipio del país.</p>
-                </div>
-              </div>
-              <div className="perk-card">
-                <div className="perk-icon perk-icon-cyan"><Package size={22} /></div>
-                <div className="perk-info">
-                  <h4>Material POP y Displays Gratis</h4>
-                  <p>Exhibidores de mostrador, catálogos físicos y afiches promocionales para tu local.</p>
-                </div>
-              </div>
-              <div className="perk-card">
-                <div className="perk-icon perk-icon-mint"><Stethoscope size={22} /></div>
-                <div className="perk-info">
-                  <h4>Soporte Técnico Veterinario</h4>
-                  <p>Capacitación para tu equipo y fichas técnicas oficiales avaladas.</p>
-                </div>
-              </div>
+            <div className="distributor-banner-tags">
+              <span className="distributor-tag">⭐ Márgenes de 35% a 55%</span>
+              <span className="distributor-tag">🚚 Envíos a Todo México</span>
+              <span className="distributor-tag">📦 Material POP y Displays</span>
+              <span className="distributor-tag">🩺 Soporte Técnico Veterinario</span>
             </div>
+          </div>
 
-            <div className="distributor-contact-bar">
-              <div className="social-cta">
+          <div className="distributor-container">
+            {/* Left Column: Value Proposition & Benefits */}
+            <div className="distributor-content">
+              <div className="distributor-perks-header">
+                <h3>Ventajas del Programa de Distribución</h3>
+                <p>Márgenes preferenciales, soporte comercial y respaldo clínico directo de fábrica para tu negocio.</p>
+              </div>
+
+              <div className="distributor-perks-grid">
+                <div className="perk-card">
+                  <div className="perk-icon perk-icon-green"><TrendingUp size={22} /></div>
+                  <div className="perk-info">
+                    <h4>Márgenes de 35% a 55%</h4>
+                    <p>Precios preferenciales por volumen y esquemas de descuento escalonados.</p>
+                  </div>
+                </div>
+                <div className="perk-card">
+                  <div className="perk-icon perk-icon-blue"><Truck size={22} /></div>
+                  <div className="perk-info">
+                    <h4>Envíos a Todo México</h4>
+                    <p>Entregas seguras y aseguradas a cualquier estado y municipio del país.</p>
+                  </div>
+                </div>
+                <div className="perk-card">
+                  <div className="perk-icon perk-icon-cyan"><Package size={22} /></div>
+                  <div className="perk-info">
+                    <h4>Material POP y Displays Gratis</h4>
+                    <p>Exhibidores de mostrador, catálogos físicos y afiches promocionales para tu local.</p>
+                  </div>
+                </div>
+                <div className="perk-card">
+                  <div className="perk-icon perk-icon-mint"><Stethoscope size={22} /></div>
+                  <div className="perk-info">
+                    <h4>Soporte Técnico Veterinario</h4>
+                    <p>Capacitación para tu equipo y fichas técnicas oficiales avaladas.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="distributor-contact-bar">
+                <span className="distributor-contact-label">Atención y Redes Oficiales:</span>
+                <div className="social-cta">
                 <a 
                   href="https://wa.me/525536206854?text=Hola,%20me%20interesa%20informaci%C3%B3n%20sobre%20precios%20de%20mayoreo%20y%20distribuci%C3%B3n%20de%20Megatrol%20e%20Inobazz%20Pharma" 
                   target="_blank" 
@@ -940,7 +950,8 @@ const Home = () => {
             </form>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* ── BLOG PREVIEW ──────────────────────────────────────── */}
       <section className="blog-section">
