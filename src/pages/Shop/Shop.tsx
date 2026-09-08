@@ -97,9 +97,8 @@ const Shop = () => {
         className="product-card"
         onClick={() => setModalProduct(product)}
       >
-        {product.tag && <span className="product-card-tag">{product.tag}</span>}
-        
         <div className="product-card-image-wrap">
+          {product.tag && <span className="product-card-tag">{product.tag}</span>}
           <img src={product.image} alt={product.name} className="product-card-img" />
           <button
             type="button"
