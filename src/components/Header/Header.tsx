@@ -1,11 +1,13 @@
 import { Link, NavLink } from 'react-router-dom';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, User as UserIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 const Header = () => {
   const { totalItems, openCart } = useCart();
+  const { currentUser, isAuthenticated, openAuthModal, openAccountModal } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Close mobile menu on ESC key
@@ -43,6 +45,17 @@ const Header = () => {
     }
   };
 
+  const handleAccountClick = () => {
+    setMobileOpen(false);
+    if (isAuthenticated) {
+      openAccountModal();
+    } else {
+      openAuthModal('login');
+    }
+  };
+
+  const userFirstName = currentUser?.name ? currentUser.name.split(' ')[0] : 'Mi Cuenta';
+
   return (
     <header className="header">
       <div className="container header-container">
@@ -69,6 +82,38 @@ const Header = () => {
         )}
 
         <nav className={`nav-links ${mobileOpen ? 'open' : ''}`}>
+          {/* Mobile User Card at top of drawer */}
+          <div className="mobile-user-section">
+            {isAuthenticated && currentUser ? (
+              <button 
+                type="button" 
+                className="mobile-user-card"
+                onClick={handleAccountClick}
+              >
+                {currentUser.avatar ? (
+                  <img src={currentUser.avatar} alt={currentUser.name} className="mobile-user-avatar" />
+                ) : (
+                  <div className="mobile-user-avatar-placeholder">
+                    {currentUser.name.slice(0, 1).toUpperCase()}
+                  </div>
+                )}
+                <div className="mobile-user-details">
+                  <strong>{currentUser.name}</strong>
+                  <span>Ver mis pedidos y perfil →</span>
+                </div>
+              </button>
+            ) : (
+              <button 
+                type="button" 
+                className="mobile-login-btn"
+                onClick={handleAccountClick}
+              >
+                <UserIcon size={18} />
+                <span>Iniciar Sesión / Crear Cuenta</span>
+              </button>
+            )}
+          </div>
+
           <NavLink to="/" end onClick={handleHomeClick}>Inicio</NavLink>
           <NavLink to="/tienda" onClick={() => handleNavClick('/tienda')}>Tienda</NavLink>
           <NavLink to="/ciencia" onClick={() => handleNavClick('/ciencia')}>Nuestra Ciencia</NavLink>
@@ -78,10 +123,40 @@ const Header = () => {
         </nav>
 
         <div className="header-actions">
+          {/* Account Button */}
+          <button 
+            type="button"
+            className="header-account-btn" 
+            onClick={handleAccountClick}
+            aria-label={isAuthenticated ? `Mi Cuenta (${currentUser?.name})` : "Iniciar Sesión"}
+            title={isAuthenticated ? `Mi Cuenta (${currentUser?.name})` : "Iniciar Sesión"}
+          >
+            {isAuthenticated && currentUser ? (
+              <div className="header-user-pill">
+                {currentUser.avatar ? (
+                  <img src={currentUser.avatar} alt={currentUser.name} className="header-avatar-mini" />
+                ) : (
+                  <span className="header-avatar-initial">
+                    {currentUser.name.slice(0, 1).toUpperCase()}
+                  </span>
+                )}
+                <span className="header-username-text">{userFirstName}</span>
+              </div>
+            ) : (
+              <div className="header-guest-pill">
+                <UserIcon size={18} />
+                <span className="header-guest-text">Iniciar Sesión</span>
+              </div>
+            )}
+          </button>
+
+          {/* Cart Button */}
           <button className="cart-btn" aria-label="Carrito de compras" onClick={() => { setMobileOpen(false); openCart(); }}>
             <ShoppingCart size={24} />
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
           </button>
+
+          {/* Mobile menu toggle */}
           <button 
             className="mobile-menu-btn" 
             aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"} 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   Check, 
@@ -11,15 +11,18 @@ import {
   Receipt, 
   Lock, 
   CheckCircle2,
-  Copy
+  Copy,
+  User as UserIcon
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import { markProductsAsPurchased } from '../../data/reviews';
 import { MEGATROL_BANK_DETAILS } from '../../data/bankDetails';
 import './Checkout.css';
 
 const Checkout = () => {
   const { items, totalPrice, clearCart } = useCart();
+  const { currentUser, isAuthenticated, openAuthModal, addOrder } = useAuth();
   const navigate = useNavigate();
   const shipping = totalPrice >= 599 ? 0 : 99;
   const total = totalPrice + shipping;
@@ -30,6 +33,28 @@ const Checkout = () => {
     nombre: '', apellido: '', email: '', telefono: '',
     calle: '', colonia: '', ciudad: '', estado: '', cp: '',
   });
+
+  // Auto-fill from authenticated user profile
+  useEffect(() => {
+    if (currentUser) {
+      const nameParts = currentUser.name.trim().split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
+      setForm(prev => ({
+        ...prev,
+        nombre: prev.nombre || firstName,
+        apellido: prev.apellido || lastName,
+        email: prev.email || currentUser.email,
+        telefono: prev.telefono || currentUser.phone || '',
+        calle: prev.calle || currentUser.address?.calle || '',
+        colonia: prev.colonia || currentUser.address?.colonia || '',
+        ciudad: prev.ciudad || currentUser.address?.ciudad || '',
+        estado: prev.estado || currentUser.address?.estado || '',
+        cp: prev.cp || currentUser.address?.cp || '',
+      }));
+    }
+  }, [currentUser]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -47,6 +72,14 @@ const Checkout = () => {
       markProductsAsPurchased(items.map(i => i.product.id));
     }
     const orderNumber = `MEG-${Math.floor(100000 + Math.random() * 900000)}`;
+    const formattedDate = new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+    const orderItems = items.map(it => ({
+      name: it.product.name,
+      qty: it.quantity,
+      price: it.unitPrice ?? it.product.price,
+      variant: [it.selectedAroma, it.selectedPresentation].filter(Boolean).join(' • ')
+    }));
+
     const orderData = {
       orderNumber,
       customerName: `${form.nombre} ${form.apellido}`.trim(),
@@ -55,14 +88,23 @@ const Checkout = () => {
       total,
       shipping,
       paymentMethod,
-      items: items.map(it => ({
-        name: it.product.name,
-        qty: it.quantity,
-        price: it.unitPrice ?? it.product.price,
-        variant: [it.selectedAroma, it.selectedPresentation].filter(Boolean).join(' • ')
-      })),
-      date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+      items: orderItems,
+      date: formattedDate,
+      status: 'Confirmado' as const,
+      address: {
+        calle: form.calle,
+        colonia: form.colonia,
+        ciudad: form.ciudad,
+        estado: form.estado,
+        cp: form.cp
+      }
     };
+
+    // Save into authenticated user profile if logged in
+    if (isAuthenticated && currentUser) {
+      addOrder(orderData);
+    }
+
     try {
       sessionStorage.setItem('megatrol_last_order', JSON.stringify(orderData));
     } catch (err) {
@@ -85,6 +127,36 @@ const Checkout = () => {
       <form className="checkout-layout" onSubmit={handleSubmit}>
         {/* Left: Form */}
         <div className="checkout-form">
+          {/* Account Status / Login Banner */}
+          {isAuthenticated && currentUser ? (
+            <div className="checkout-auth-banner checkout-auth-logged">
+              <div className="checkout-auth-info">
+                <CheckCircle2 size={20} className="checkout-auth-icon-success" />
+                <div>
+                  <strong>Comprando como {currentUser.name}</strong>
+                  <p>Tus datos de contacto y dirección de envío se cargaron automáticamente desde tu cuenta.</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="checkout-auth-banner checkout-auth-guest">
+              <div className="checkout-auth-info">
+                <UserIcon size={20} className="checkout-auth-icon-info" />
+                <div>
+                  <strong>¿Ya tienes una cuenta Megatrol?</strong>
+                  <p>Inicia sesión para autocompletar tu dirección y guardar este pedido en tu historial.</p>
+                </div>
+              </div>
+              <button 
+                type="button" 
+                className="checkout-auth-btn"
+                onClick={() => openAuthModal('login')}
+              >
+                Iniciar Sesión
+              </button>
+            </div>
+          )}
+
           {/* Shipping */}
           <div className="form-section">
             <h2>

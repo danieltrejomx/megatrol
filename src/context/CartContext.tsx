@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { parsePresentations, type Product } from '../data/products';
 
 export interface CartItem {
@@ -48,11 +48,29 @@ const makeItemKey = (productId: number, presentation?: string, aroma?: string): 
   return `${productId}_${presentation || 'default'}_${aroma || 'default'}`;
 };
 
+const STORAGE_KEY_CART = 'megatrol_cart_items';
+
 const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY_CART);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Sync to localStorage whenever items change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_CART, JSON.stringify(items));
+    } catch (e) {
+      console.error('Failed to save cart to localStorage', e);
+    }
+  }, [items]);
 
   const openCart = () => setIsCartOpen(true);
   const closeCart = () => setIsCartOpen(false);

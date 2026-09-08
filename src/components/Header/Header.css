@@ -121,8 +121,92 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
+
+/* Account Button in Desktop Header */
+.header-account-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: inherit;
+}
+
+.header-guest-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: 1.5px solid #e2e8f0;
+  color: #334155;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.header-guest-pill:hover {
+  background: #e2e8f0;
+  color: #0084c7;
+  border-color: #cbd5e1;
+}
+
+.header-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  color: #1e40af;
+  padding: 4px 12px 4px 6px;
+  border-radius: 9999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.header-user-pill:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+}
+
+.header-avatar-mini {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #3b82f6;
+}
+
+.header-avatar-initial {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #0084c7;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.header-username-text {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-user-section {
+  display: none;
+}
+
 
 .cart-btn {
   background: none;
@@ -308,5 +392,99 @@
   .mobile-menu-btn:hover {
     background: rgba(0, 132, 199, 0.12);
     color: var(--color-primary);
+  }
+
+  /* Mobile User Section in Drawer */
+  .mobile-user-section {
+    display: block;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid #f1f5f9;
+  }
+
+  .mobile-user-card {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 1px solid #bae6fd;
+    padding: 12px 14px;
+    border-radius: 14px;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .mobile-user-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #0084c7;
+  }
+
+  .mobile-user-avatar-placeholder {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #0084c7;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 800;
+  }
+
+  .mobile-user-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-user-details strong {
+    font-size: 15px;
+    color: #0c2b42;
+  }
+
+  .mobile-user-details span {
+    font-size: 12.5px;
+    color: #0084c7;
+    font-weight: 600;
+  }
+
+  .mobile-login-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #f8fafc;
+    border: 1.5px dashed #cbd5e1;
+    color: #0c2b42;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-login-btn:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: #0084c7;
+  }
+
+  @media (max-width: 520px) {
+    .header-guest-text {
+      display: none;
+    }
+    .header-guest-pill {
+      padding: 7px;
+      border-radius: 50%;
+    }
+    .header-username-text {
+      max-width: 70px;
+    }
   }
 }

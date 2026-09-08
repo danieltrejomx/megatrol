@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
+import { AuthModal } from './components/AuthModal/AuthModal';
+import { AccountModal } from './components/AccountModal/AccountModal';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
@@ -18,11 +21,14 @@ import BlogArticle from './pages/Blog/BlogArticle';
 
 function App() {
   return (
-    <CartProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <CartDrawer />
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <AuthProvider>
+      <CartProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <CartDrawer />
+          <AuthModal />
+          <AccountModal />
+          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header />
           <main style={{ flex: 1 }}>
             <Routes>
@@ -63,6 +69,7 @@ function App() {
         </div>
       </BrowserRouter>
     </CartProvider>
+  </AuthProvider>
   );
 }
 
