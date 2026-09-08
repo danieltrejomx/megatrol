@@ -10,10 +10,12 @@ import {
   Building2, 
   Receipt, 
   Lock, 
-  CheckCircle2 
+  CheckCircle2,
+  Copy
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { markProductsAsPurchased } from '../../data/reviews';
+import { MEGATROL_BANK_DETAILS } from '../../data/bankDetails';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -23,6 +25,7 @@ const Checkout = () => {
   const total = totalPrice + shipping;
 
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'oxxo' | 'transfer'>('card');
+  const [copiedClabe, setCopiedClabe] = useState(false);
   const [form, setForm] = useState({
     nombre: '', apellido: '', email: '', telefono: '',
     calle: '', colonia: '', ciudad: '', estado: '', cp: '',
@@ -32,13 +35,41 @@ const Checkout = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleCopyClabe = () => {
+    navigator.clipboard.writeText(MEGATROL_BANK_DETAILS.clabe);
+    setCopiedClabe(true);
+    setTimeout(() => setCopiedClabe(false), 2500);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (items.length > 0) {
       markProductsAsPurchased(items.map(i => i.product.id));
     }
+    const orderNumber = `MEG-${Math.floor(100000 + Math.random() * 900000)}`;
+    const orderData = {
+      orderNumber,
+      customerName: `${form.nombre} ${form.apellido}`.trim(),
+      email: form.email,
+      phone: form.telefono,
+      total,
+      shipping,
+      paymentMethod,
+      items: items.map(it => ({
+        name: it.product.name,
+        qty: it.quantity,
+        price: it.unitPrice ?? it.product.price,
+        variant: [it.selectedAroma, it.selectedPresentation].filter(Boolean).join(' • ')
+      })),
+      date: new Date().toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
+    };
+    try {
+      sessionStorage.setItem('megatrol_last_order', JSON.stringify(orderData));
+    } catch (err) {
+      console.warn(err);
+    }
     clearCart();
-    navigate('/orden-confirmada');
+    navigate('/orden-confirmada', { state: orderData });
   };
 
   return (
@@ -133,11 +164,68 @@ const Checkout = () => {
               </div>
             )}
             {paymentMethod === 'transfer' && (
-              <div className="oxxo-info">
-                <p>
-                  <Building2 size={16} />
-                  <span>Al confirmar tu pedido te enviaremos los datos de la cuenta bancaria. Tu pedido se procesará una vez confirmado el pago.</span>
-                </p>
+              <div className="bank-transfer-details-card">
+                <div className="bank-card-header">
+                  <div className="bank-header-badge">
+                    <Building2 size={20} />
+                    <span>Datos para Transferencia / SPEI</span>
+                  </div>
+                  <span className="bank-guarantee-pill">Sin Comisiones · Inmediato</span>
+                </div>
+
+                <div className="bank-details-box">
+                  <div className="bank-detail-row">
+                    <span className="bank-label">Beneficiario / Titular:</span>
+                    <div className="bank-value-group">
+                      <strong className="bank-beneficiary-name">{MEGATROL_BANK_DETAILS.beneficiary}</strong>
+                      <span className="bank-dist-tag">{MEGATROL_BANK_DETAILS.distributorName}</span>
+                    </div>
+                  </div>
+
+                  <div className="bank-detail-row">
+                    <span className="bank-label">Banco Destino:</span>
+                    <strong className="bank-name-badge">{MEGATROL_BANK_DETAILS.bankName}</strong>
+                  </div>
+
+                  <div className="bank-detail-row clabe-row-highlight">
+                    <span className="bank-label">CLABE Interbancaria (18 dígitos):</span>
+                    <div className="clabe-code-container">
+                      <code className="clabe-digits">{MEGATROL_BANK_DETAILS.clabe}</code>
+                      <button
+                        type="button"
+                        className="btn-copy-clabe"
+                        onClick={handleCopyClabe}
+                        title="Copiar CLABE al portapapeles"
+                      >
+                        {copiedClabe ? <Check size={14} /> : <Copy size={14} />}
+                        <span>{copiedClabe ? '¡Copiada!' : 'Copiar CLABE'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="bank-detail-row">
+                    <span className="bank-label">Monto exacto a transferir:</span>
+                    <strong className="bank-amount-to-pay">${total.toFixed(2)} MXN</strong>
+                  </div>
+
+                  <div className="bank-detail-row">
+                    <span className="bank-label">Concepto sugerido:</span>
+                    <span className="bank-concept-hint">
+                      {form.nombre ? `Pago ${form.nombre.trim()}` : 'Tu Nombre o Teléfono'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="bank-instructions-note">
+                  <div className="bank-note-item">
+                    <CheckCircle2 size={16} className="bank-check-icon" />
+                    <span>Transfiere desde la app de tu banco favorito (BBVA, Banamex, Santander, Banorte, Mercado Pago, Nu, etc.).</span>
+                  </div>
+                  <div className="bank-note-item">
+                    <CheckCircle2 size={16} className="bank-check-icon" />
+                    <span>Al confirmar tu pedido obtendrás tu número de orden y botón directo para enviar tu comprobante por WhatsApp al <strong>(55) 3620 6854</strong>.</span>
+                  </div>
+                </div>
               </div>
             )}
           </div>

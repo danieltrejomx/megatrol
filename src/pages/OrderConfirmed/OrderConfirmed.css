@@ -39,7 +39,216 @@
   font-size: 16px;
   color: var(--color-text-light);
   line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.confirmed-greeting {
+  font-size: 16px;
+  color: var(--color-heading);
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+
+/* ── CONFIRMED BANK CARD ── */
+.confirmed-bank-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+  border: 2px solid #0084c7;
+  border-radius: 20px;
+  padding: 26px 28px;
+  text-align: left;
   margin-bottom: 36px;
+  box-shadow: 0 12px 36px rgba(0, 132, 199, 0.12);
+}
+
+.confirmed-bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(0, 132, 199, 0.18);
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.confirmed-bank-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confirmed-bank-title h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #0c2b42;
+  margin: 0;
+}
+
+.confirmed-bank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #047857;
+  background: #d1fae5;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+}
+
+.confirmed-bank-intro {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.5;
+  margin: 0 0 16px 0;
+}
+
+.confirmed-bank-grid {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.confirmed-bank-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 8px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.confirmed-bank-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.c-bank-label {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.c-bank-value {
+  color: #0c2b42;
+  font-weight: 800;
+}
+
+.c-bank-sub {
+  font-size: 11.5px;
+  color: #0084c7;
+  font-weight: 700;
+  background: rgba(0, 132, 199, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+}
+
+.c-clabe-item {
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+}
+
+.c-clabe-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.c-clabe-code {
+  font-family: 'Consolas', 'Menlo', monospace;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0c2b42;
+  letter-spacing: 1px;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.c-btn-copy-clabe {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #0084c7;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.c-btn-copy-clabe:hover {
+  background: #00669c;
+  transform: translateY(-1px);
+}
+
+.c-total-highlight {
+  font-size: 18px;
+  color: #059669;
+  font-weight: 900;
+}
+
+.c-ref-code {
+  font-family: 'Consolas', monospace;
+  letter-spacing: 0.5px;
+  color: #0c2b42;
+  font-size: 14px;
+}
+
+.confirmed-whatsapp-voucher-box {
+  background: rgba(37, 211, 102, 0.08);
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.confirmed-whatsapp-voucher-box p {
+  margin: 0;
+  font-size: 13px;
+  color: #065f46;
+  line-height: 1.4;
+}
+
+.btn-send-whatsapp-voucher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #25D366;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-send-whatsapp-voucher:hover {
+  background: #1eb956;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
 }
 
 .next-steps {

@@ -127,6 +127,189 @@
   margin: 0;
 }
 
+/* ── BANK TRANSFER DETAILS CARD ── */
+.bank-transfer-details-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 100%);
+  border: 1.5px solid #0084c7;
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 8px 24px rgba(0, 132, 199, 0.08);
+  animation: fadeIn 0.3s ease;
+  margin-top: 14px;
+}
+
+.bank-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(0, 132, 199, 0.15);
+  padding-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.bank-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #0c2b42;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+.bank-guarantee-pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #047857;
+  background: #d1fae5;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #a7f3d0;
+}
+
+.bank-details-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bank-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 8px;
+  font-size: 13.5px;
+  flex-wrap: wrap;
+}
+
+.bank-detail-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bank-label {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.bank-value-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.bank-beneficiary-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0c2b42;
+}
+
+.bank-dist-tag {
+  font-size: 11px;
+  color: #0084c7;
+  font-weight: 700;
+  background: rgba(0, 132, 199, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.bank-name-badge {
+  color: #0c2b42;
+  font-weight: 800;
+  font-size: 13.5px;
+}
+
+.clabe-row-highlight {
+  background: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.clabe-code-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.clabe-digits {
+  font-family: 'Consolas', 'Menlo', monospace;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0c2b42;
+  letter-spacing: 1px;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-copy-clabe {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #0084c7;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-copy-clabe:hover {
+  background: #00669c;
+  transform: translateY(-1px);
+}
+
+.bank-amount-to-pay {
+  font-size: 16px;
+  font-weight: 900;
+  color: #059669;
+}
+
+.bank-concept-hint {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.bank-instructions-note {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.bank-note-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.bank-check-icon {
+  color: #10b981;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
 /* Summary */
 .checkout-summary {
   width: 360px;

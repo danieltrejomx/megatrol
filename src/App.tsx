@@ -44,7 +44,7 @@ function App() {
 
           {/* WhatsApp Floating Button */}
           <a
-            href="https://wa.me/5211234567890"
+            href="https://wa.me/525536206854?text=Hola,%20quisiera%20informaci%C3%B3n%20sobre%20los%20productos%20Megatrol"
             target="_blank"
             rel="noreferrer"
             style={{
