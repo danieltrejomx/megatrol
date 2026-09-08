@@ -815,6 +815,9 @@
     display: flex;
     width: 100%;
   }
+  .shop-results-header {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {
