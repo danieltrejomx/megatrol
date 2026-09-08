@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation, useParams } from 'react-router-dom';
 import { 
   PawPrint, 
   Leaf, 
@@ -22,15 +22,32 @@ import { useAuth } from '../../context/AuthContext';
 import { ProductModal } from '../../components/ProductModal/ProductModal';
 import './Shop.css';
 
-const filters = [
-  { key: 'all', label: 'Todos los Productos', icon: PawPrint },
-  { key: 'Megatrol Shower', label: 'Megatrol Shower', icon: Sparkles },
-  { key: 'Megatrol Talco', label: 'Megatrol Talco', icon: Leaf },
-  { key: 'Línea Megadoxi', label: 'Línea Megadoxi', icon: Pill },
-  { key: 'Plagatrol', label: 'Plagatrol', icon: ShieldCheck },
-  { key: 'Línea Megatrol', label: 'Spray y Jabón Megatrol', icon: Zap },
-  { key: 'Salud y Suplementos', label: 'Salud y Suplementos', icon: Bone },
+export const filters = [
+  { key: 'all', slug: 'todos', label: 'Todos los Productos', icon: PawPrint },
+  { key: 'Megatrol Shower', slug: 'megatrol-shower', label: 'Megatrol Shower', icon: Sparkles },
+  { key: 'Megatrol Talco', slug: 'megatrol-talco', label: 'Megatrol Talco', icon: Leaf },
+  { key: 'Línea Megadoxi', slug: 'linea-megadoxi', label: 'Línea Megadoxi', icon: Pill },
+  { key: 'Plagatrol', slug: 'plagatrol', label: 'Plagatrol', icon: ShieldCheck },
+  { key: 'Línea Megatrol', slug: 'spray-y-jabon-megatrol', label: 'Spray y Jabón Megatrol', icon: Zap },
+  { key: 'Salud y Suplementos', slug: 'salud-y-suplementos', label: 'Salud y Suplementos', icon: Bone },
 ];
+
+export const categorySlugMap: Record<string, string> = {
+  'todos': 'all',
+  'all': 'all',
+  'megatrol-shower': 'Megatrol Shower',
+  'shower': 'Megatrol Shower',
+  'megatrol-talco': 'Megatrol Talco',
+  'talco': 'Megatrol Talco',
+  'linea-megadoxi': 'Línea Megadoxi',
+  'megadoxi': 'Línea Megadoxi',
+  'plagatrol': 'Plagatrol',
+  'spray-y-jabon-megatrol': 'Línea Megatrol',
+  'linea-megatrol': 'Línea Megatrol',
+  'spray-y-jabon': 'Línea Megatrol',
+  'salud-y-suplementos': 'Salud y Suplementos',
+  'suplementos': 'Salud y Suplementos',
+};
 
 const Shop = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
@@ -45,7 +62,35 @@ const Shop = () => {
   const { toggleFavorite, isFavorite } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { categorySlug } = useParams<{ categorySlug?: string }>();
   const [searchParams] = useSearchParams();
+
+  // Sincroniza la categoría seleccionada a partir de la URL /categoria/:categorySlug o query ?categoria=...
+  useEffect(() => {
+    if (categorySlug) {
+      const mapped = categorySlugMap[categorySlug.toLowerCase()];
+      if (mapped) {
+        setSelectedFilter(mapped);
+        const found = filters.find(item => item.key === mapped);
+        document.title = `${found?.label || mapped} - Catálogo Oficial | Megatrol`;
+      } else {
+        setSelectedFilter('all');
+      }
+    } else {
+      const catParam = searchParams.get('categoria') || searchParams.get('cat');
+      if (catParam) {
+        const mapped = categorySlugMap[catParam.toLowerCase()];
+        if (mapped) {
+          setSelectedFilter(mapped);
+          const found = filters.find(item => item.key === mapped);
+          document.title = `${found?.label || mapped} - Catálogo Oficial | Megatrol`;
+          return;
+        }
+      }
+      setSelectedFilter('all');
+      document.title = 'Tienda Oficial | Megatrol Pet Care';
+    }
+  }, [categorySlug, searchParams]);
 
   // Detect window width to only enable category drawer breakdown on mobile
   useEffect(() => {
@@ -236,8 +281,9 @@ const Shop = () => {
                     key={f.key} 
                     className={`category-accordion-item ${isMobile && isExpanded ? 'is-expanded' : ''}`}
                   >
-                    <button
-                      type="button"
+                    <Link
+                      to={isAll ? '/tienda' : `/categoria/${f.slug}`}
+                      state={isMobile ? { preventScroll: true } : undefined}
                       className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
                       onClick={() => {
                         if (isMobile) {
@@ -252,6 +298,7 @@ const Shop = () => {
                           setExpandedCategories([]);
                         }
                       }}
+                      title={`Ver productos de ${f.label}`}
                     >
                       <span className="filter-btn-label">
                         <Icon size={15} />
@@ -266,7 +313,7 @@ const Shop = () => {
                           />
                         )}
                       </span>
-                    </button>
+                    </Link>
 
                     {/* Desglose inmediato de productos en la categoría: ÚNICAMENTE EN MÓVIL */}
                     {isMobile && isExpanded && categoryProducts.length > 0 && (
@@ -333,7 +380,7 @@ const Shop = () => {
               <button 
                 type="button" 
                 className="reset-filter-btn" 
-                onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); }}
+                onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); navigate('/tienda'); }}
               >
                 <span>Mostrar todos</span>
                 <X size={14} />
@@ -348,7 +395,7 @@ const Shop = () => {
               </div>
               <h3>No se encontraron productos</h3>
               <p>Intenta con otro término de búsqueda o selecciona otra categoría.</p>
-              <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); }}>
+              <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); navigate('/tienda'); }}>
                 Ver Todos los Productos
               </button>
             </div>

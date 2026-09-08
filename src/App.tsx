@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, useParams, useNavigate, type Location } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useParams, useNavigate, Navigate, type Location } from 'react-router-dom';
 import { products } from './data/products';
 import { ProductModal } from './components/ProductModal/ProductModal';
 import { CartProvider } from './context/CartContext';
@@ -57,12 +57,20 @@ function AnimatedRoutes() {
   const state = location.state as { backgroundLocation?: Location } | null;
   const currentRoutesLocation = state?.backgroundLocation || location;
 
+  // Group /tienda and /categoria/* under the same transition key so category filtering is instant and seamless
+  const routeKey = currentRoutesLocation.pathname.startsWith('/categoria') || currentRoutesLocation.pathname.startsWith('/tienda')
+    ? '/tienda'
+    : currentRoutesLocation.pathname;
+
   return (
     <>
-      <div key={currentRoutesLocation.pathname} className="page-transition-wrapper">
+      <div key={routeKey} className="page-transition-wrapper">
         <Routes location={currentRoutesLocation}>
           <Route path="/" element={<Home />} />
           <Route path="/tienda" element={<Shop />} />
+          <Route path="/categoria" element={<Navigate to="/tienda" replace />} />
+          <Route path="/categoria/:categorySlug" element={<Shop />} />
+          <Route path="/tienda/categoria/:categorySlug" element={<Shop />} />
           <Route path="/producto/:slug" element={<ProductDetail />} />
           <Route path="/carrito" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
