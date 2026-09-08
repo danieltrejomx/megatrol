@@ -327,15 +327,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
                     <span>{product.species}</span>
                   </span>
                 )}
-                <button
-                  type="button"
-                  className="product-modal-link-pill"
-                  onClick={handleShareProduct}
-                  title="Copiar enlace directo de este producto"
-                >
-                  <Share2 size={11} />
-                  <span>{copiedLink ? '¡Enlace copiado!' : `/producto/${product.slug}`}</span>
-                </button>
               </div>
 
               <h2 id="product-modal-title" className="product-modal-title">{product.name}</h2>
