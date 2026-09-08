@@ -110,10 +110,6 @@ const Shop = () => {
                 <span className="price-currency-suffix">MXN</span>
               </div>
             </div>
-            <div className="price-meta-badge">
-              <CheckCircle2 size={12} />
-              <span>En stock</span>
-            </div>
           </div>
 
           <div className="product-card-actions">
