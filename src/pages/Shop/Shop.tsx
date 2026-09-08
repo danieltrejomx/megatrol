@@ -113,12 +113,12 @@ const Shop = () => {
               {addedId === product.id ? (
                 <>
                   <CheckCircle2 size={15} />
-                  <span>¡Agregado!</span>
+                  <span>¡Añadido!</span>
                 </>
               ) : (
                 <>
                   <ShoppingCart size={15} />
-                  <span>Agregar al Carrito</span>
+                  <span>Añadir al Carrito</span>
                 </>
               )}
             </button>
@@ -227,10 +227,10 @@ const Shop = () => {
                                 setAddedId(p.id);
                                 setTimeout(() => setAddedId(null), 1500);
                               }}
-                              title="Agregar al carrito"
+                              title="Añadir al carrito"
                             >
                               <ShoppingCart size={11} />
-                              <span>{addedId === p.id ? '✓' : 'Agregar'}</span>
+                              <span>{addedId === p.id ? '✓' : 'Añadir'}</span>
                             </button>
                           </div>
                         ))}
