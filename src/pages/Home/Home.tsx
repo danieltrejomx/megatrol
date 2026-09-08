@@ -983,13 +983,10 @@ const Home = () => {
           </div>
 
           <div className="reviews-carousel-container" ref={reviewsCarouselRef}>
-            {testimonials.map((item) => {
-              const matchedProduct = products.find((p) => p.slug === item.productSlug);
-
-              return (
-                <div 
-                  className="review-card interactive-review-card" 
-                  key={item.id}
+            {testimonials.map((item) => (
+              <div 
+                className="review-card interactive-review-card" 
+                key={item.id}
                   onClick={() => handleOpenReviewProduct(item.productSlug)}
                   role="button"
                   tabIndex={0}
@@ -1031,32 +1028,6 @@ const Home = () => {
                   <h4 className="review-card-title">"{item.title}"</h4>
                   <p className="review-card-text">{item.text}</p>
 
-                  <div className="review-product-cta">
-                    <button
-                      type="button"
-                      className="review-product-cta-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpenReviewProduct(item.productSlug);
-                      }}
-                    >
-                      {matchedProduct && (
-                        <img 
-                          src={matchedProduct.image} 
-                          alt={item.product} 
-                          className="review-cta-thumb" 
-                        />
-                      )}
-                      <div className="review-cta-text">
-                        <span className="review-cta-label">Producto Reseñado</span>
-                        <span className="review-cta-name">{item.product}</span>
-                      </div>
-                      <span className="review-cta-action">
-                        Ver Producto <ChevronRight size={14} />
-                      </span>
-                    </button>
-                  </div>
-
                   <div className="review-author-box">
                     <div className="review-avatar">{getInitials(item.name)}</div>
                     <div className="review-author-info">
@@ -1066,8 +1037,7 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))}
           </div>
 
           <div className="reviews-swipe-hint">
