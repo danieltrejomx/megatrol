@@ -198,24 +198,24 @@ const demoVideos = [
   },
   {
     id: 'pug-megatrol',
-    title: 'Aplicación en Perro Pug: Protección Megatrol',
-    shortTitle: 'Aplicación en Pug',
-    badge: 'Demostración Real',
-    desc: 'Observa la aplicación directa y segura de la fórmula Megatrol en un perrito Pug, eliminando pulgas y garrapatas de forma efectiva.',
+    title: 'Demostración de Baño: Shower Shampoo & Talco',
+    shortTitle: 'Shower & Talco',
+    badge: 'Higiene y Protección',
+    desc: 'Observa el baño relajante con Shower Shampoo Aromas y la aplicación de Talco Ecológico para dejar a tu mascota limpia, fresca y protegida.',
     src: '/videos/pugmega.mp4',
     driveUrl: '',
     products: [
       {
-        slug: 'spray-antipulgas',
-        name: 'Spray Antipulgas Megatrol (Oficial)',
-        price: 149,
-        image: '/images/megatrol-spray-oficial.png'
+        slug: 'shower-shampoo-aromas',
+        name: 'Shower Shampoo Aromas',
+        price: 210,
+        image: '/images/shower-shampoo-aromas.png'
       },
       {
-        slug: 'shampoo-antipulgas',
-        name: 'Shampoo Antipulgas Megatrol (Oficial)',
-        price: 189,
-        image: '/images/megatrol-shampoo-portada.png'
+        slug: 'talco-ecologico',
+        name: 'Talco Ecológico Megatrol (80 g)',
+        price: 199,
+        image: '/images/megatrol-talco-80g.png'
       }
     ]
   }
