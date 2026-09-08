@@ -363,3 +363,179 @@ ul {
     font-size: 14.5px;
   }
 }
+
+/* ── ROUTE PAGE TRANSITION & BANNER ENTRANCE ANIMATIONS ───────── */
+.page-transition-wrapper {
+  animation: pageFadeSlideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes pageFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Banner containers entrance animation */
+.page-banner-header,
+.distributor-banner-header,
+.shop-header,
+.hero-card {
+  animation: bannerCardIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes bannerCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.985);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Banner Badge pop & slide-down */
+.page-banner-badge,
+.distributor-banner-badge,
+.shop-badge,
+.hero-badge-pill {
+  animation: badgeSlideDown 0.44s 0.06s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes badgeSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Banner Title stagger */
+.page-banner-header h1,
+.distributor-banner-header h1,
+.distributor-banner-header h2,
+.shop-header h1,
+.hero-content h1 {
+  animation: titleFadeUp 0.48s 0.14s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes titleFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Banner Subtitle stagger */
+.page-banner-header p,
+.distributor-banner-header p,
+.shop-header p,
+.hero-description {
+  animation: textFadeUp 0.48s 0.20s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes textFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Banner Controls (Search bar, tags, CTA actions) stagger */
+.distributor-banner-tags,
+.shop-search-bar,
+.hero-actions,
+.hero-trust-badges {
+  animation: elementStaggerUp 0.5s 0.26s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes elementStaggerUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Content cards staggered entry */
+.product-card,
+.blog-card,
+.science-pillar-card,
+.benefit-item-glass,
+.history-narrative-card {
+  animation: contentCascadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes contentCascadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stagger delays for grid items */
+.product-card:nth-child(1), .blog-card:nth-child(1) { animation-delay: 0.10s; }
+.product-card:nth-child(2), .blog-card:nth-child(2) { animation-delay: 0.16s; }
+.product-card:nth-child(3), .blog-card:nth-child(3) { animation-delay: 0.22s; }
+.product-card:nth-child(4), .blog-card:nth-child(4) { animation-delay: 0.28s; }
+.product-card:nth-child(5), .blog-card:nth-child(5) { animation-delay: 0.34s; }
+.product-card:nth-child(6), .blog-card:nth-child(6) { animation-delay: 0.40s; }
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-wrapper,
+  .page-banner-header,
+  .distributor-banner-header,
+  .shop-header,
+  .hero-card,
+  .page-banner-badge,
+  .distributor-banner-badge,
+  .shop-badge,
+  .hero-badge-pill,
+  .page-banner-header h1,
+  .distributor-banner-header h1,
+  .distributor-banner-header h2,
+  .shop-header h1,
+  .hero-content h1,
+  .page-banner-header p,
+  .distributor-banner-header p,
+  .shop-header p,
+  .hero-description,
+  .distributor-banner-tags,
+  .shop-search-bar,
+  .hero-actions,
+  .hero-trust-badges,
+  .product-card,
+  .blog-card,
+  .science-pillar-card,
+  .benefit-item-glass,
+  .history-narrative-card {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { AuthModal } from './components/AuthModal/AuthModal';
@@ -21,6 +21,29 @@ import Distributors from './pages/Distributors/Distributors';
 import Blog from './pages/Blog/Blog';
 import BlogArticle from './pages/Blog/BlogArticle';
 
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <div key={location.pathname} className="page-transition-wrapper">
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/tienda" element={<Shop />} />
+        <Route path="/producto/:slug" element={<ProductDetail />} />
+        <Route path="/carrito" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orden-confirmada" element={<OrderConfirmed />} />
+        <Route path="/ciencia" element={<Science />} />
+        <Route path="/nosotros" element={<About />} />
+        <Route path="/distribuidores" element={<Distributors />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogArticle />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </div>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -35,20 +58,7 @@ function App() {
           <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header />
           <main style={{ flex: 1 }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/tienda" element={<Shop />} />
-              <Route path="/producto/:slug" element={<ProductDetail />} />
-              <Route path="/carrito" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/orden-confirmada" element={<OrderConfirmed />} />
-              <Route path="/ciencia" element={<Science />} />
-              <Route path="/nosotros" element={<About />} />
-              <Route path="/distribuidores" element={<Distributors />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:slug" element={<BlogArticle />} />
-              <Route path="*" element={<Home />} />
-            </Routes>
+            <AnimatedRoutes />
           </main>
           <Footer />
 
