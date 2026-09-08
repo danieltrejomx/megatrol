@@ -21,22 +21,17 @@ import {
   Pencil,
   Trash2,
   Check,
-  MessageCircle
+  MessageCircle,
+  Loader2
 } from 'lucide-react';
 import { useAuth, type UserAddress } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { products, parsePresentations, getAromaEmoji } from '../../data/products';
 import { PRESET_AVATARS, UserAvatar } from '../../data/avatars';
+import { lookupPostalCode, MEXICAN_STATES } from '../../services/postalCodeService';
 import { Link } from 'react-router-dom';
 import './AccountModal.css';
 
-const MEXICAN_STATES = [
-  'Aguascalientes', 'Baja California', 'Baja California Sur', 'Campeche', 'Chiapas', 
-  'Chihuahua', 'Ciudad de México', 'Coahuila', 'Colima', 'Durango', 'Estado de México', 
-  'Guanajuato', 'Guerrero', 'Hidalgo', 'Jalisco', 'Michoacán', 'Morelos', 'Nayarit', 
-  'Nuevo León', 'Oaxaca', 'Puebla', 'Querétaro', 'Quintana Roo', 'San Luis Potosí', 
-  'Sinaloa', 'Sonora', 'Tabasco', 'Tamaulipas', 'Tlaxcala', 'Veracruz', 'Yucatán', 'Zacatecas'
-];
 
 export const AccountModal = () => {
   const { 
@@ -111,6 +106,42 @@ export const AccountModal = () => {
     cp: ''
   });
   const [phone, setPhone] = useState('');
+  const [cpLoading, setCpLoading] = useState(false);
+  const [cpSuccess, setCpSuccess] = useState(false);
+  const [availableColonias, setAvailableColonias] = useState<string[]>([]);
+  const [manualColonia, setManualColonia] = useState(false);
+
+  const handleCpChange = async (newCp: string) => {
+    const clean = newCp.replace(/\D/g, '').slice(0, 5);
+    setAddressForm(prev => ({ ...prev, cp: clean }));
+    setCpSuccess(false);
+
+    if (clean.length === 5) {
+      setCpLoading(true);
+      try {
+        const result = await lookupPostalCode(clean);
+        if (result) {
+          setAddressForm(prev => ({
+            ...prev,
+            cp: clean,
+            estado: result.estado || prev.estado,
+            ciudad: result.ciudad || prev.ciudad,
+            colonia: result.colonias.length === 1 ? result.colonias[0] : (prev.colonia || result.colonias[0] || ''),
+          }));
+          setAvailableColonias(result.colonias);
+          setManualColonia(false);
+          setCpSuccess(true);
+        }
+      } catch {
+        // Fallback gracefully
+      } finally {
+        setCpLoading(false);
+      }
+    } else {
+      setAvailableColonias([]);
+    }
+  };
+
 
   // Profile form state (name, phone, preset avatar)
   const [editName, setEditName] = useState('');
@@ -715,16 +746,67 @@ export const AccountModal = () => {
                   />
                 </div>
 
-                <div className="account-field-full">
-                  <label htmlFor="acc-colonia">Colonia *</label>
+                <div className="account-field-half">
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                    <label htmlFor="acc-cp" style={{ margin: 0 }}>Código Postal (C.P.) *</label>
+                    {cpLoading && (
+                      <span className="cp-badge-loading">
+                        <Loader2 size={12} className="cp-spin" /> Buscando...
+                      </span>
+                    )}
+                    {cpSuccess && (
+                      <span className="cp-badge-success">
+                        <Check size={12} /> Ubicación autocompletada
+                      </span>
+                    )}
+                  </div>
                   <input
-                    id="acc-colonia"
+                    id="acc-cp"
                     type="text"
-                    placeholder="Ej. Crédito Constructor"
-                    value={addressForm.colonia}
-                    onChange={e => setAddressForm({ ...addressForm, colonia: e.target.value })}
+                    inputMode="numeric"
+                    placeholder="Ej. 03940"
+                    maxLength={5}
+                    value={addressForm.cp}
+                    onChange={e => handleCpChange(e.target.value)}
                     required
                   />
+                </div>
+
+                <div className="account-field-half">
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
+                    <label htmlFor="acc-colonia" style={{ margin: 0 }}>Colonia *</label>
+                    {availableColonias.length > 0 && (
+                      <button
+                        type="button"
+                        className="cp-toggle-colonia-btn"
+                        onClick={() => setManualColonia(!manualColonia)}
+                      >
+                        {manualColonia ? 'Elegir de lista' : 'Escribir otra'}
+                      </button>
+                    )}
+                  </div>
+                  {availableColonias.length > 0 && !manualColonia ? (
+                    <select
+                      id="acc-colonia"
+                      value={addressForm.colonia}
+                      onChange={e => setAddressForm({ ...addressForm, colonia: e.target.value })}
+                      required
+                    >
+                      <option value="">Selecciona tu colonia</option>
+                      {availableColonias.map(col => (
+                        <option key={col} value={col}>{col}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      id="acc-colonia"
+                      type="text"
+                      placeholder="Ej. Crédito Constructor"
+                      value={addressForm.colonia}
+                      onChange={e => setAddressForm({ ...addressForm, colonia: e.target.value })}
+                      required
+                    />
+                  )}
                 </div>
 
                 <div className="account-field-half">
@@ -735,19 +817,6 @@ export const AccountModal = () => {
                     placeholder="Ej. Benito Juárez"
                     value={addressForm.ciudad}
                     onChange={e => setAddressForm({ ...addressForm, ciudad: e.target.value })}
-                    required
-                  />
-                </div>
-
-                <div className="account-field-half">
-                  <label htmlFor="acc-cp">Código Postal (C.P.) *</label>
-                  <input
-                    id="acc-cp"
-                    type="text"
-                    placeholder="Ej. 03940"
-                    maxLength={5}
-                    value={addressForm.cp}
-                    onChange={e => setAddressForm({ ...addressForm, cp: e.target.value })}
                     required
                   />
                 </div>
@@ -767,7 +836,7 @@ export const AccountModal = () => {
                   </select>
                 </div>
 
-                <div className="account-field-half">
+                <div className="account-field-full">
                   <label htmlFor="acc-phone">Teléfono de Entrega</label>
                   <input
                     id="acc-phone"

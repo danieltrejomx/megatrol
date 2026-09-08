@@ -12,12 +12,14 @@ import {
   Lock, 
   CheckCircle2,
   Copy,
-  User as UserIcon
+  User as UserIcon,
+  Loader2
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { markProductsAsPurchased } from '../../data/reviews';
 import { MEGATROL_BANK_DETAILS } from '../../data/bankDetails';
+import { lookupPostalCode, MEXICAN_STATES } from '../../services/postalCodeService';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -33,6 +35,10 @@ const Checkout = () => {
     nombre: '', apellido: '', email: '', telefono: '',
     calle: '', colonia: '', ciudad: '', estado: '', cp: '',
   });
+  const [cpLoading, setCpLoading] = useState(false);
+  const [cpSuccess, setCpSuccess] = useState(false);
+  const [availableColonias, setAvailableColonias] = useState<string[]>([]);
+  const [manualColonia, setManualColonia] = useState(false);
 
   // Auto-fill from authenticated user profile
   useEffect(() => {
@@ -56,9 +62,41 @@ const Checkout = () => {
     }
   }, [currentUser]);
 
+  const handleCpChange = async (newCp: string) => {
+    const clean = newCp.replace(/\D/g, '').slice(0, 5);
+    setForm(prev => ({ ...prev, cp: clean }));
+    setCpSuccess(false);
+
+    if (clean.length === 5) {
+      setCpLoading(true);
+      try {
+        const result = await lookupPostalCode(clean);
+        if (result) {
+          setForm(prev => ({
+            ...prev,
+            cp: clean,
+            estado: result.estado || prev.estado,
+            ciudad: result.ciudad || prev.ciudad,
+            colonia: result.colonias.length === 1 ? result.colonias[0] : (prev.colonia || result.colonias[0] || ''),
+          }));
+          setAvailableColonias(result.colonias);
+          setManualColonia(false);
+          setCpSuccess(true);
+        }
+      } catch {
+        // Silent fallback
+      } finally {
+        setCpLoading(false);
+      }
+    } else {
+      setAvailableColonias([]);
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
 
   const handleCopyClabe = () => {
     navigator.clipboard.writeText(MEGATROL_BANK_DETAILS.clabe);
@@ -170,17 +208,80 @@ const Checkout = () => {
             <input name="email" type="email" placeholder="Correo electrónico *" required value={form.email} onChange={handleChange} />
             <input name="telefono" type="tel" placeholder="Teléfono / WhatsApp *" required value={form.telefono} onChange={handleChange} />
             <input name="calle" placeholder="Calle y número *" required value={form.calle} onChange={handleChange} />
-            <input name="colonia" placeholder="Colonia *" required value={form.colonia} onChange={handleChange} />
-            <div className="form-row">
-              <input name="ciudad" placeholder="Ciudad *" required value={form.ciudad} onChange={handleChange} />
-              <input name="cp" placeholder="C.P. *" required value={form.cp} onChange={handleChange} />
+            
+            <div className="form-row" style={{ alignItems: 'flex-start' }}>
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
+                  <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600 }}>C.P. *</span>
+                  {cpLoading && (
+                    <span className="cp-badge-loading">
+                      <Loader2 size={12} className="cp-spin" /> Buscando...
+                    </span>
+                  )}
+                  {cpSuccess && (
+                    <span className="cp-badge-success">
+                      <Check size={12} /> Detectado
+                    </span>
+                  )}
+                </div>
+                <input
+                  name="cp"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="Ej. 03940"
+                  maxLength={5}
+                  required
+                  value={form.cp}
+                  onChange={e => handleCpChange(e.target.value)}
+                />
+              </div>
+
+              <div style={{ flex: 1.5, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
+                  <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600 }}>Colonia *</span>
+                  {availableColonias.length > 0 && (
+                    <button
+                      type="button"
+                      className="cp-toggle-colonia-btn"
+                      onClick={() => setManualColonia(!manualColonia)}
+                    >
+                      {manualColonia ? 'Elegir de lista' : 'Escribir otra'}
+                    </button>
+                  )}
+                </div>
+                {availableColonias.length > 0 && !manualColonia ? (
+                  <select
+                    name="colonia"
+                    required
+                    value={form.colonia}
+                    onChange={handleChange}
+                  >
+                    <option value="">Selecciona tu colonia</option>
+                    {availableColonias.map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    name="colonia"
+                    placeholder="Colonia *"
+                    required
+                    value={form.colonia}
+                    onChange={handleChange}
+                  />
+                )}
+              </div>
             </div>
-            <select name="estado" required value={form.estado} onChange={handleChange}>
-              <option value="">Estado *</option>
-              {['Aguascalientes','Baja California','Baja California Sur','Campeche','Chiapas','Chihuahua','Ciudad de México','Coahuila','Colima','Durango','Estado de México','Guanajuato','Guerrero','Hidalgo','Jalisco','Michoacán','Morelos','Nayarit','Nuevo León','Oaxaca','Puebla','Querétaro','Quintana Roo','San Luis Potosí','Sinaloa','Sonora','Tabasco','Tamaulipas','Tlaxcala','Veracruz','Yucatán','Zacatecas'].map(e => (
-                <option key={e} value={e}>{e}</option>
-              ))}
-            </select>
+
+            <div className="form-row">
+              <input name="ciudad" placeholder="Ciudad / Municipio *" required value={form.ciudad} onChange={handleChange} />
+              <select name="estado" required value={form.estado} onChange={handleChange}>
+                <option value="">Estado *</option>
+                {MEXICAN_STATES.map(e => (
+                  <option key={e} value={e}>{e}</option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Payment */}

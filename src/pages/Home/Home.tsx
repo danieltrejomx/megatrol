@@ -195,6 +195,29 @@ const demoVideos = [
         image: '/images/megatrol-talco-80g.png'
       }
     ]
+  },
+  {
+    id: 'pug-megatrol',
+    title: 'Aplicación en Perro Pug: Protección Megatrol',
+    shortTitle: 'Aplicación en Pug',
+    badge: 'Demostración Real',
+    desc: 'Observa la aplicación directa y segura de la fórmula Megatrol en un perrito Pug, eliminando pulgas y garrapatas de forma efectiva.',
+    src: '/videos/pugmega.mp4',
+    driveUrl: '',
+    products: [
+      {
+        slug: 'spray-antipulgas',
+        name: 'Spray Antipulgas Megatrol (Oficial)',
+        price: 149,
+        image: '/images/megatrol-spray-oficial.png'
+      },
+      {
+        slug: 'shampoo-antipulgas',
+        name: 'Shampoo Antipulgas Megatrol (Oficial)',
+        price: 189,
+        image: '/images/megatrol-shampoo-portada.png'
+      }
+    ]
   }
 ];
 

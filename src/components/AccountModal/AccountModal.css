@@ -618,6 +618,49 @@
   margin-top: 0.5rem;
 }
 
+@keyframes cp-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.cp-spin {
+  animation: cp-spin 0.8s linear infinite;
+}
+
+.cp-badge-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #0084c7;
+  font-weight: 500;
+}
+
+.cp-badge-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.cp-toggle-colonia-btn {
+  background: none;
+  border: none;
+  color: #0084c7;
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-weight: 600;
+}
+
+.cp-toggle-colonia-btn:hover {
+  color: #005d8c;
+}
+
+
 .account-save-btn {
   background: linear-gradient(135deg, #0084c7 0%, #0369a1 100%);
   color: #ffffff;
