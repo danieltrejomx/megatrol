@@ -228,7 +228,7 @@ export const AccountModal = () => {
             {activeTab === 'profile' ? (
               <button
                 type="button"
-                className={`account-header-edit-btn ${headerSaved ? 'saved' : ''}`}
+                className={`account-header-save-btn ${headerSaved ? 'saved' : ''}`}
                 onClick={handleHeaderSave}
                 title="Guardar cambios de tu cuenta"
               >
@@ -617,12 +617,6 @@ export const AccountModal = () => {
                     <span className="preset-avatar-label">Mis Iniciales</span>
                   </button>
                 </div>
-              </div>
-
-              <div className="account-form-actions">
-                <button type="submit" className="account-save-btn">
-                  Guardar Cambios de Perfil
-                </button>
               </div>
             </form>
           )}

@@ -1078,6 +1078,35 @@
   box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
 }
 
+.account-header-save-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  background: #16a34a;
+  border: 1px solid #22c55e;
+  color: #ffffff;
+  padding: 0.48rem 0.95rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.35);
+}
+
+.account-header-save-btn:hover {
+  background: #15803d;
+  border-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.45);
+}
+
+.account-header-save-btn.saved {
+  background: #059669;
+  border-color: #10b981;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+}
+
 .account-tab-badge.fav-badge {
   background: #f43f5e;
 }
