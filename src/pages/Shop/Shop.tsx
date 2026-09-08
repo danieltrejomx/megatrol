@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams, useLocation, useParams } from 'react-router-dom';
 import { 
   PawPrint, 
@@ -64,6 +64,19 @@ const Shop = () => {
   const location = useLocation();
   const { categorySlug } = useParams<{ categorySlug?: string }>();
   const [searchParams] = useSearchParams();
+  const shopLayoutRef = useRef<HTMLDivElement>(null);
+
+  const scrollToProducts = (instant = false) => {
+    if (shopLayoutRef.current) {
+      const rect = shopLayoutRef.current.getBoundingClientRect();
+      const offset = 90;
+      const targetY = Math.max(0, rect.top + window.pageYOffset - offset);
+      window.scrollTo({
+        top: targetY,
+        behavior: instant ? 'instant' : 'smooth'
+      });
+    }
+  };
 
   // Sincroniza la categoría seleccionada a partir de la URL /categoria/:categorySlug o query ?categoria=...
   useEffect(() => {
@@ -76,6 +89,7 @@ const Shop = () => {
       } else {
         setSelectedFilter('all');
       }
+      setTimeout(() => scrollToProducts(false), 50);
     } else {
       const catParam = searchParams.get('categoria') || searchParams.get('cat');
       if (catParam) {
@@ -84,6 +98,7 @@ const Shop = () => {
           setSelectedFilter(mapped);
           const found = filters.find(item => item.key === mapped);
           document.title = `${found?.label || mapped} - Catálogo Oficial | Megatrol`;
+          setTimeout(() => scrollToProducts(false), 50);
           return;
         }
       }
@@ -262,7 +277,7 @@ const Shop = () => {
         </div>
       </div>
 
-      <div className="shop-layout">
+      <div ref={shopLayoutRef} className="shop-layout">
         {/* Sidebar Categories with Accordion Breakdown */}
         <aside className="shop-sidebar">
           <div className="sidebar-section">
@@ -283,20 +298,20 @@ const Shop = () => {
                   >
                     <Link
                       to={isAll ? '/tienda' : `/categoria/${f.slug}`}
-                      state={isMobile ? { preventScroll: true } : undefined}
+                      state={{ preventScroll: true }}
                       className={`filter-btn ${selectedFilter === f.key ? 'active' : ''}`}
                       onClick={() => {
+                        setSelectedFilter(f.key);
                         if (isMobile) {
-                          setSelectedFilter(f.key);
                           setExpandedCategories(prev => 
                             prev.includes(f.key) 
                               ? prev.filter(k => k !== f.key) 
                               : [...prev, f.key]
                           );
                         } else {
-                          setSelectedFilter(f.key);
                           setExpandedCategories([]);
                         }
+                        scrollToProducts(false);
                       }}
                       title={`Ver productos de ${f.label}`}
                     >
@@ -380,7 +395,13 @@ const Shop = () => {
               <button 
                 type="button" 
                 className="reset-filter-btn" 
-                onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); navigate('/tienda'); }}
+                onClick={() => { 
+                  setSelectedFilter('all'); 
+                  setSearchTerm(''); 
+                  setExpandedCategories([]); 
+                  navigate('/tienda', { state: { preventScroll: true } }); 
+                  scrollToProducts(false);
+                }}
               >
                 <span>Mostrar todos</span>
                 <X size={14} />
@@ -395,7 +416,16 @@ const Shop = () => {
               </div>
               <h3>No se encontraron productos</h3>
               <p>Intenta con otro término de búsqueda o selecciona otra categoría.</p>
-              <button className="btn btn-primary" onClick={() => { setSelectedFilter('all'); setSearchTerm(''); setExpandedCategories([]); navigate('/tienda'); }}>
+              <button 
+                className="btn btn-primary" 
+                onClick={() => { 
+                  setSelectedFilter('all'); 
+                  setSearchTerm(''); 
+                  setExpandedCategories([]); 
+                  navigate('/tienda', { state: { preventScroll: true } }); 
+                  scrollToProducts(false);
+                }}
+              >
                 Ver Todos los Productos
               </button>
             </div>
