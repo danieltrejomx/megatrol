@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { FlaskConical, PawPrint, Leaf, MapPin, Sparkles } from 'lucide-react';
+import { FlaskConical, PawPrint, Leaf, MapPin, Sparkles, ShieldAlert } from 'lucide-react';
 import './About.css';
 
 function useCountUp(target: number, duration: number = 1800, start: boolean = false) {
@@ -81,17 +81,37 @@ const About = () => {
                 <Sparkles size={13} /> Origen y Trayectoria
               </span>
               <h2>Nuestra Historia</h2>
-              <p>
-                Inobazz Pharma nació de una necesidad evidente: la industria veterinaria dependía
-                enormemente de pesticidas sintéticos y químicos agresivos para el control de parásitos.
-                Estos productos, aunque efectivos, a menudo provocaban reacciones adversas en mascotas
-                sensibles y suponían un riesgo a largo plazo para la salud del animal y la familia.
-              </p>
-              <p>
-                Con un equipo multidisciplinario de veterinarios, químicos y biólogos, nos propusimos
-                desarrollar una alternativa que fuera igualmente letal para los parásitos pero completamente
-                segura para los mamíferos. Así nació la línea Megatrol.
-              </p>
+              
+              <div className="history-story-cards">
+                {/* Bloque 1: El Desafío */}
+                <div className="history-story-card challenge">
+                  <div className="story-card-icon-wrap challenge">
+                    <ShieldAlert size={22} />
+                  </div>
+                  <div className="story-card-content">
+                    <span className="story-card-tag">El Desafío</span>
+                    <h3>Dependencia de Químicos Agresivos</h3>
+                    <p>
+                      La industria veterinaria dependía de pesticidas sintéticos que provocaban reacciones adversas en mascotas sensibles y suponían un riesgo a largo plazo para la familia.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bloque 2: La Solución Innovadora */}
+                <div className="history-story-card solution">
+                  <div className="story-card-icon-wrap solution">
+                    <FlaskConical size={22} />
+                  </div>
+                  <div className="story-card-content">
+                    <span className="story-card-tag">La Innovación</span>
+                    <h3>Biotecnología Botánica Megatrol</h3>
+                    <p>
+                      Veterinarios, químicos y biólogos desarrollamos una alternativa botánica de grado farmacéutico: letal contra parásitos y 100% segura para los mamíferos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div className="history-banner-tags">
                 <span className="history-tag">🔬 Rigor Científico y Farmacéutico</span>
                 <span className="history-tag">🌿 Fórmulas Botánicas No Tóxicas</span>
