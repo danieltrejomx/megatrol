@@ -92,6 +92,11 @@
   color: #38bdf8;
 }
 
+.social-links a.social-wa-link:hover {
+  color: #25d366;
+}
+
+
 /* Link Columns */
 .footer-links-col ul {
   display: flex;
