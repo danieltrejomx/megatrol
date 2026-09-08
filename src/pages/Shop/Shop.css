@@ -6,14 +6,19 @@
   position: relative;
   text-align: center;
   margin-bottom: 45px;
-  padding: 60px 30px 50px;
+  padding: 38px 30px 34px;
+  min-height: 275px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border-radius: 24px;
   overflow: hidden;
   background-image: 
     linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
-    url('/images/shop-banner.jpg');
+    url('/images/banner-tab-tienda.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 38%;
   box-shadow: 0 10px 30px rgba(0, 132, 199, 0.08);
   border: 1px solid rgba(0, 132, 199, 0.18);
 }
@@ -28,25 +33,25 @@
   letter-spacing: 1.2px;
   padding: 6px 18px;
   border-radius: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   box-shadow: 0 2px 8px rgba(0, 132, 199, 0.3);
 }
 
 .shop-header h1 {
-  font-size: 40px;
+  font-size: clamp(30px, 3.2vw, 38px);
   font-weight: 800;
   color: var(--color-heading);
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 .shop-header p {
-  font-size: 17px;
+  font-size: 16px;
   color: #335566;
   font-weight: 500;
-  line-height: 1.6;
+  line-height: 1.5;
   max-width: 660px;
-  margin: 0 auto 26px auto;
+  margin: 0 auto 20px auto;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
 }
 

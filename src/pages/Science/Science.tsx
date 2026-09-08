@@ -5,7 +5,7 @@ const Science = () => {
   return (
     <div className="science-page">
       <div className="container page-banner-container">
-        <div className="page-banner-header">
+        <div className="page-banner-header banner-ciencia">
           <span className="page-banner-badge">Innovación Natural</span>
           <h1>Nuestra Ciencia</h1>
           <p>

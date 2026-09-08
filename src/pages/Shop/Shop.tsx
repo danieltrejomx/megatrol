@@ -120,7 +120,7 @@ const Shop = () => {
   return (
     <div className="shop-page container">
       {/* Header Banner */}
-      <div className="shop-header">
+      <div className="shop-header banner-tienda">
         <span className="shop-badge">Catálogo Oficial Inobazz Pharma</span>
         <h1>Catálogo</h1>
         <p>Soluciones ecológicas, nutricionales y farmacéuticas de grado veterinario para la salud y bienestar de tu mascota.</p>

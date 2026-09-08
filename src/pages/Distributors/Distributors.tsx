@@ -28,7 +28,7 @@ const Distributors = () => {
   return (
     <div className="distributors-page">
       <div className="container page-banner-container">
-        <div className="page-banner-header">
+        <div className="page-banner-header banner-distribuidores">
           <span className="page-banner-badge">Ventas al Mayoreo</span>
           <h1>Únete a la Red Megatrol</h1>
           <p>

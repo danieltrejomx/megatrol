@@ -472,9 +472,9 @@
   position: relative;
   background: 
     linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
-    url('/images/shop-banner.jpg');
+    url('/images/banner-tab-tienda.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 38%;
   border-radius: 28px;
   padding: 50px 36px 44px;
   text-align: center;
@@ -823,9 +823,9 @@
   position: relative;
   background: 
     linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
-    url('/images/shop-banner.jpg');
+    url('/images/banner-tab-ciencia.jpg');
   background-size: cover;
-  background-position: center 32%;
+  background-position: center 36%;
   border-radius: 28px;
   padding: 50px 36px 44px;
   text-align: center;
@@ -1309,9 +1309,9 @@
   position: relative;
   background: 
     linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
-    url('/images/shop-banner.jpg');
+    url('/images/banner-tab-blog.jpg');
   background-size: cover;
-  background-position: center 38%;
+  background-position: center 25%;
   border-radius: 28px;
   padding: 50px 36px 44px;
   text-align: center;
@@ -1608,9 +1608,9 @@
   position: relative;
   background: 
     linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
-    url('/images/shop-banner.jpg');
+    url('/images/banner-tab-distribuidores.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 40%;
   border-radius: 28px;
   padding: 50px 36px 44px;
   text-align: center;
@@ -1996,9 +1996,9 @@
   position: relative;
   background: 
     linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
-    url('/images/shop-banner.jpg');
+    url('/images/banner-tab-blog.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 25%;
   border-radius: 28px;
   padding: 50px 36px 44px;
   text-align: center;

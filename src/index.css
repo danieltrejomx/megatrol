@@ -142,7 +142,7 @@ ul {
   box-shadow: 0 6px 18px rgba(116, 192, 67, 0.35);
 }
 
-/* ── SHARED PAGE BANNER (Matches Shop Catalog Banner) ── */
+/* ── SHARED PAGE BANNER (Standardized dimensions across all tabs) ── */
 .page-banner-container {
   padding-top: 40px;
   margin-bottom: 45px;
@@ -151,16 +151,58 @@ ul {
 .page-banner-header {
   position: relative;
   text-align: center;
-  padding: 60px 30px 50px;
+  padding: 44px 30px;
+  min-height: 275px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border-radius: 24px;
   overflow: hidden;
-  background-image: 
-    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
-    url('/images/shop-banner.jpg');
   background-size: cover;
-  background-position: center 30%;
+  background-position: center 35%;
   box-shadow: 0 10px 30px rgba(0, 132, 199, 0.08);
   border: 1px solid rgba(0, 132, 199, 0.18);
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
+    url('/images/banner-tab-ciencia.jpg');
+}
+
+/* Specific Tab Backgrounds */
+.page-banner-header.banner-ciencia {
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
+    url('/images/banner-tab-ciencia.jpg');
+  background-position: center 36%;
+}
+
+.page-banner-header.banner-tienda,
+.shop-header {
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
+    url('/images/banner-tab-tienda.jpg');
+  background-position: center 38%;
+}
+
+.page-banner-header.banner-blog {
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
+    url('/images/banner-tab-blog.jpg');
+  background-position: center 25%;
+}
+
+.page-banner-header.banner-nosotros {
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
+    url('/images/banner-tab-nosotros.jpg');
+  background-position: center 32%;
+}
+
+.page-banner-header.banner-distribuidores {
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(224, 242, 254, 0.82) 40%, rgba(241, 248, 233, 0.88) 100%),
+    url('/images/banner-tab-distribuidores.jpg');
+  background-position: center 40%;
 }
 
 .page-banner-badge {
@@ -173,20 +215,20 @@ ul {
   letter-spacing: 1.2px;
   padding: 6px 18px;
   border-radius: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   box-shadow: 0 2px 8px rgba(0, 132, 199, 0.3);
 }
 
 .page-banner-header h1 {
-  font-size: 40px;
+  font-size: clamp(30px, 3.2vw, 38px);
   font-weight: 800;
   color: var(--color-heading);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 .page-banner-header p {
-  font-size: 17px;
+  font-size: 16.5px;
   color: #335566;
   font-weight: 500;
   line-height: 1.6;
@@ -201,13 +243,14 @@ ul {
     margin-bottom: 32px;
   }
   .page-banner-header {
-    padding: 40px 20px 36px;
+    min-height: 230px;
+    padding: 34px 20px 30px;
     border-radius: 18px;
   }
   .page-banner-header h1 {
-    font-size: 30px;
+    font-size: 28px;
   }
   .page-banner-header p {
-    font-size: 15px;
+    font-size: 14.5px;
   }
 }

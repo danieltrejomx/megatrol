@@ -62,7 +62,7 @@ const About = () => {
   return (
     <div className="about-page">
       <div className="container page-banner-container">
-        <div className="page-banner-header">
+        <div className="page-banner-header banner-nosotros">
           <span className="page-banner-badge">Laboratorio Farmacéutico Veterinario</span>
           <h1>Conoce a Inobazz</h1>
           <p>
