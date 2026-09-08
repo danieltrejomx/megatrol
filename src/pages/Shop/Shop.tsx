@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { 
   PawPrint, 
   Leaf, 
@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { useCart } from '../../context/CartContext';
+import { ProductModal } from '../../components/ProductModal/ProductModal';
 import './Shop.css';
 
 const filters = [
@@ -34,8 +35,26 @@ const Shop = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [addedId, setAddedId] = useState<number | null>(null);
+  const [modalProduct, setModalProduct] = useState<Product | null>(null);
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Open modal if URL specifies ?producto=slug or ?p=slug
+  useEffect(() => {
+    const slug = searchParams.get('producto') || searchParams.get('p');
+    if (slug) {
+      const found = products.find(p => p.slug === slug);
+      if (found) setModalProduct(found);
+    }
+  }, [searchParams]);
+
+  const handleCloseModal = () => {
+    setModalProduct(null);
+    if (searchParams.get('producto') || searchParams.get('p')) {
+      navigate('/tienda', { replace: true });
+    }
+  };
 
   const filteredProducts = products.filter(product => {
     const matchesFilter = selectedFilter === 'all' || product.line === selectedFilter;
@@ -55,7 +74,7 @@ const Shop = () => {
     <div
       key={product.id}
       className="product-card"
-      onClick={() => navigate(`/producto/${product.slug}`)}
+      onClick={() => setModalProduct(product)}
     >
       {product.tag && <span className="product-card-tag">{product.tag}</span>}
       
@@ -210,7 +229,7 @@ const Shop = () => {
                           <div
                             key={p.id}
                             className="drawer-product-row"
-                            onClick={() => navigate(`/producto/${p.slug}`)}
+                            onClick={() => setModalProduct(p)}
                             title={`Ver detalles de ${p.name}`}
                           >
                             <img src={p.image} alt={p.name} className="drawer-product-img" />
@@ -323,6 +342,9 @@ const Shop = () => {
           )}
         </main>
       </div>
+
+      {/* Pantalla Emergente de Producto (Product Detail Modal) */}
+      <ProductModal product={modalProduct} onClose={handleCloseModal} />
     </div>
   );
 };

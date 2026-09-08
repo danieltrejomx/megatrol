@@ -19,9 +19,10 @@ import {
   ShoppingCart,
   Send
 } from 'lucide-react';
-import { products } from '../../data/products';
+import { products, type Product } from '../../data/products';
 import { blogArticles, type BlogArticle } from '../../data/blog';
 import BlogModal from '../../components/BlogModal/BlogModal';
+import { ProductModal } from '../../components/ProductModal/ProductModal';
 import { useCart } from '../../context/CartContext';
 import './Home.css';
 
@@ -268,6 +269,7 @@ const Home = () => {
   };
 
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
+  const [modalProduct, setModalProduct] = useState<Product | null>(null);
 
   const handleAddFromVideo = (slug: string) => {
     const productObj = products.find((p) => p.slug === slug);
@@ -524,7 +526,7 @@ const Home = () => {
                   className="carousel-card" 
                   onClick={() => {
                     if (dragMovedRef.current) return;
-                    navigate(`/producto/${p.slug}`);
+                    setModalProduct(p);
                   }}
                 >
                   {p.tag && <span className="product-tag">{p.tag}</span>}
@@ -727,17 +729,22 @@ const Home = () => {
                     <div className="video-product-cards-list">
                       {demoVideos[selectedVideoIndex].products.map((prod) => (
                         <div key={prod.slug} className="video-product-tile">
-                          <Link 
-                            to={`/producto/${prod.slug}`} 
+                          <button 
+                            type="button"
+                            onClick={() => {
+                              const found = products.find((p) => p.slug === prod.slug);
+                              if (found) setModalProduct(found);
+                            }}
                             className="video-prod-main-link"
                             title={`Ver detalles de ${prod.name}`}
+                            style={{ background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', padding: 0 }}
                           >
                             <img src={prod.image} alt={prod.name} className="video-prod-thumb" />
                             <div className="video-prod-details">
                               <strong className="video-prod-name">{prod.name}</strong>
                               <span className="video-prod-price">${prod.price} MXN</span>
                             </div>
-                          </Link>
+                          </button>
 
                           <div className="video-prod-actions">
                             <button
@@ -1126,6 +1133,9 @@ const Home = () => {
 
       {/* Pantalla Emergente (Modal) con toda la información del artículo */}
       <BlogModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />
+
+      {/* Pantalla Emergente (Modal) con toda la información del producto */}
+      <ProductModal product={modalProduct} onClose={() => setModalProduct(null)} />
 
     </div>
   );
