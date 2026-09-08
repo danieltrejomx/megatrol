@@ -17,7 +17,9 @@ import {
   Package,
   Stethoscope,
   ShoppingCart,
-  Send
+  Send,
+  Sparkles,
+  ArrowRight
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { blogArticles, type BlogArticle } from '../../data/blog';
@@ -631,40 +633,46 @@ const Home = () => {
 
       {/* ── HOW IT WORKS ──────────────────────────────────────── */}
       <section className="how-works-section">
-        <div className="container how-works-container">
-          <div className="how-works-content">
-            <span className="section-label">Mecanismo de Acción</span>
-            <h2>¿Cómo funciona Megatrol?</h2>
-            <p>
-              Megatrol fue formulado para que el bienestar de tu mascota sea lo más importante. 
-              Es la mejor alternativa para librarte de las pulgas y garrapatas que afectan a tu mascota y a tu familia.
-            </p>
-            <div className="works-steps">
-              <div className="step">
-                <span className="step-num">01</span>
-                <div>
-                  <h4>Ataca al Adulto</h4>
-                  <p>Afecta directamente el sistema neuroendocrino del parásito adulto.</p>
+        <div className="container">
+          <div className="how-works-banner">
+            <div className="how-works-content">
+              <span className="works-badge">
+                <Sparkles size={14} /> Mecanismo de Acción Científico
+              </span>
+              <h2>¿Cómo funciona Megatrol?</h2>
+              <p>
+                Megatrol fue formulado para que el bienestar de tu mascota sea lo más importante. 
+                Es la mejor alternativa botánica y ecológica para librarte de las pulgas y garrapatas que afectan a tu mascota y a tu familia.
+              </p>
+              <div className="works-steps">
+                <div className="step-glass">
+                  <span className="step-num">01</span>
+                  <div>
+                    <h4>Ataca al Adulto</h4>
+                    <p>Afecta directamente el sistema neuroendocrino del parásito adulto.</p>
+                  </div>
+                </div>
+                <div className="step-glass">
+                  <span className="step-num">02</span>
+                  <div>
+                    <h4>Bloquea Huevos y Larvas</h4>
+                    <p>Bloquea la hormona ecdisona en huevos y larvas, impidiendo su eclosión.</p>
+                  </div>
+                </div>
+                <div className="step-glass">
+                  <span className="step-num">03</span>
+                  <div>
+                    <h4>Rompe el Ciclo de Vida</h4>
+                    <p>Elimina la reinfestación al cortar el ciclo completo del parásito.</p>
+                  </div>
                 </div>
               </div>
-              <div className="step">
-                <span className="step-num">02</span>
-                <div>
-                  <h4>Bloquea Huevos y Larvas</h4>
-                  <p>Bloquea la hormona ecdisona en huevos y larvas, impidiendo su eclosión.</p>
-                </div>
-              </div>
-              <div className="step">
-                <span className="step-num">03</span>
-                <div>
-                  <h4>Rompe el Ciclo de Vida</h4>
-                  <p>Elimina la reinfestación al cortar el ciclo completo del parásito.</p>
-                </div>
-              </div>
+              <Link to="/ciencia" className="btn btn-primary btn-works-cta">
+                <span>Conoce Nuestra Ciencia</span>
+                <ArrowRight size={16} />
+              </Link>
             </div>
-            <Link to="/ciencia" className="btn btn-primary">Conoce Nuestra Ciencia</Link>
-          </div>
-          <div className="how-works-image">
+            <div className="how-works-image">
             <div className="video-showcase-container">
               {/* Header */}
               <div className="video-player-header">
@@ -785,7 +793,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* ── TESTIMONIALS (4 EN FILA / CAROUSEL) ──────────────── */}
       <section className="testimonials-section">
