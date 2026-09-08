@@ -225,15 +225,27 @@ export const AccountModal = () => {
           </div>
 
           <div className="account-header-actions">
-            <button
-              type="button"
-              className={`account-header-edit-btn ${headerSaved ? 'saved' : ''}`}
-              onClick={handleHeaderSave}
-              title="Guardar cambios de tu cuenta"
-            >
-              <Check size={14} />
-              <span>{headerSaved ? '¡Guardado!' : 'Guardar Cambios'}</span>
-            </button>
+            {activeTab === 'profile' ? (
+              <button
+                type="button"
+                className={`account-header-edit-btn ${headerSaved ? 'saved' : ''}`}
+                onClick={handleHeaderSave}
+                title="Guardar cambios de tu cuenta"
+              >
+                <Check size={14} />
+                <span>{headerSaved ? '¡Guardado!' : 'Guardar Cambios'}</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="account-header-edit-btn"
+                onClick={() => setActiveTab('profile')}
+                title="Editar nombre y foto de perfil"
+              >
+                <Pencil size={14} />
+                <span>Editar Perfil</span>
+              </button>
+            )}
             <button 
               type="button" 
               className="account-logout-btn" 
