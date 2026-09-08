@@ -152,25 +152,19 @@ const homeLines = [
 
 const demoVideos = [
   {
-    id: 'shower-shampoo',
-    title: 'Shower Shampoo & Talco Megatrol',
-    shortTitle: 'Shower & Talco',
-    badge: 'Limpieza y Protección',
-    desc: 'Remueve impurezas y grasa con rico aroma a chicle, y protege con talco sin mojar a tu mascota.',
-    src: '/videos/video-demostracion-shower-shampoo.mp4',
-    driveUrl: 'https://drive.google.com/file/d/1krn2iqeeCz4Nt0SnmewGTYX9c4Pf-blU/view?usp=sharing',
+    id: 'dermapet',
+    title: 'Línea Dermatológica Dermapet',
+    shortTitle: 'Dermapet Shampoo',
+    badge: 'Baño Medicado',
+    desc: 'Ingredientes de origen natural y pH balanceado para calmar, hidratar y tratar afecciones en la piel.',
+    src: '/videos/video-demostracion-dermapet.mp4',
+    driveUrl: 'https://drive.google.com/file/d/1Vn73XXF6i6t6jjMwgIyH93ZSYXIDTMQH/view?usp=sharing',
     products: [
       {
-        slug: 'shower-shampoo-aromas',
-        name: 'Shower Shampoo Aromas',
-        price: 210,
-        image: '/images/shower-shampoo-aromas.png'
-      },
-      {
-        slug: 'talco-ecologico',
-        name: 'Talco Ecológico Megatrol (80 g)',
-        price: 199,
-        image: '/images/megatrol-talco-80g.png'
+        slug: 'dermapet-shampoo',
+        name: 'Dermapet Shampoo Dermatológico',
+        price: 270,
+        image: '/images/dermapet-shampoo.png'
       }
     ]
   },
