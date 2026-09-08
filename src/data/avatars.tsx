@@ -75,32 +75,6 @@ export const PRESET_AVATARS: AvatarOption[] = [
     )
   },
   {
-    id: 'horse',
-    name: 'Caballo Noble',
-    bg: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
-    border: '#d97706',
-    icon: (size = 32) => (
-      <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
-        {/* Mane */}
-        <path d="M19 8C19 8 20 14 17 18C15 21 16 25 16 25" stroke="#78350f" strokeWidth="3.5" strokeLinecap="round" />
-        {/* Ears */}
-        <polygon points="20,13 22,7 25,12" fill="#92400e" />
-        <polygon points="26,14 28,7 30,13" fill="#92400e" />
-        {/* Face */}
-        <path d="M21 12C21 12 30 14 30 20C30 24 28 29 27 34C26.5 36.5 24 38 21.5 38C19 38 17.5 36.5 17 34C16 29 18 20 21 12Z" fill="#b45309" />
-        {/* White blaze */}
-        <path d="M23 15C23 15 25 21 24.5 27C24.2 30 23 32 23 32" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" />
-        {/* Muzzle */}
-        <ellipse cx="22" cy="35" rx="5" ry="3.5" fill="#78350f" />
-        <circle cx="20" cy="35" r="0.8" fill="#1e293b" />
-        <circle cx="24" cy="35" r="0.8" fill="#1e293b" />
-        {/* Eye */}
-        <circle cx="27.5" cy="20" r="1.8" fill="#1e293b" />
-        <circle cx="27" cy="19.4" r="0.6" fill="#ffffff" />
-      </svg>
-    )
-  },
-  {
     id: 'paw',
     name: 'Huellita Megatrol',
     bg: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
@@ -120,26 +94,74 @@ export const PRESET_AVATARS: AvatarOption[] = [
     )
   },
   {
-    id: 'vet',
+    id: 'vet_male',
     name: 'Doctor Veterinario',
     bg: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
     border: '#0284c7',
     icon: (size = 32) => (
       <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+        {/* Lab coat collar background */}
+        <path d="M14 43C14 36.5 17.5 33 24 33C30.5 33 34 36.5 34 43H14Z" fill="#ffffff" stroke="#cbd5e1" strokeWidth="1.2" />
+        <path d="M20 33L24 38.5L28 33" fill="#0284c7" />
         {/* Stethoscope */}
-        <path d="M15 18V26C15 31 19 35 24 35C29 35 33 31 33 26V18" stroke="#0369a1" strokeWidth="2.5" strokeLinecap="round" />
-        <circle cx="15" cy="17" r="2" fill="#0284c7" />
-        <circle cx="33" cy="17" r="2" fill="#0284c7" />
-        <path d="M24 35V39M24 39C21.5 39 21.5 42 24 42C26.5 42 26.5 39 24 39Z" stroke="#0369a1" strokeWidth="2" strokeLinecap="round" />
+        <path d="M16 25V30C16 34.5 19 37 24 37C29 37 32 34.5 32 30V25" stroke="#0369a1" strokeWidth="2.2" strokeLinecap="round" />
+        <circle cx="16" cy="24" r="1.8" fill="#0284c7" />
+        <circle cx="32" cy="24" r="1.8" fill="#0284c7" />
+        <path d="M24 37V40M24 40C22 40 22 42.5 24 42.5C26 42.5 26 40 24 40Z" stroke="#0369a1" strokeWidth="1.8" strokeLinecap="round" />
         {/* Doctor Head */}
         <circle cx="24" cy="20" r="9" fill="#fed7aa" />
-        {/* Medical Cap */}
-        <path d="M15 18C15 12 18 10 24 10C30 10 33 12 33 18H15Z" fill="#0284c7" />
-        <path d="M22.5 14H25.5M24 12.5V15.5" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
+        {/* Hair peeking at temples */}
+        <path d="M15 19C15 15 16.5 13 18 12.5C16.5 15.5 16.5 18.5 16.5 21H15V19Z" fill="#334155" />
+        <path d="M33 19C33 15 31.5 13 30 12.5C31.5 15.5 31.5 18.5 31.5 21H33V19Z" fill="#334155" />
+        {/* Medical Scrub Cap */}
+        <path d="M15 17C15 11 18 9 24 9C30 9 33 11 33 17H15Z" fill="#0284c7" />
+        <path d="M22.5 13H25.5M24 11.5V14.5" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
         {/* Face */}
-        <circle cx="21" cy="20" r="1.3" fill="#1e293b" />
-        <circle cx="27" cy="20" r="1.3" fill="#1e293b" />
-        <path d="M22 24C22.5 25 23.5 25.5 24 25.5C24.5 25.5 25.5 25 26 24" stroke="#1e293b" strokeWidth="1.2" strokeLinecap="round" />
+        <circle cx="21" cy="20" r="1.2" fill="#1e293b" />
+        <circle cx="27" cy="20" r="1.2" fill="#1e293b" />
+        <path d="M22 23.8C22.6 24.8 23.4 25.1 24 25.1C24.6 25.1 25.4 24.8 26 23.8" stroke="#1e293b" strokeWidth="1.2" strokeLinecap="round" />
+        {/* Cheeks */}
+        <circle cx="18" cy="22" r="1.3" fill="#f43f5e" opacity="0.35" />
+        <circle cx="30" cy="22" r="1.3" fill="#f43f5e" opacity="0.35" />
+      </svg>
+    )
+  },
+  {
+    id: 'vet_female',
+    name: 'Doctora Veterinaria',
+    bg: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%)',
+    border: '#ec4899',
+    icon: (size = 32) => (
+      <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+        {/* Lab coat collar background */}
+        <path d="M14 43C14 36.5 17.5 33 24 33C30.5 33 34 36.5 34 43H14Z" fill="#ffffff" stroke="#fbcfe8" strokeWidth="1.2" />
+        <path d="M20 33L24 38.5L28 33" fill="#ec4899" />
+        {/* Hair behind shoulders */}
+        <path d="M14 22C13 27 14 33 16 35C17 33 16 27 16 23Z" fill="#854d0e" />
+        <path d="M34 22C35 27 34 33 32 35C31 33 32 27 32 23Z" fill="#854d0e" />
+        {/* Stethoscope */}
+        <path d="M16 25V30C16 34.5 19 37 24 37C29 37 32 34.5 32 30V25" stroke="#db2777" strokeWidth="2.2" strokeLinecap="round" />
+        <circle cx="16" cy="24" r="1.8" fill="#ec4899" />
+        <circle cx="32" cy="24" r="1.8" fill="#ec4899" />
+        <path d="M24 37V40M24 40C22 40 22 42.5 24 42.5C26 42.5 26 40 24 40Z" stroke="#db2777" strokeWidth="1.8" strokeLinecap="round" />
+        {/* Head */}
+        <circle cx="24" cy="20" r="9" fill="#fed7aa" />
+        {/* Hair strands framing face */}
+        <path d="M16 17C16 20 17 23 18 24C17 22 17 19 18 17Z" fill="#854d0e" />
+        <path d="M32 17C32 20 31 23 30 24C31 22 31 19 30 17Z" fill="#854d0e" />
+        {/* Medical Scrub Cap */}
+        <path d="M15 17C15 11 18 9 24 9C30 9 33 11 33 17H15Z" fill="#ec4899" />
+        <circle cx="24" cy="7.5" r="2.2" fill="#db2777" />
+        <path d="M22.5 13H25.5M24 11.5V14.5" stroke="#ffffff" strokeWidth="1.6" strokeLinecap="round" />
+        {/* Face */}
+        <circle cx="21" cy="20" r="1.2" fill="#1e293b" />
+        <circle cx="20.6" cy="19.6" r="0.4" fill="#ffffff" />
+        <circle cx="27" cy="20" r="1.2" fill="#1e293b" />
+        <circle cx="26.6" cy="19.6" r="0.4" fill="#ffffff" />
+        <path d="M22 23.8C22.6 24.8 23.4 25.1 24 25.1C24.6 25.1 25.4 24.8 26 23.8" stroke="#1e293b" strokeWidth="1.2" strokeLinecap="round" />
+        {/* Rosy cheeks */}
+        <circle cx="18" cy="22" r="1.6" fill="#f43f5e" opacity="0.45" />
+        <circle cx="30" cy="22" r="1.6" fill="#f43f5e" opacity="0.45" />
       </svg>
     )
   },
@@ -200,6 +222,8 @@ export const PRESET_AVATARS: AvatarOption[] = [
 
 export const getPresetAvatar = (avatarId?: string): AvatarOption | undefined => {
   if (!avatarId) return undefined;
+  if (avatarId === 'vet') return PRESET_AVATARS.find(a => a.id === 'vet_male');
+  if (avatarId === 'horse') return PRESET_AVATARS.find(a => a.id === 'dog');
   return PRESET_AVATARS.find(a => a.id === avatarId);
 };
 

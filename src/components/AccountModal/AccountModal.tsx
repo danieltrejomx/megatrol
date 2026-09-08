@@ -117,6 +117,13 @@ export const AccountModal = () => {
     setTimeout(() => setAddressSavedToast(false), 3000);
   };
 
+  const handleSelectAvatar = (avatarId: string) => {
+    setEditAvatar(avatarId);
+    updateProfile({
+      avatar: avatarId
+    });
+  };
+
   const handleProfileSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!editName.trim()) return;
@@ -164,7 +171,7 @@ export const AccountModal = () => {
               onClick={() => setActiveTab('profile')} 
               title="Haz clic para cambiar tu avatar de perfil"
             >
-              <UserAvatar avatarId={currentUser.avatar} name={currentUser.name} size={68} />
+              <UserAvatar avatarId={editAvatar || currentUser.avatar} name={editName || currentUser.name} size={68} />
               <span className="account-avatar-edit-badge" aria-label="Editar foto de perfil">
                 <Pencil size={12} />
               </span>
@@ -172,12 +179,12 @@ export const AccountModal = () => {
 
             <div className="account-user-meta">
               <div className="account-name-badge">
-                <h2 className="account-user-name">{currentUser.name}</h2>
+                <h2 className="account-user-name">{editName || currentUser.name}</h2>
                 <span className="account-role-tag">Cliente Megatrol</span>
               </div>
               <p className="account-user-email">{currentUser.email}</p>
-              {currentUser.phone && (
-                <p className="account-user-phone">📞 {currentUser.phone}</p>
+              {(editPhone || currentUser.phone) && (
+                <p className="account-user-phone">📞 {editPhone || currentUser.phone}</p>
               )}
             </div>
           </div>
@@ -521,7 +528,7 @@ export const AccountModal = () => {
                         type="button"
                         key={avatar.id}
                         className={`preset-avatar-option ${isSelected ? 'selected' : ''}`}
-                        onClick={() => setEditAvatar(avatar.id)}
+                        onClick={() => handleSelectAvatar(avatar.id)}
                       >
                         <div 
                           className="preset-avatar-bubble"
@@ -543,7 +550,7 @@ export const AccountModal = () => {
                   <button
                     type="button"
                     className={`preset-avatar-option ${editAvatar === 'initials' || !editAvatar ? 'selected' : ''}`}
-                    onClick={() => setEditAvatar('initials')}
+                    onClick={() => handleSelectAvatar('initials')}
                   >
                     <div 
                       className="preset-avatar-bubble"
