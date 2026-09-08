@@ -13,6 +13,7 @@ import {
   Building2,
   Store,
   ChevronRight,
+  ChevronDown,
   Sparkles,
   Heart,
   User,
@@ -22,7 +23,7 @@ import {
 } from 'lucide-react';
 import { useAuth, type UserAddress } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
-import { products } from '../../data/products';
+import { products, parsePresentations, getAromaEmoji } from '../../data/products';
 import { PRESET_AVATARS, UserAvatar } from '../../data/avatars';
 import { Link } from 'react-router-dom';
 import './AccountModal.css';
@@ -46,7 +47,15 @@ export const AccountModal = () => {
     toggleFavorite
   } = useAuth();
   
-  const { items, totalPrice, openCart, addToCart } = useCart();
+  const { 
+    items, 
+    totalPrice, 
+    openCart, 
+    addToCart, 
+    removeFromCart, 
+    updateQuantity, 
+    updateItemVariant 
+  } = useCart();
   
   const [activeTab, setActiveTab] = useState<'orders' | 'favorites' | 'profile' | 'address' | 'cart'>('orders');
   const [addressSavedToast, setAddressSavedToast] = useState(false);
@@ -689,21 +698,120 @@ export const AccountModal = () => {
               ) : (
                 <div className="account-cart-list">
                   <div className="account-cart-items">
-                    {items.map(it => (
-                      <div key={it.id} className="account-cart-item">
-                        <img src={it.activeImage} alt={it.product.name} className="account-cart-thumb" />
-                        <div className="account-cart-meta">
-                          <h4>{it.product.name}</h4>
-                          <span className="account-cart-variant">
-                            {[it.selectedAroma, it.selectedPresentation].filter(Boolean).join(' • ') || 'Estándar'}
-                          </span>
-                          <span className="account-cart-qty">Cantidad: {it.quantity}</span>
+                    {items.map(it => {
+                      const availablePresentations = parsePresentations(it.product.presentation);
+                      const availableAromas = it.product.aromas || [];
+                      const unitPrice = it.unitPrice ?? it.product.price;
+                      const itemTotal = unitPrice * it.quantity;
+                      const currentImg = it.activeImage || it.product.image;
+
+                      return (
+                        <div key={it.id} className="account-cart-item">
+                          <img src={currentImg} alt={it.product.name} className="account-cart-thumb" />
+                          <div className="account-cart-meta">
+                            <div className="account-cart-item-header">
+                              <h4 className="account-cart-item-title">{it.product.name}</h4>
+                              <button
+                                type="button"
+                                className="account-cart-delete-btn"
+                                onClick={() => removeFromCart(it.id)}
+                                title="Eliminar producto"
+                                aria-label={`Eliminar ${it.product.name} del carrito`}
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+
+                            {/* Selectores interactivos de presentación y aroma */}
+                            <div className="account-cart-variants-selectors">
+                              {availablePresentations.length > 1 ? (
+                                <div className="account-variant-select-wrapper" title="Cambiar presentación">
+                                  <Package size={12} className="account-variant-icon" />
+                                  <select
+                                    className="account-variant-select"
+                                    value={it.selectedPresentation || availablePresentations[0]}
+                                    onChange={(e) => updateItemVariant(it.id, e.target.value, it.selectedAroma)}
+                                    aria-label={`Cambiar presentación de ${it.product.name}`}
+                                  >
+                                    {availablePresentations.map((pres) => {
+                                      const presPrice = it.product.presentationPrices?.[pres];
+                                      const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice})` : '';
+                                      return (
+                                        <option key={pres} value={pres}>
+                                          {pres}{priceLabel}
+                                        </option>
+                                      );
+                                    })}
+                                  </select>
+                                  <ChevronDown size={11} className="account-variant-arrow" />
+                                </div>
+                              ) : it.selectedPresentation ? (
+                                <span className="account-variant-tag">
+                                  <Package size={11} />
+                                  <span>{it.selectedPresentation}</span>
+                                </span>
+                              ) : null}
+
+                              {availableAromas.length > 1 ? (
+                                <div className="account-variant-select-wrapper aroma" title="Cambiar aroma">
+                                  <Sparkles size={12} className="account-variant-icon" />
+                                  <select
+                                    className="account-variant-select"
+                                    value={it.selectedAroma || availableAromas[0]}
+                                    onChange={(e) => updateItemVariant(it.id, it.selectedPresentation, e.target.value)}
+                                    aria-label={`Cambiar aroma de ${it.product.name}`}
+                                  >
+                                    {availableAromas.map((aroma) => (
+                                      <option key={aroma} value={aroma}>
+                                        {getAromaEmoji(aroma)} {aroma}
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <ChevronDown size={11} className="account-variant-arrow" />
+                                </div>
+                              ) : it.selectedAroma ? (
+                                <span className="account-variant-tag aroma">
+                                  <Sparkles size={11} />
+                                  <span>{getAromaEmoji(it.selectedAroma)} {it.selectedAroma}</span>
+                                </span>
+                              ) : null}
+                            </div>
+
+                            {/* Controles de cantidad y precio */}
+                            <div className="account-cart-item-footer">
+                              <div className="account-cart-qty-ctrl">
+                                <button
+                                  type="button"
+                                  onClick={() => updateQuantity(it.id, it.quantity - 1)}
+                                  aria-label="Disminuir cantidad"
+                                  className="account-cart-qty-btn"
+                                >
+                                  −
+                                </button>
+                                <span className="account-cart-qty-val">{it.quantity}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => updateQuantity(it.id, it.quantity + 1)}
+                                  aria-label="Aumentar cantidad"
+                                  className="account-cart-qty-btn"
+                                >
+                                  +
+                                </button>
+                              </div>
+
+                              <div className="account-cart-pricing">
+                                {it.quantity > 1 && (
+                                  <span className="account-cart-unit-price">${unitPrice.toLocaleString('es-MX')} c/u</span>
+                                )}
+                                <strong className="account-cart-total-price">
+                                  ${itemTotal.toLocaleString('es-MX')} MXN
+                                </strong>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <div className="account-cart-pricing">
-                          <strong>${((it.unitPrice ?? it.product.price) * it.quantity).toLocaleString('es-MX')} MXN</strong>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   <div className="account-cart-checkout-box">
