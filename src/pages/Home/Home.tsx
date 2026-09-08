@@ -61,6 +61,7 @@ const testimonials = [
     role: 'Médico Veterinario Zootecnista',
     city: 'CDMX',
     product: 'Spray Megatrol',
+    productSlug: 'spray-antipulgas',
     stars: 5,
     title: '¡En 3 días eliminó las pulgas!',
     text: 'Lo receto a diario en mi clínica. Los dueños quedan fascinados porque no huele a químico agresivo y rompe el ciclo biológico sin irritar la piel sensible.',
@@ -72,6 +73,7 @@ const testimonials = [
     role: 'Dueña de 3 Gatos Persa',
     city: 'Guadalajara',
     product: 'Shampoo Antipulgas Megatrol',
+    productSlug: 'shampoo-antipulgas',
     stars: 5,
     title: 'Suave y seguro para mis gatitos',
     text: 'Siempre me daba miedo bañar a mis gatos con productos comerciales por temor a intoxicación. Megatrol es 100% natural, les dejó el pelo impecable y cero pulgas.',
@@ -83,6 +85,7 @@ const testimonials = [
     role: 'Dueña de 2 Golden Retrievers',
     city: 'Monterrey, N.L.',
     product: 'Kit Protección Total',
+    productSlug: 'kit-proteccion-total',
     stars: 5,
     title: 'El mejor kit antipulgas',
     text: 'El shampoo deja el pelo con un brillo espectacular y el spray lo aplico en sus camas y tapetes. Ya no se rascan para nada y están felices.',
@@ -94,6 +97,7 @@ const testimonials = [
     role: 'Especialista en Medicina Felina y Canina',
     city: 'Querétaro',
     product: 'Megadoxi & Megastrin',
+    productSlug: 'megadoxi',
     stars: 5,
     title: 'Excelente respuesta clínica',
     text: 'La palatabilidad de las suspensiones orales facilita mucho la dosificación tanto en perros como en gatos renuentes. Muy recomendable.',
@@ -105,6 +109,7 @@ const testimonials = [
     role: 'Dermatología Veterinaria',
     city: 'Puebla',
     product: 'Dermapet Shampoo',
+    productSlug: 'dermapet-shampoo',
     stars: 5,
     title: 'Gran efectividad en dermatitis',
     text: 'El ácido salicílico con azufre orgánico y neem desinflama y remueve costras desde el primer baño. Indispensable en mi práctica veterinaria.',
@@ -116,6 +121,7 @@ const testimonials = [
     role: 'Estilista Profesional Canina',
     city: 'Puebla',
     product: 'Shower Shampoo Aromas',
+    productSlug: 'shower-shampoo-aromas',
     stars: 5,
     title: 'Aroma duradero y pelo sedoso',
     text: 'En la estética canina usamos los diferentes aromas. El acondicionador deja los nudos fáciles de desenredar y a los clientes les fascina el perfume.',
@@ -127,6 +133,7 @@ const testimonials = [
     role: 'Dueño de Bulldog Francés',
     city: 'Estado de México',
     product: 'Bálsamo SilkPaw',
+    productSlug: 'balsamo-silkpaw',
     stars: 5,
     title: 'Almohadillas y trufa hidratadas',
     text: 'Mi bulldog tenía la nariz muy reseca y grietas en las almohadillas por el pavimento. En una semana de aplicar SilkPaw sanó por completo.',
@@ -138,6 +145,7 @@ const testimonials = [
     role: 'Dueño de Pastor Alemán Senior',
     city: 'Mérida, Yuc.',
     product: 'Balance Pet Geriátricos',
+    productSlug: 'balance-pet-geriatricos',
     stars: 5,
     title: 'Recuperó energía y movilidad',
     text: 'Mi perro de 11 años ya batallaba para levantarse. Con estas tabletas con colágeno y Omega 3 anda activo y con ganas de pasear todos los días.',
@@ -361,6 +369,16 @@ const Home = () => {
 
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [modalProduct, setModalProduct] = useState<Product | null>(null);
+
+  const handleOpenReviewProduct = (slug?: string) => {
+    if (!slug) return;
+    const found = products.find((p) => p.slug === slug);
+    if (found) {
+      setModalProduct(found);
+    } else {
+      navigate(`/tienda?producto=${slug}`);
+    }
+  };
 
   const handleAddFromVideo = (slug: string) => {
     const productObj = products.find((p) => p.slug === slug);
@@ -965,36 +983,91 @@ const Home = () => {
           </div>
 
           <div className="reviews-carousel-container" ref={reviewsCarouselRef}>
-            {testimonials.map((item) => (
-              <div className="review-card" key={item.id}>
-                <div className="review-card-top">
-                  <div className="review-stars">
-                    {[...Array(item.stars)].map((_, idx) => (
-                      <Star key={idx} size={15} fill="#f59e0b" color="#f59e0b" />
-                    ))}
+            {testimonials.map((item) => {
+              const matchedProduct = products.find((p) => p.slug === item.productSlug);
+
+              return (
+                <div 
+                  className="review-card interactive-review-card" 
+                  key={item.id}
+                  onClick={() => handleOpenReviewProduct(item.productSlug)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleOpenReviewProduct(item.productSlug);
+                    }
+                  }}
+                  title={`Haz clic para ver detalles y comprar ${item.product}`}
+                >
+                  <div className="review-card-top">
+                    <div className="review-stars">
+                      {[...Array(item.stars)].map((_, idx) => (
+                        <Star key={idx} size={15} fill="#f59e0b" color="#f59e0b" />
+                      ))}
+                    </div>
+                    <span className="verified-badge">
+                      <CheckCircle size={13} /> Compra Verificada
+                    </span>
                   </div>
-                  <span className="verified-badge">
-                    <CheckCircle size={13} /> Compra Verificada
-                  </span>
-                </div>
 
-                <div className="review-product-tag">
-                  {item.product}
-                </div>
+                  <div className="review-product-tag-wrap">
+                    <button
+                      type="button"
+                      className="review-product-tag"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenReviewProduct(item.productSlug);
+                      }}
+                      title={`Ver detalles de ${item.product}`}
+                    >
+                      <ShoppingCart size={12} />
+                      <span>{item.product}</span>
+                      <span className="review-tag-arrow">→</span>
+                    </button>
+                  </div>
 
-                <h4 className="review-card-title">"{item.title}"</h4>
-                <p className="review-card-text">{item.text}</p>
+                  <h4 className="review-card-title">"{item.title}"</h4>
+                  <p className="review-card-text">{item.text}</p>
 
-                <div className="review-author-box">
-                  <div className="review-avatar">{getInitials(item.name)}</div>
-                  <div className="review-author-info">
-                    <span className="review-author-name">{item.name}</span>
-                    <span className="review-author-role">{item.role} • {item.city}</span>
-                    <span className="review-date">{item.date}</span>
+                  <div className="review-product-cta">
+                    <button
+                      type="button"
+                      className="review-product-cta-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenReviewProduct(item.productSlug);
+                      }}
+                    >
+                      {matchedProduct && (
+                        <img 
+                          src={matchedProduct.image} 
+                          alt={item.product} 
+                          className="review-cta-thumb" 
+                        />
+                      )}
+                      <div className="review-cta-text">
+                        <span className="review-cta-label">Producto Reseñado</span>
+                        <span className="review-cta-name">{item.product}</span>
+                      </div>
+                      <span className="review-cta-action">
+                        Ver Producto <ChevronRight size={14} />
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="review-author-box">
+                    <div className="review-avatar">{getInitials(item.name)}</div>
+                    <div className="review-author-info">
+                      <span className="review-author-name">{item.name}</span>
+                      <span className="review-author-role">{item.role} • {item.city}</span>
+                      <span className="review-date">{item.date}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="reviews-swipe-hint">
