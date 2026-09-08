@@ -36,9 +36,25 @@ const Shop = () => {
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const [addedId, setAddedId] = useState<number | null>(null);
   const [modalProduct, setModalProduct] = useState<Product | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth <= 900 : false
+  );
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+
+  // Detect window width to only enable category drawer breakdown on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth <= 900;
+      setIsMobile(mobile);
+      if (!mobile) {
+        setExpandedCategories([]);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Open modal if URL specifies ?producto=slug or ?p=slug
   useEffect(() => {
@@ -194,7 +210,7 @@ const Shop = () => {
                 return (
                   <div 
                     key={f.key} 
-                    className={`category-accordion-item ${isExpanded && !isAll ? 'is-expanded' : ''}`}
+                    className={`category-accordion-item ${isMobile && isExpanded && !isAll ? 'is-expanded' : ''}`}
                   >
                     <button
                       type="button"
@@ -205,11 +221,15 @@ const Shop = () => {
                           setExpandedCategories([]);
                         } else {
                           setSelectedFilter(f.key);
-                          setExpandedCategories(prev => 
-                            prev.includes(f.key) && selectedFilter === f.key 
-                              ? [] 
-                              : [f.key]
-                          );
+                          if (isMobile) {
+                            setExpandedCategories(prev => 
+                              prev.includes(f.key) && selectedFilter === f.key 
+                                ? [] 
+                                : [f.key]
+                            );
+                          } else {
+                            setExpandedCategories([]);
+                          }
                         }
                       }}
                     >
@@ -219,7 +239,7 @@ const Shop = () => {
                       </span>
                       <span className="filter-btn-meta">
                         <span className="count-badge">{getFilterCount(f.key)}</span>
-                        {!isAll && (
+                        {isMobile && !isAll && (
                           <ChevronDown 
                             size={14} 
                             className={`accordion-arrow ${isExpanded ? 'open' : ''}`} 
@@ -228,8 +248,8 @@ const Shop = () => {
                       </span>
                     </button>
 
-                    {/* Desglose inmediato de productos en la categoría */}
-                    {!isAll && isExpanded && categoryProducts.length > 0 && (
+                    {/* Desglose inmediato de productos en la categoría: ÚNICAMENTE EN MÓVIL */}
+                    {isMobile && !isAll && isExpanded && categoryProducts.length > 0 && (
                       <div className="category-drawer-products">
                         {categoryProducts.map((p) => (
                           <div

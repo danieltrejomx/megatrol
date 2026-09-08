@@ -227,7 +227,16 @@
   gap: 8px;
 }
 
-/* ── DRAWER DE PRODUCTOS DESGLOSADOS ── */
+/* ── DRAWER DE PRODUCTOS DESGLOSADOS (ÚNICAMENTE EN MÓVIL) ── */
+@media (min-width: 901px) {
+  .accordion-arrow {
+    display: none !important;
+  }
+  .category-drawer-products {
+    display: none !important;
+  }
+}
+
 .category-drawer-products {
   display: flex;
   flex-direction: column;
@@ -749,9 +758,22 @@
   .filter-buttons {
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 8px;
+  }
+  .category-accordion-item {
+    flex: 1 1 calc(50% - 8px);
+    width: calc(50% - 8px);
+  }
+  .category-accordion-item.is-expanded {
+    flex: 1 1 100%;
+    width: 100%;
   }
   .filter-btn {
-    flex: 1 1 calc(50% - 8px);
+    width: 100%;
+  }
+  .category-drawer-products {
+    display: flex;
+    width: 100%;
   }
 }
 
@@ -767,8 +789,13 @@
   .shop-header p {
     font-size: 15px;
   }
+  .category-accordion-item {
+    flex: 1 1 100%;
+    width: 100%;
+  }
   .filter-btn {
     flex: 1 1 100%;
+    width: 100%;
   }
   .product-grid {
     grid-template-columns: 1fr;
