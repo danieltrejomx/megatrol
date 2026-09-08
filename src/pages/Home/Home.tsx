@@ -428,10 +428,15 @@ const Home = () => {
       {/* ── BEST SELLERS CAROUSEL ─────────────────────────────── */}
       <section className="best-sellers-section">
         <div className="container">
-          <div className="section-header">
-            <span className="section-label">Catálogo Destacado</span>
+          <div className="catalog-banner-header">
+            <span className="catalog-banner-badge">Catálogo Destacado</span>
             <h2>Nuestros Productos para Mascotas</h2>
             <p>Soluciones naturales, veterinarias y dermocosméticas formuladas especialmente para perros y gatos.</p>
+            <div className="catalog-banner-tags">
+              <span className="catalog-tag">⭐ Más Vendidos</span>
+              <span className="catalog-tag">🌿 100% Ecológicos</span>
+              <span className="catalog-tag">🚚 Envío Gratis desde $599</span>
+            </div>
           </div>
 
           {/* Line Filter Tabs */}
@@ -670,32 +675,31 @@ const Home = () => {
       {/* ── TESTIMONIALS (4 EN FILA / CAROUSEL) ──────────────── */}
       <section className="testimonials-section">
         <div className="container">
-          <div className="reviews-section-header">
-            <div className="reviews-header-text">
-              <div className="reviews-trust-badge">
-                <span className="stars-mini">★★★★★</span>
-                <span><strong>4.9 / 5</strong> Calificación Promedio (+1,250 opiniones verificadas)</span>
-              </div>
-              <span className="section-label">Casos de Éxito</span>
-              <h2>¿Realmente Funciona?</h2>
-              <p className="reviews-subtitle">
-                Conoce la experiencia real de dueños de perros y gatos, médicos veterinarios y profesionales en todo México.
-              </p>
+          <div className="reviews-banner-header">
+            <div className="reviews-banner-badge">
+              <span className="stars-mini">★★★★★</span>
+              <span><strong>4.9 / 5</strong> · +1,250 Opiniones Verificadas</span>
             </div>
+            <span className="reviews-banner-label">Casos de Éxito</span>
+            <h2>¿Realmente Funciona?</h2>
+            <p className="reviews-banner-subtitle">
+              Conoce la experiencia real de dueños de perros y gatos, médicos veterinarios y profesionales en todo México.
+            </p>
             <div className="reviews-nav-controls">
               <button 
                 className="reviews-nav-btn" 
                 onClick={() => scrollReviews('left')} 
                 aria-label="Ver testimonios anteriores"
               >
-                <ChevronLeft size={22} />
+                <ChevronLeft size={20} />
               </button>
+              <span className="reviews-nav-hint">Desliza para ver más historias reales</span>
               <button 
                 className="reviews-nav-btn" 
                 onClick={() => scrollReviews('right')} 
                 aria-label="Ver testimonios siguientes"
               >
-                <ChevronRight size={22} />
+                <ChevronRight size={20} />
               </button>
             </div>
           </div>
@@ -941,9 +945,16 @@ const Home = () => {
       {/* ── BLOG PREVIEW ──────────────────────────────────────── */}
       <section className="blog-section">
         <div className="container">
-          <div className="section-header">
-            <h2>Blog y Consejos</h2>
-            <p>Mantente informado sobre la salud y bienestar de tus mascotas</p>
+          <div className="blog-banner-header">
+            <span className="blog-banner-badge">Guías & Consejos</span>
+            <h2>Blog y Consejos Veterinarios</h2>
+            <p>Mantente informado sobre la salud y bienestar de tus mascotas con artículos clínicos avalados.</p>
+            <div className="blog-banner-tags">
+              <span className="blog-tag">📚 Artículos Clínicos</span>
+              <span className="blog-tag">🐕 Salud Canina</span>
+              <span className="blog-tag">🐈 Salud Felina</span>
+              <span className="blog-tag">🌿 Soluciones Botánicas</span>
+            </div>
           </div>
 
           <div className="blog-grid">
