@@ -52,6 +52,7 @@ const Header = () => {
     setMobileOpen(false);
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     document.documentElement.scrollTo?.({ top: 0, left: 0, behavior: 'smooth' });
+    window.dispatchEvent(new CustomEvent('megatrol-peek-pets'));
   };
 
   const handleNavClick = (path: string) => {

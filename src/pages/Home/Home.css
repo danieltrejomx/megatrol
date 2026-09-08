@@ -4,7 +4,7 @@
 /* ── HERO ────────────────────────────────────────────────────── */
 .hero-section {
   position: relative;
-  padding: 48px 0 20px;
+  padding: 56px 0 20px;
 }
 
 .hero-container-wrap {
@@ -2434,7 +2434,7 @@
 
 @media (max-width: 768px) {
   .hero-section {
-    padding: 16px 0 16px;
+    padding: 46px 0 16px;
   }
   .hero-card {
     padding: 32px 18px 28px;

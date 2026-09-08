@@ -1,33 +1,135 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import './PeekingPets.css';
 
 interface PeekingPetsProps {
   className?: string;
 }
 
-export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
-  const [isWaved, setIsWaved] = useState(false);
+type PetStatus = 'idle' | 'entering' | 'greeting' | 'leaving' | 'hidden';
 
-  const handleClick = () => {
-    setIsWaved(true);
-    setTimeout(() => setIsWaved(false), 2500);
+export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
+  const location = useLocation();
+  const [petStatus, setPetStatus] = useState<PetStatus>('hidden');
+  const [bubbleText, setBubbleText] = useState('¡Hola! 🐾');
+  const [isInteracted, setIsInteracted] = useState(false);
+
+  const timersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  const clearAllTimers = () => {
+    timersRef.current.forEach(t => clearTimeout(t));
+    timersRef.current = [];
+  };
+
+  const playGreetingSequence = (delay = 200) => {
+    clearAllTimers();
+    setIsInteracted(false);
+    setBubbleText('¡Hola! 🐾');
+    setPetStatus('hidden');
+
+    // 1. Sube y asoma al centro
+    const t0 = setTimeout(() => {
+      setPetStatus('entering');
+    }, delay);
+
+    // 2. Saluda con sus patitas en bucle
+    const t1 = setTimeout(() => {
+      setPetStatus('greeting');
+    }, delay + 650);
+
+    // 3. Se bajan tras saludar (no son estáticos)
+    const t2 = setTimeout(() => {
+      setPetStatus('leaving');
+    }, delay + 4200);
+
+    // 4. Quedan ocultos tras descender
+    const t3 = setTimeout(() => {
+      setPetStatus('hidden');
+    }, delay + 4950);
+
+    timersRef.current.push(t0, t1, t2, t3);
+  };
+
+  useEffect(() => {
+    // Solo al entrar a inicio
+    if (location.pathname === '/') {
+      playGreetingSequence(350);
+    } else {
+      clearAllTimers();
+      setPetStatus('hidden');
+    }
+
+    const handleCustomTrigger = () => {
+      if (location.pathname === '/') {
+        playGreetingSequence(100);
+      }
+    };
+
+    window.addEventListener('megatrol-peek-pets', handleCustomTrigger);
+
+    return () => {
+      clearAllTimers();
+      window.removeEventListener('megatrol-peek-pets', handleCustomTrigger);
+    };
+  }, [location.pathname, location.key]);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    if (petStatus === 'hidden') {
+      playGreetingSequence(50);
+      return;
+    }
+
+    // Interacción al tocarlos mientras saludan
+    setIsInteracted(true);
+    setBubbleText('¡Guau! 🐶 ¡Miau! 🐱');
+
+    clearAllTimers();
+    setPetStatus('greeting');
+
+    const tLeave = setTimeout(() => {
+      setPetStatus('leaving');
+    }, 2800);
+
+    const tHide = setTimeout(() => {
+      setPetStatus('hidden');
+    }, 3550);
+
+    timersRef.current.push(tLeave, tHide);
   };
 
   return (
     <div 
-      className={`peeking-pets-container ${className} ${isWaved ? 'is-interacted' : ''}`} 
-      onClick={handleClick}
-      role="button"
-      tabIndex={0}
-      title="¡Tócame para saludar!"
-      aria-label="Perrito y gatito saludando"
+      className={`peeking-pets-stage ${className}`}
+      aria-hidden={petStatus === 'hidden'}
     >
-      {/* Friendly Speech Bubble */}
-      <div className="peeking-bubble">
-        <span className="bubble-sparkle">✨</span>
-        <span className="bubble-text">{isWaved ? '¡Guau! 🐶 ¡Miau! 🐱' : '¡Hola! 🐾'}</span>
-        <div className="bubble-tail"></div>
-      </div>
+      {/* Zona sutil invisible para volver a saludarlos si se hace clic */}
+      {petStatus === 'hidden' && (
+        <button
+          type="button"
+          className="peeking-pets-invisible-trigger"
+          onClick={() => playGreetingSequence(50)}
+          aria-label="Ver perrito y gatito saludando"
+          title="🐾 ¡Haz clic para ver el saludo!"
+        />
+      )}
+
+      {/* Contenedor animado de las mascotas */}
+      <div 
+        className={`peeking-pets-container status-${petStatus} ${isInteracted ? 'is-interacted' : ''}`} 
+        onClick={handleClick}
+        role="button"
+        tabIndex={0}
+        title={petStatus !== 'hidden' ? '¡Tócame para saludar!' : undefined}
+        aria-label="Perrito y gatito saludando"
+      >
+        {/* Globito de saludo amigable */}
+        <div className="peeking-bubble">
+          <span className="bubble-sparkle">✨</span>
+          <span className="bubble-text">{bubbleText}</span>
+          <div className="bubble-tail"></div>
+        </div>
 
       {/* SVG Illustration */}
       <svg
@@ -210,6 +312,7 @@ export const PeekingPets: React.FC<PeekingPetsProps> = ({ className = '' }) => {
         </g>
       </svg>
     </div>
+  </div>
   );
 };
 
