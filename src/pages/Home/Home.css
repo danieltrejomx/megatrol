@@ -4,7 +4,11 @@
 /* ── HERO ────────────────────────────────────────────────────── */
 .hero-section {
   position: relative;
-  padding: 36px 0 20px;
+  padding: 48px 0 20px;
+}
+
+.hero-container-wrap {
+  position: relative;
 }
 
 .hero-card {

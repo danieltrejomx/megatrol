@@ -32,6 +32,7 @@ import BlogModal from '../../components/BlogModal/BlogModal';
 import { ProductModal } from '../../components/ProductModal/ProductModal';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import PeekingPets from '../../components/PeekingPets/PeekingPets';
 import './Home.css';
 import '../Distributors/Distributors.css';
 
@@ -438,7 +439,8 @@ const Home = () => {
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="hero-section">
-        <div className="container">
+        <div className="container hero-container-wrap">
+          <PeekingPets />
           <div className="hero-card">
             {/* Extended Watermark Backdrop of Pets (Perrito & Michito) */}
             <div className="hero-pets-watermark" aria-hidden="true"></div>
