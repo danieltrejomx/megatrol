@@ -19,7 +19,9 @@ import {
   ShoppingCart,
   Send,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { blogArticles, type BlogArticle } from '../../data/blog';
@@ -262,6 +264,9 @@ const Home = () => {
     setIsDragging(false);
   };
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+
   const nextVideo = () => {
     setSelectedVideoIndex((prev) => (prev + 1) % demoVideos.length);
   };
@@ -269,6 +274,35 @@ const Home = () => {
   const prevVideo = () => {
     setSelectedVideoIndex((prev) => (prev - 1 + demoVideos.length) % demoVideos.length);
   };
+
+  const toggleSound = () => {
+    if (videoRef.current) {
+      const newMuted = !videoRef.current.muted;
+      videoRef.current.muted = newMuted;
+      setIsVideoMuted(newMuted);
+      if (videoRef.current.paused) {
+        videoRef.current.play().catch(() => {});
+      }
+    }
+  };
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.muted = isVideoMuted;
+    video.defaultMuted = isVideoMuted;
+
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Fallback to muted autoplay if browser policy restricts audio
+        video.muted = true;
+        setIsVideoMuted(true);
+        video.play().catch(() => {});
+      });
+    }
+  }, [selectedVideoIndex]);
 
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
   const [modalProduct, setModalProduct] = useState<Product | null>(null);
@@ -684,12 +718,21 @@ const Home = () => {
               <div className="video-media-card">
                 <div className="video-screen-wrapper">
                   <video
+                    ref={videoRef}
                     key={demoVideos[selectedVideoIndex].src}
                     src={demoVideos[selectedVideoIndex].src}
-                    controls
+                    autoPlay
+                    muted={isVideoMuted}
                     playsInline
-                    preload="metadata"
+                    loop
+                    controls
+                    preload="auto"
                     className="video-element"
+                    onVolumeChange={() => {
+                      if (videoRef.current) {
+                        setIsVideoMuted(videoRef.current.muted);
+                      }
+                    }}
                   />
                   <button 
                     type="button" 
@@ -708,6 +751,26 @@ const Home = () => {
                     title="Siguiente"
                   >
                     <ChevronRight size={22} />
+                  </button>
+
+                  <button
+                    type="button"
+                    className="video-sound-toggle-btn"
+                    onClick={toggleSound}
+                    aria-label={isVideoMuted ? "Activar sonido del video" : "Silenciar video"}
+                    title={isVideoMuted ? "Activar sonido" : "Silenciar"}
+                  >
+                    {isVideoMuted ? (
+                      <>
+                        <VolumeX size={14} />
+                        <span>Activar sonido</span>
+                      </>
+                    ) : (
+                      <>
+                        <Volume2 size={14} />
+                        <span>Sonido activo</span>
+                      </>
+                    )}
                   </button>
                 </div>
                 
