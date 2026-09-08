@@ -1,7 +1,64 @@
-import { FlaskConical, PawPrint, Leaf } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { FlaskConical, PawPrint, Leaf, MapPin, Sparkles } from 'lucide-react';
 import './About.css';
 
+function useCountUp(target: number, duration: number = 1800, start: boolean = false) {
+  const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    if (!start) return;
+
+    let startTime: number | null = null;
+    let animationFrameId: number;
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      // Smooth cubic ease-out
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(1 + (target - 1) * easeOut);
+      setCount(current);
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [target, duration, start]);
+
+  return count;
+}
+
 const About = () => {
+  const bannerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (bannerRef.current) {
+      observer.observe(bannerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const petsCount = useCountUp(10, 1600, isVisible);
+  const naturalCount = useCountUp(100, 1800, isVisible);
+  const statesCount = useCountUp(32, 1600, isVisible);
+
   return (
     <div className="about-page">
       <div className="container page-banner-container">
@@ -16,37 +73,67 @@ const About = () => {
       </div>
 
       <div className="container about-content">
-        <section className="about-history">
-          <div className="history-text">
-            <h2>Nuestra Historia</h2>
-            <p>
-              Inobazz Pharma nació de una necesidad evidente: la industria veterinaria dependía
-              enormemente de pesticidas sintéticos y químicos agresivos para el control de parásitos.
-              Estos productos, aunque efectivos, a menudo provocaban reacciones adversas en mascotas
-              sensibles y suponían un riesgo a largo plazo para la salud del animal y la familia.
-            </p>
-            <p>
-              Con un equipo multidisciplinario de veterinarios, químicos y biólogos, nos propusimos
-              desarrollar una alternativa que fuera igualmente letal para los parásitos pero completamente
-              segura para los mamíferos. Así nació la línea Megatrol.
-            </p>
-          </div>
-          <div className="history-stats">
-            <div className="stat-box">
-              <span className="stat-number">+10k</span>
-              <span className="stat-label">Mascotas Protegidas</span>
+        {/* ── NUESTRA HISTORIA BANNER ── */}
+        <section className="about-history-banner" ref={bannerRef}>
+          <div className="history-banner-grid">
+            <div className="history-banner-text">
+              <span className="history-banner-badge">
+                <Sparkles size={13} /> Origen y Trayectoria
+              </span>
+              <h2>Nuestra Historia</h2>
+              <p>
+                Inobazz Pharma nació de una necesidad evidente: la industria veterinaria dependía
+                enormemente de pesticidas sintéticos y químicos agresivos para el control de parásitos.
+                Estos productos, aunque efectivos, a menudo provocaban reacciones adversas en mascotas
+                sensibles y suponían un riesgo a largo plazo para la salud del animal y la familia.
+              </p>
+              <p>
+                Con un equipo multidisciplinario de veterinarios, químicos y biólogos, nos propusimos
+                desarrollar una alternativa que fuera igualmente letal para los parásitos pero completamente
+                segura para los mamíferos. Así nació la línea Megatrol.
+              </p>
+              <div className="history-banner-tags">
+                <span className="history-tag">🔬 Rigor Científico y Farmacéutico</span>
+                <span className="history-tag">🌿 Fórmulas Botánicas No Tóxicas</span>
+                <span className="history-tag">🇲🇽 Laboratorio 100% Mexicano</span>
+              </div>
             </div>
-            <div className="stat-box">
-              <span className="stat-number">100%</span>
-              <span className="stat-label">Ingredientes Naturales</span>
-            </div>
-            <div className="stat-box">
-              <span className="stat-number">32</span>
-              <span className="stat-label">Estados de la República</span>
+
+            <div className="history-banner-stats">
+              <div className="stat-card-glass">
+                <div className="stat-card-icon icon-paw">
+                  <PawPrint size={26} />
+                </div>
+                <div className="stat-card-data">
+                  <span className="stat-number">+{petsCount}k</span>
+                  <span className="stat-label">Mascotas Protegidas</span>
+                </div>
+              </div>
+
+              <div className="stat-card-glass">
+                <div className="stat-card-icon icon-leaf">
+                  <Leaf size={26} />
+                </div>
+                <div className="stat-card-data">
+                  <span className="stat-number">{naturalCount}%</span>
+                  <span className="stat-label">Ingredientes Naturales</span>
+                </div>
+              </div>
+
+              <div className="stat-card-glass">
+                <div className="stat-card-icon icon-map">
+                  <MapPin size={26} />
+                </div>
+                <div className="stat-card-data">
+                  <span className="stat-number">{statesCount}</span>
+                  <span className="stat-label">Estados de la República</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
+        {/* ── PILARES / VALORES ── */}
         <section className="about-values">
           <div className="section-header">
             <h2>Nuestros Pilares</h2>
