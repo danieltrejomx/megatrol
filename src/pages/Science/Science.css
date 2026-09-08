@@ -5,41 +5,98 @@
 .science-content {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 56px;
 }
 
-.science-section {
+/* ── PILAR 1: MONOTERPENOS CÍCLICOS ── */
+.science-pillar-card {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 50px 48px;
   display: flex;
-  gap: 60px;
+  gap: 50px;
   align-items: center;
-}
-.science-section.reverse {
-  flex-direction: row-reverse;
+  border: 1px solid rgba(0, 132, 199, 0.14);
+  box-shadow: 0 16px 40px rgba(0, 78, 130, 0.06);
+  position: relative;
+  overflow: hidden;
 }
 
-.science-text {
-  flex: 1;
+.science-pillar-content {
+  flex: 1.2;
 }
-.science-text h2 {
+
+.science-pillar-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(0, 132, 199, 0.08);
+  color: var(--color-primary);
+  border: 1px solid rgba(0, 132, 199, 0.18);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 18px;
+}
+
+.badge-dot {
+  opacity: 0.45;
+  font-size: 10px;
+}
+
+.science-pillar-content h2 {
   font-size: 32px;
   color: var(--color-heading);
-  margin-bottom: 24px;
-}
-.science-text p {
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--color-text-light);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  line-height: 1.25;
 }
 
-.science-image {
-  flex: 1;
+.science-lead {
+  font-size: 16px;
+  line-height: 1.75;
+  color: #1e293b;
+  margin-bottom: 14px;
 }
+
+.science-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #475569;
+  margin-bottom: 22px;
+}
+
+.science-pillar-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pillar-feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0c2b42;
+}
+
+.pillar-icon {
+  color: #059669;
+  flex-shrink: 0;
+}
+
+.science-pillar-media {
+  flex: 0.85;
+}
+
 .science-image-card {
   position: relative;
-  border-radius: 24px;
+  border-radius: 22px;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 4 / 3.2;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(0, 0, 0, 0.06);
   background: var(--color-bg-alt);
@@ -65,13 +122,13 @@
 
 .science-card-caption {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
-  background: rgba(255, 255, 255, 0.88);
+  bottom: 14px;
+  left: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.90);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 14px;
   padding: 10px 16px;
   display: flex;
@@ -94,20 +151,288 @@
   color: var(--color-heading);
 }
 
-.mechanism-section {
-  background: var(--color-bg-alt);
-  padding: 60px 40px;
-  border-radius: 24px;
+/* ── PILAR 2: ACEITE DE NEEM (BANNER DESTACADO) ── */
+.neem-banner {
+  position: relative;
+  background: 
+    linear-gradient(135deg, rgba(8, 28, 46, 0.95) 0%, rgba(12, 54, 76, 0.92) 45%, rgba(6, 44, 30, 0.95) 100%),
+    url('/images/ciencia-aceite-neem.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 28px;
+  padding: 56px 50px;
+  color: #ffffff;
+  display: grid;
+  grid-template-columns: 1.25fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  box-shadow: 0 20px 48px rgba(0, 40, 70, 0.22);
+  overflow: hidden;
 }
+
+.neem-banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.neem-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(56, 189, 248, 0.16);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 18px;
+  backdrop-filter: blur(6px);
+}
+
+.neem-scientific-name {
+  font-style: italic;
+  color: #7dd3fc;
+  font-weight: 600;
+}
+
+.neem-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px;
+  line-height: 1.25;
+}
+
+.neem-lead {
+  font-size: 16px;
+  line-height: 1.75;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.neem-lead strong {
+  color: #ffffff;
+}
+
+.neem-body {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #cbd5e1;
+  margin-bottom: 24px;
+}
+
+.neem-body strong {
+  color: #ffffff;
+}
+
+.neem-features-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.neem-feature-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 16px;
+  padding: 13px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: all 0.25s ease;
+}
+
+.neem-feature-card:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateX(4px);
+  border-color: rgba(56, 189, 248, 0.35);
+}
+
+.neem-feature-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.neem-feature-icon.icon-amber {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.neem-feature-icon.icon-blue {
+  background: rgba(56, 189, 248, 0.22);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.neem-feature-icon.icon-green {
+  background: rgba(74, 222, 128, 0.22);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+}
+
+.neem-feature-info strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.neem-feature-info p {
+  font-size: 13px;
+  color: #cbd5e1;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Visual Card dentro del banner */
+.neem-banner-visual {
+  position: relative;
+  z-index: 2;
+}
+
+.neem-visual-card {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  aspect-ratio: 4 / 3.3;
+  background: #0c2b42;
+}
+
+.neem-visual-tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(8, 28, 46, 0.80);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  z-index: 2;
+}
+
+.neem-visual-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.neem-visual-card:hover .neem-visual-img {
+  transform: scale(1.04);
+}
+
+.neem-visual-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 20px 16px;
+  background: linear-gradient(to top, rgba(6, 24, 38, 0.96) 0%, rgba(6, 24, 38, 0.80) 65%, transparent 100%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 2;
+}
+
+.neem-overlay-sub {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #4ade80;
+}
+
+.neem-overlay-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  font-style: italic;
+}
+
+.neem-overlay-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.neem-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── PILAR 3: MECANISMO DE ACCIÓN ── */
+.mechanism-section {
+  background: #ffffff;
+  padding: 56px 44px;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 132, 199, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 78, 130, 0.05);
+}
+
 .mechanism-section .section-header {
   text-align: center;
   margin-bottom: 40px;
 }
+
 .mechanism-section .section-header h2 {
   font-size: 32px;
   color: var(--color-heading);
   margin-bottom: 12px;
 }
+
 .mechanism-section .section-header p {
   font-size: 16px;
   color: var(--color-text-light);
@@ -116,18 +441,28 @@
 .mechanism-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  gap: 28px;
 }
+
 .mechanism-card {
-  background: white;
-  padding: 32px;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  background: #f8fafc;
+  padding: 32px 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 132, 199, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.mechanism-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 132, 199, 0.10);
+  background: #ffffff;
+}
+
 .mechanism-icon {
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -150,26 +485,65 @@
   background: rgba(116, 192, 67, 0.16);
   color: var(--color-secondary-dark);
 }
+
 .mechanism-card h3 {
   font-size: 18px;
   color: var(--color-heading);
   margin-bottom: 12px;
 }
+
 .mechanism-card p {
   font-size: 14px;
   color: var(--color-text-light);
   line-height: 1.6;
 }
 
-@media (max-width: 768px) {
-  .science-section, .science-section.reverse {
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .science-pillar-card {
     flex-direction: column;
-    gap: 40px;
+    padding: 36px 26px;
+    gap: 36px;
   }
+
+  .neem-banner {
+    grid-template-columns: 1fr;
+    padding: 40px 28px;
+    gap: 36px;
+  }
+
   .mechanism-grid {
     grid-template-columns: 1fr;
   }
+
   .mechanism-section {
-    padding: 40px 20px;
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .science-content {
+    gap: 40px;
+  }
+
+  .science-pillar-card {
+    padding: 28px 20px;
+  }
+
+  .science-pillar-content h2 {
+    font-size: 26px;
+  }
+
+  .neem-banner {
+    padding: 32px 18px;
+    border-radius: 22px;
+  }
+
+  .neem-title {
+    font-size: 26px;
+  }
+
+  .neem-feature-card {
+    padding: 12px 14px;
   }
 }
