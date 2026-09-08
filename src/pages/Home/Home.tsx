@@ -399,6 +399,9 @@ const Home = () => {
       <section className="hero-section">
         <div className="container">
           <div className="hero-card">
+            {/* Extended Watermark Backdrop of Pets (Perrito & Michito) */}
+            <div className="hero-pets-watermark" aria-hidden="true"></div>
+
             {/* Ambient background glows */}
             <div className="hero-orb hero-orb-blue"></div>
             <div className="hero-orb hero-orb-green"></div>
@@ -462,6 +465,10 @@ const Home = () => {
 
               <div className="hero-visual-col">
                 <div className="hero-image-wrapper">
+                  {/* Subtle glowing halo and breathing ground shadow */}
+                  <div className="hero-product-aura" aria-hidden="true"></div>
+                  <div className="hero-product-shadow" aria-hidden="true"></div>
+
                   {/* Floating badge 1: Top Right */}
                   <div className="hero-float-badge float-top-right">
                     <span className="float-badge-icon-wrap icon-leaf">
