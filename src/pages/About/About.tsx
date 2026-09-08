@@ -82,33 +82,38 @@ const About = () => {
               </span>
               <h2>Nuestra Historia</h2>
               
-              <div className="history-story-cards">
-                {/* Bloque 1: El Desafío */}
-                <div className="history-story-card challenge">
-                  <div className="story-card-icon-wrap challenge">
-                    <ShieldAlert size={22} />
+              <div className="history-narrative-flow">
+                {/* Bloque 1: El Desafío Original */}
+                <div className="history-narrative-card challenge">
+                  <div className="narrative-card-header">
+                    <div className="narrative-icon-badge challenge">
+                      <ShieldAlert size={18} />
+                    </div>
+                    <span className="narrative-pill-label">El Origen</span>
                   </div>
-                  <div className="story-card-content">
-                    <span className="story-card-tag">El Desafío</span>
-                    <h3>Dependencia de Químicos Agresivos</h3>
-                    <p>
-                      La industria veterinaria dependía de pesticidas sintéticos que provocaban reacciones adversas en mascotas sensibles y suponían un riesgo a largo plazo para la familia.
-                    </p>
-                  </div>
+                  <p className="narrative-text">
+                    <strong>Inobazz Pharma</strong> nació de una necesidad evidente: la industria veterinaria dependía enormemente de <strong>pesticidas sintéticos y químicos agresivos</strong> para el control de parásitos. Estos productos, aunque efectivos, a menudo provocaban <em>reacciones adversas en mascotas sensibles</em> y suponían un riesgo a largo plazo para la salud del animal y la familia.
+                  </p>
                 </div>
 
-                {/* Bloque 2: La Solución Innovadora */}
-                <div className="history-story-card solution">
-                  <div className="story-card-icon-wrap solution">
-                    <FlaskConical size={22} />
+                {/* Conector visual entre el desafío y la innovación */}
+                <div className="history-narrative-connector" aria-hidden="true">
+                  <span className="connector-line"></span>
+                  <span className="connector-dot"></span>
+                  <span className="connector-line"></span>
+                </div>
+
+                {/* Bloque 2: La Solución Biotecnológica */}
+                <div className="history-narrative-card solution">
+                  <div className="narrative-card-header">
+                    <div className="narrative-icon-badge solution">
+                      <FlaskConical size={18} />
+                    </div>
+                    <span className="narrative-pill-label">La Solución Botánica</span>
                   </div>
-                  <div className="story-card-content">
-                    <span className="story-card-tag">La Innovación</span>
-                    <h3>Biotecnología Botánica Megatrol</h3>
-                    <p>
-                      Veterinarios, químicos y biólogos desarrollamos una alternativa botánica de grado farmacéutico: letal contra parásitos y 100% segura para los mamíferos.
-                    </p>
-                  </div>
+                  <p className="narrative-text">
+                    Con un <strong>equipo multidisciplinario de veterinarios, químicos y biólogos</strong>, nos propusimos desarrollar una alternativa que fuera <strong>igualmente letal para los parásitos pero completamente segura para los mamíferos</strong>. Así nació la línea <strong>Megatrol</strong>.
+                  </p>
                 </div>
               </div>
 
