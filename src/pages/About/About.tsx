@@ -135,8 +135,19 @@ const About = () => {
 
         {/* ── PILARES / VALORES ── */}
         <section className="about-values">
-          <div className="section-header">
+          <div className="values-banner-header">
+            <span className="values-banner-badge">
+              <Sparkles size={13} /> Filosofía y Compromiso
+            </span>
             <h2>Nuestros Pilares</h2>
+            <p>
+              Guiamos cada fórmula e innovación bajo tres compromisos fundamentales que garantizan máxima eficacia clínica, bienestar animal y sustentabilidad ecológica.
+            </p>
+            <div className="values-banner-tags">
+              <span className="values-tag">🔬 Rigor Científico</span>
+              <span className="values-tag">🐾 Bienestar Animal</span>
+              <span className="values-tag">🌿 100% Sustentable</span>
+            </div>
           </div>
           <div className="values-grid">
             <div className="value-card">
