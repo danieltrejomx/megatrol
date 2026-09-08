@@ -119,6 +119,22 @@
   font-style: italic;
 }
 
+.article-content-body {
+  border: 1.5px solid var(--color-primary);
+  border-radius: 20px;
+  padding: 36px 32px;
+  margin-bottom: 40px;
+  background: transparent;
+}
+
+.article-content-body > :first-child {
+  margin-top: 0;
+}
+
+.article-content-body > :last-child {
+  margin-bottom: 0;
+}
+
 .article-paragraph {
   font-size: 16px;
   color: #374151;
@@ -584,5 +600,9 @@
   }
   .article-author-box {
     flex-direction: column;
+  }
+  .article-content-body {
+    padding: 20px 16px;
+    border-radius: 16px;
   }
 }

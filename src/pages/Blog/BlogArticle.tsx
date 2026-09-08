@@ -94,7 +94,8 @@ const BlogArticle = () => {
           </div>
           <p className="article-lead">{article.excerpt}</p>
 
-          {article.content.map((block, i) => {
+          <div className="article-content-body">
+            {article.content.map((block, i) => {
             if (block.type === 'paragraph') {
               return <p key={i} className="article-paragraph">{block.text}</p>;
             }
@@ -179,6 +180,7 @@ const BlogArticle = () => {
             }
             return null;
           })}
+          </div>
 
           {/* Author Box */}
           <div className="article-author-box">
