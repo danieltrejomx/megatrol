@@ -899,11 +899,19 @@ export const AccountModal = () => {
 
                         <div className="account-cart-actions">
                           <Link 
+                            to="/tienda" 
+                            className="account-catalog-btn"
+                            onClick={closeAccountModal}
+                          >
+                            <Store size={15} />
+                            <span>Catálogo</span>
+                          </Link>
+                          <Link 
                             to="/checkout" 
                             className="account-checkout-btn"
                             onClick={closeAccountModal}
                           >
-                            Proceder al Pago
+                            Comprar Ahora
                           </Link>
                         </div>
                       </div>

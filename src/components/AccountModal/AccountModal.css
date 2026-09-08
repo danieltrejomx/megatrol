@@ -978,41 +978,59 @@
 
 .account-cart-actions {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
 }
 
-.account-cart-view-btn {
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
+.account-catalog-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
   color: #334155;
-  padding: 0.7rem 1.1rem;
-  border-radius: 10px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.account-cart-view-btn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.account-checkout-btn {
-  background: #0084c7;
-  color: #ffffff;
-  padding: 0.7rem 1.3rem;
+  padding: 0.7rem 1.25rem;
   border-radius: 10px;
   font-size: 0.88rem;
   font-weight: 700;
   text-decoration: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 3px 10px rgba(0, 132, 199, 0.25);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.account-catalog-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.account-checkout-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  background: #16a34a;
+  border: 1px solid #22c55e;
+  color: #ffffff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 3px 12px rgba(22, 163, 74, 0.35);
 }
 
 .account-checkout-btn:hover {
-  background: #0284c7;
+  background: #15803d;
+  border-color: #16a34a;
   transform: translateY(-1px);
+  box-shadow: 0 5px 16px rgba(22, 163, 74, 0.45);
 }
 
 /* Avatar Wrapper & Edit Badge in Header */
@@ -1586,7 +1604,17 @@
     align-items: stretch;
   }
   .account-cart-actions {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.6rem;
+    width: 100%;
+  }
+  .account-catalog-btn,
+  .account-checkout-btn {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    padding: 0.7rem 0.6rem;
+    font-size: 0.84rem;
   }
   .preset-avatars-grid {
     grid-template-columns: repeat(3, 1fr);
