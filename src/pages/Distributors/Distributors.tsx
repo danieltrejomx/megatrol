@@ -29,13 +29,19 @@ const Distributors = () => {
   return (
     <div className="distributors-page">
       <div className="container page-banner-container">
-        <div className="page-banner-header banner-distribuidores">
-          <span className="page-banner-badge">Ventas al Mayoreo</span>
-          <h1>Únete a la Red Megatrol</h1>
+        <div className="distributor-banner-header">
+          <span className="distributor-banner-badge">Distribución Directa de Laboratorio</span>
+          <h1>Ventas al Mayoreo</h1>
           <p>
-            Ventas al mayoreo para veterinarias, estéticas caninas, pet shops y distribuidores independientes.
-            Ofrece a tus clientes la mejor alternativa ecológica del mercado.
+            ¿Tienes una veterinaria, tienda de mascotas, forrajera, rancho o eres revendedor? 
+            Únete a la red nacional de distribuidores de Inobazz Pharma y obtén precios directos de fábrica.
           </p>
+          <div className="distributor-banner-tags">
+            <span className="distributor-tag">⭐ Márgenes de 35% a 55%</span>
+            <span className="distributor-tag">🚚 Envíos a Todo México</span>
+            <span className="distributor-tag">📦 Material POP y Displays</span>
+            <span className="distributor-tag">🩺 Soporte Técnico Veterinario</span>
+          </div>
         </div>
       </div>
 

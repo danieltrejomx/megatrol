@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ShoppingCart, 
@@ -9,10 +9,11 @@ import {
   ArrowRight, 
   Zap,
   Sparkles,
-  Package
+  Package,
+  ChevronDown
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { getAromaEmoji } from '../../data/products';
+import { getAromaEmoji, parsePresentations } from '../../data/products';
 import './CartDrawer.css';
 
 export const CartDrawer: React.FC = () => {
@@ -20,6 +21,7 @@ export const CartDrawer: React.FC = () => {
     items, 
     removeFromCart, 
     updateQuantity, 
+    updateItemVariant,
     totalItems, 
     totalPrice, 
     isCartOpen, 
@@ -158,6 +160,8 @@ export const CartDrawer: React.FC = () => {
                 const { product, quantity, selectedPresentation, selectedAroma, unitPrice, activeImage } = item;
                 const currentPrice = unitPrice ?? product.price;
                 const currentImg = activeImage || product.image;
+                const availablePresentations = parsePresentations(product.presentation);
+                const availableAromas = product.aromas || [];
 
                 return (
                   <div key={item.id} className="drawer-item-card">
@@ -179,23 +183,60 @@ export const CartDrawer: React.FC = () => {
                         </button>
                       </div>
 
-                      {/* Variantes seleccionadas */}
-                      {(selectedPresentation || selectedAroma) && (
-                        <div className="drawer-item-variants">
-                          {selectedPresentation && (
-                            <span className="drawer-variant-tag">
-                              <Package size={11} />
-                              <span>{selectedPresentation}</span>
-                            </span>
-                          )}
-                          {selectedAroma && (
-                            <span className="drawer-variant-tag aroma">
-                              <Sparkles size={11} />
-                              <span>{getAromaEmoji(selectedAroma)} {selectedAroma}</span>
-                            </span>
-                          )}
-                        </div>
-                      )}
+                      {/* Variantes y selector de presentación / aroma */}
+                      <div className="drawer-item-variants">
+                        {availablePresentations.length > 1 ? (
+                          <div className="drawer-variant-selector-wrapper" title="Cambiar presentación">
+                            <Package size={11} className="drawer-select-icon" />
+                            <select
+                              className="drawer-variant-select"
+                              value={selectedPresentation || availablePresentations[0]}
+                              onChange={(e) => updateItemVariant(item.id, e.target.value, selectedAroma)}
+                              aria-label={`Cambiar presentación de ${product.name}`}
+                            >
+                              {availablePresentations.map((pres) => {
+                                const presPrice = product.presentationPrices?.[pres];
+                                const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice})` : '';
+                                return (
+                                  <option key={pres} value={pres}>
+                                    {pres}{priceLabel}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                            <ChevronDown size={10} className="drawer-select-arrow" />
+                          </div>
+                        ) : selectedPresentation ? (
+                          <span className="drawer-variant-tag">
+                            <Package size={11} />
+                            <span>{selectedPresentation}</span>
+                          </span>
+                        ) : null}
+
+                        {availableAromas.length > 1 ? (
+                          <div className="drawer-variant-selector-wrapper aroma" title="Cambiar aroma">
+                            <Sparkles size={11} className="drawer-select-icon" />
+                            <select
+                              className="drawer-variant-select"
+                              value={selectedAroma || availableAromas[0]}
+                              onChange={(e) => updateItemVariant(item.id, selectedPresentation, e.target.value)}
+                              aria-label={`Cambiar aroma de ${product.name}`}
+                            >
+                              {availableAromas.map((aroma) => (
+                                <option key={aroma} value={aroma}>
+                                  {getAromaEmoji(aroma)} {aroma}
+                                </option>
+                              ))}
+                            </select>
+                            <ChevronDown size={10} className="drawer-select-arrow" />
+                          </div>
+                        ) : selectedAroma ? (
+                          <span className="drawer-variant-tag aroma">
+                            <Sparkles size={11} />
+                            <span>{getAromaEmoji(selectedAroma)} {selectedAroma}</span>
+                          </span>
+                        ) : null}
+                      </div>
 
                       <div className="drawer-item-bottom">
                         {/* Selector de cantidad compacto */}

@@ -237,7 +237,106 @@ ul {
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
 }
 
+/* ── DISTRIBUTOR BANNER HEADER (SHARED) ──────────────── */
+.distributor-banner-header {
+  position: relative;
+  background: 
+    linear-gradient(135deg, rgba(12, 43, 66, 0.88) 0%, rgba(22, 78, 115, 0.84) 100%),
+    url('/images/banner-tab-distribuidores.jpg');
+  background-size: cover;
+  background-position: center 40%;
+  border-radius: 28px;
+  padding: 50px 36px 44px;
+  text-align: center;
+  color: #ffffff;
+  box-shadow: 0 16px 40px rgba(0, 50, 90, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.distributor-banner-badge {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.22);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  font-size: 12px;
+  font-weight: 800;
+  padding: 5px 16px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(6px);
+}
+
+.distributor-banner-header h1,
+.distributor-banner-header h2 {
+  font-size: clamp(28px, 3.2vw, 38px);
+  color: #ffffff;
+  margin: 0 0 12px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.distributor-banner-header p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 660px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.distributor-banner-tags {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.distributor-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.distributor-tag:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
 @media (max-width: 768px) {
+  .distributor-banner-header {
+    padding: 36px 20px 30px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+  }
+  .distributor-banner-header h1,
+  .distributor-banner-header h2 {
+    font-size: 26px;
+  }
+  .distributor-banner-header p {
+    font-size: 14px;
+  }
+  .distributor-banner-tags {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
   .page-banner-container {
     padding-top: 24px;
     margin-bottom: 32px;

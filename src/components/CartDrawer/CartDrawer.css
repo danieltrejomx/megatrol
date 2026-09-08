@@ -1,4 +1,4 @@
-﻿/* ── CART DRAWER BACKDROP ── */
+/* ── CART DRAWER BACKDROP ── */
 .cart-drawer-backdrop {
   position: fixed;
   inset: 0;
@@ -349,6 +349,89 @@
 .drawer-variant-tag.aroma {
   background: #e0f2fe;
   color: #0369a1;
+}
+
+/* Selector interactivo de presentaciones y aromas dentro del carrito */
+.drawer-variant-selector-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.drawer-variant-selector-wrapper:hover,
+.drawer-variant-selector-wrapper:focus-within {
+  background: #ffffff;
+  border-color: #0084c7;
+  box-shadow: 0 0 0 2px rgba(0, 132, 199, 0.15);
+}
+
+.drawer-variant-selector-wrapper.aroma {
+  background: #f0f9ff;
+  border-color: #bae6fd;
+}
+
+.drawer-variant-selector-wrapper.aroma:hover,
+.drawer-variant-selector-wrapper.aroma:focus-within {
+  background: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.18);
+}
+
+.drawer-select-icon {
+  color: #0084c7;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.drawer-select-arrow {
+  color: #64748b;
+  flex-shrink: 0;
+  pointer-events: none;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.drawer-variant-selector-wrapper:hover .drawer-select-arrow {
+  color: #0c2b42;
+  transform: translateY(1px);
+}
+
+.drawer-variant-select {
+  border: none;
+  background: transparent;
+  color: #0c2b42;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  max-width: 170px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drawer-variant-select:focus {
+  outline: none;
+}
+
+.drawer-variant-select option {
+  font-weight: 600;
+  color: #0f172a;
+  background: #ffffff;
+  padding: 6px;
 }
 
 .drawer-item-bottom {

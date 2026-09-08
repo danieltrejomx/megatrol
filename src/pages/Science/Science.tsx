@@ -3,8 +3,6 @@ import {
   FlaskConical, 
   RefreshCw, 
   ShieldCheck, 
-  Leaf, 
-  Sparkles, 
   CheckCircle2 
 } from 'lucide-react';
 import './Science.css';
@@ -70,86 +68,47 @@ const Science = () => {
           </div>
         </section>
 
-        {/* Pilar 2: Aceite de Neem (Banner Mejorado con Máxima Visibilidad e Identidad Megatrol) */}
-        <section className="neem-banner">
-          <div className="neem-banner-content">
-            <div className="neem-badge">
-              <ShieldCheck size={16} />
+        {/* Pilar 2: Aceite de Neem (Estilo Lindo y Luminoso Como Segunda Captura) */}
+        <section className="science-pillar-card">
+          <div className="science-pillar-content">
+            <div className="science-pillar-badge">
+              <ShieldCheck size={15} />
               <span>Activo Botánico Estrella</span>
               <span className="badge-dot">•</span>
-              <span className="neem-scientific-name">Azadirachta indica</span>
+              <span>Azadirachta indica</span>
             </div>
-            <h2 className="neem-title">Aceite de Neem: El Escudo Protector</h2>
-            <p className="neem-lead">
+            <h2>Aceite de Neem: El Escudo Protector</h2>
+            <p className="science-lead">
               Enriquecemos nuestra fórmula con <strong>Aceite de Neem (Azadirachta indica)</strong> prensado en frío, reconocido mundialmente por sus extraordinarias propiedades repelentes, insecticidas y antiparasitarias de amplio espectro.
             </p>
-            <p className="neem-body">
+            <p className="science-body">
               El ingrediente activo clave, la <strong>azadiractina</strong>, es fundamental para nuestro mecanismo de acción: no solo derriba y elimina a los parásitos adultos en contacto, sino que también actúa de forma integral sobre su sistema reproductivo.
             </p>
-
-            <div className="neem-features-grid">
-              <div className="neem-feature-card">
-                <div className="neem-feature-icon icon-amber">
-                  <Zap size={20} />
-                </div>
-                <div className="neem-feature-info">
-                  <strong>Efecto Adulticida Inmediato</strong>
-                  <p>Inmoviliza pulgas, garrapatas y ácaros colapsando su membrana celular al contacto.</p>
-                </div>
+            <div className="science-pillar-features">
+              <div className="pillar-feature-item">
+                <CheckCircle2 size={16} className="pillar-icon" />
+                <span>Efecto Adulticida Inmediato: derriba pulgas, garrapatas y ácaros al contacto</span>
               </div>
-
-              <div className="neem-feature-card">
-                <div className="neem-feature-icon icon-blue">
-                  <RefreshCw size={20} />
-                </div>
-                <div className="neem-feature-info">
-                  <strong>Bloqueo Hormonal IGR</strong>
-                  <p>La azadiractina imita a la ecdisona, impidiendo la muda de larvas y esterilizando a las hembras.</p>
-                </div>
+              <div className="pillar-feature-item">
+                <CheckCircle2 size={16} className="pillar-icon" />
+                <span>Bloqueo Hormonal IGR: inhibe la muda larvaria y esteriliza al parásito</span>
               </div>
-
-              <div className="neem-feature-card">
-                <div className="neem-feature-icon icon-green">
-                  <Leaf size={20} />
-                </div>
-                <div className="neem-feature-info">
-                  <strong>100% Inocuo para Mamíferos</strong>
-                  <p>Seguro para cachorros, gatos y la convivencia familiar sin riesgo de toxicidad química.</p>
-                </div>
+              <div className="pillar-feature-item">
+                <CheckCircle2 size={16} className="pillar-icon" />
+                <span>100% Inocuo para Mamíferos: seguro para cachorros, gatos y la convivencia familiar</span>
               </div>
             </div>
           </div>
-
-          <div className="neem-banner-visual">
-            <div className="neem-visual-card">
-              <div className="neem-visual-tag">
-                <Sparkles size={14} />
-                <span>Prensado en Frío</span>
-              </div>
+          <div className="science-pillar-media">
+            <div className="science-image-card">
               <img 
                 src="/images/ciencia-aceite-neem.jpg" 
                 alt="Aceite de Neem Puro prensado en frío" 
-                className="neem-visual-img" 
+                className="science-card-img" 
               />
-              <div className="neem-visual-overlay">
-                <span className="neem-overlay-sub">Pureza Botánica Certificada</span>
-                <strong className="neem-overlay-title">Azadirachta indica</strong>
-                <div className="neem-overlay-stats">
-                  <div className="neem-stat">
-                    <span className="stat-value">100%</span>
-                    <span className="stat-label">Botánico</span>
-                  </div>
-                  <div className="stat-divider"></div>
-                  <div className="neem-stat">
-                    <span className="stat-value">0%</span>
-                    <span className="stat-label">Tóxicos</span>
-                  </div>
-                  <div className="stat-divider"></div>
-                  <div className="neem-stat">
-                    <span className="stat-value">IGR</span>
-                    <span className="stat-label">Ovicida</span>
-                  </div>
-                </div>
+              <div className="science-card-caption">
+                <span className="science-caption-tag">Pureza Botánica Certificada</span>
+                <strong className="science-caption-title">Aceite de Neem (Azadirachta indica)</strong>
               </div>
             </div>
           </div>

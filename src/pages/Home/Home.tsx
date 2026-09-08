@@ -15,13 +15,15 @@ import {
   Home as HomeIcon,
   TrendingUp,
   Package,
-  Stethoscope,
   ShoppingCart,
-  Send,
   Sparkles,
   ArrowRight,
   Volume2,
-  VolumeX
+  VolumeX,
+  Handshake,
+  Mail,
+  MessageCircle,
+  CheckCircle2
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { blogArticles, type BlogArticle } from '../../data/blog';
@@ -29,6 +31,7 @@ import BlogModal from '../../components/BlogModal/BlogModal';
 import { ProductModal } from '../../components/ProductModal/ProductModal';
 import { useCart } from '../../context/CartContext';
 import './Home.css';
+import '../Distributors/Distributors.css';
 
 const getInitials = (name: string) => {
   return name.replace(/^(Dra\.|Dr\.|MVZ\.)\s*/i, '')
@@ -198,7 +201,8 @@ const Home = () => {
   const navigate = useNavigate();
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
-  const [formData, setFormData] = useState({ nombre: '', negocio: '', ciudad: '', telefono: '', comentarios: '' });
+  const [formData, setFormData] = useState({ nombre: '', email: '', negocio: '', estado: '', ciudad: '', telefono: '', comentarios: '' });
+  const [distributorSubmitted, setDistributorSubmitted] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<BlogArticle | null>(null);
 
   const openArticle = (slug: string) => {
@@ -345,13 +349,13 @@ const Home = () => {
     }
   }, [homeFilteredProducts]);
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert('¡Gracias! Nos pondremos en contacto contigo pronto.');
+    setDistributorSubmitted(true);
   };
 
   return (
@@ -942,196 +946,151 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="distributor-container">
-            {/* Left Column: Value Proposition & Benefits */}
-            <div className="distributor-content">
-              <div className="distributor-perks-header">
-                <h3>Ventajas del Programa de Distribución</h3>
-                <p>Márgenes preferenciales, soporte comercial y respaldo clínico directo de fábrica para tu negocio.</p>
-              </div>
-
-              <div className="distributor-perks-grid">
-                <div className="perk-card">
-                  <div className="perk-icon perk-icon-green"><TrendingUp size={22} /></div>
-                  <div className="perk-info">
-                    <h4>Márgenes de 35% a 55%</h4>
-                    <p>Precios preferenciales por volumen y esquemas de descuento escalonados.</p>
-                  </div>
-                </div>
-                <div className="perk-card">
-                  <div className="perk-icon perk-icon-blue"><Truck size={22} /></div>
-                  <div className="perk-info">
-                    <h4>Envíos a Todo México</h4>
-                    <p>Entregas seguras y aseguradas a cualquier estado y municipio del país.</p>
-                  </div>
-                </div>
-                <div className="perk-card">
-                  <div className="perk-icon perk-icon-cyan"><Package size={22} /></div>
-                  <div className="perk-info">
-                    <h4>Material POP y Displays Gratis</h4>
-                    <p>Exhibidores de mostrador, catálogos físicos y afiches promocionales para tu local.</p>
-                  </div>
-                </div>
-                <div className="perk-card">
-                  <div className="perk-icon perk-icon-mint"><Stethoscope size={22} /></div>
-                  <div className="perk-info">
-                    <h4>Soporte Técnico Veterinario</h4>
-                    <p>Capacitación para tu equipo y fichas técnicas oficiales avaladas.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="distributor-contact-bar">
-                <span className="distributor-contact-label">Atención y Redes Oficiales:</span>
-                <div className="social-cta">
-                <a 
-                  href="https://wa.me/525536206854?text=Hola,%20me%20interesa%20informaci%C3%B3n%20sobre%20precios%20de%20mayoreo%20y%20distribuci%C3%B3n%20de%20Megatrol%20e%20Inobazz%20Pharma" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="social-pill wa" 
-                  aria-label="WhatsApp de Inobazz Pharma"
-                  title="WhatsApp"
-                >
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.04 14.69 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.04 3.67M9.53 7.35C9.34 7.35 9.04 7.42 8.78 7.7C8.52 7.98 7.8 8.65 7.8 10.03C7.8 11.41 8.81 12.74 8.95 12.93C9.09 13.12 10.9 15.93 13.68 17.13C14.34 17.42 14.86 17.59 15.26 17.72C15.93 17.93 16.54 17.9 17.02 17.83C17.56 17.75 18.68 17.15 18.91 16.5C19.14 15.85 19.14 15.3 19.07 15.18C19 15.06 18.81 15 18.53 14.86C18.25 14.72 16.89 14.05 16.63 13.96C16.38 13.86 16.19 13.82 16 14.1C15.82 14.38 15.29 15 15.13 15.19C14.97 15.37 14.81 15.4 14.53 15.26C14.25 15.12 13.36 14.83 12.3 13.89C11.48 13.15 10.92 12.24 10.76 11.96C10.6 11.69 10.74 11.53 10.88 11.4C11.01 11.27 11.17 11.05 11.31 10.89C11.45 10.73 11.5 10.61 11.59 10.43C11.68 10.24 11.64 10.08 11.57 9.94C11.5 9.8 10.93 8.42 10.7 7.86C10.48 7.32 10.25 7.4 10.07 7.39C9.91 7.38 9.72 7.35 9.53 7.35Z"/>
-                  </svg>
-                </a>
-                <a 
-                  href="https://facebook.com/Inobazzpharma" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="social-pill fb" 
-                  aria-label="Facebook de Inobazz Pharma"
-                  title="Facebook"
-                >
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                  </svg>
-                </a>
-                <a 
-                  href="https://instagram.com/Inobazzpharma_mx" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="social-pill ig" 
-                  aria-label="Instagram de Inobazz Pharma"
-                  title="Instagram"
-                >
-                  <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                  </svg>
-                </a>
-                <a 
-                  href="https://tiktok.com/@Inobazz.pharma_mx" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="social-pill tk" 
-                  aria-label="TikTok de Inobazz Pharma"
-                  title="TikTok"
-                >
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.19 8.19 0 0 0 4.79 1.52V6.75a4.85 4.85 0 0 1-1.02-.06z"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: High-Converting Distributor Form */}
-          <div className="distributor-form-wrapper">
-            <div className="form-header-badge">
-              <Zap size={14} />
-              <span>Alta Inmediata</span>
-            </div>
-            <h3>Solicitar Lista de Precios de Mayoreo</h3>
-            <p>Llena tus datos y un ejecutivo comercial te enviará el catálogo digital y la lista de precios preferencial.</p>
-            
-            <form className="distributor-form" onSubmit={handleFormSubmit}>
-              <div className="form-group">
-                <label>Nombre y Apellidos</label>
-                <input 
-                  name="nombre" 
-                  type="text" 
-                  placeholder="Ej. Dr. Carlos Morales" 
-                  value={formData.nombre} 
-                  onChange={handleFormChange} 
-                  required 
-                />
-              </div>
-
-              <div className="form-row-2">
-                <div className="form-group">
-                  <label>Nombre de tu Negocio / Veterinaria</label>
-                  <input 
-                    name="negocio" 
-                    type="text" 
-                    placeholder="Ej. Veterinaria San Ángel" 
-                    value={formData.negocio} 
-                    onChange={handleFormChange} 
-                    required 
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Ciudad y Estado</label>
-                  <input 
-                    name="ciudad" 
-                    type="text" 
-                    placeholder="Ej. Guadalajara, Jal." 
-                    value={formData.ciudad} 
-                    onChange={handleFormChange} 
-                    required 
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Teléfono Celular / WhatsApp</label>
-                <input 
-                  name="telefono" 
-                  type="tel" 
-                  placeholder="Ej. 55 1234 5678" 
-                  value={formData.telefono} 
-                  onChange={handleFormChange} 
-                  required 
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Línea de Interés Principal</label>
-                <select name="lineaInteres" className="form-select">
-                  <option value="todas">Catálogo Completo (Perros y Gatos)</option>
-                  <option value="megatrol">Línea Megatrol (Antiparasitarios Naturales)</option>
-                  <option value="pequenas">Pequeñas Especies (Salud y Cuidado)</option>
-                  <option value="farmaceuticos">Farmacéuticos y Antibióticos</option>
-                  <option value="multivitaminicos">Multivitamínicos y Suplementos</option>
-                  <option value="dermocosmeticos">Dermocosmética y Shampoos</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Comentarios o volumen estimado (Opcional)</label>
-                <textarea 
-                  name="comentarios" 
-                  placeholder="Cuéntanos sobre tu negocio o qué productos te interesan cotizar..." 
-                  value={formData.comentarios} 
-                  onChange={handleFormChange} 
-                  rows={3}
-                ></textarea>
-              </div>
-
-              <button type="submit" className="btn-distributor-submit">
-                <Send size={16} />
-                <span>Solicitar Catálogo y Precios de Mayoreo</span>
-              </button>
-
-              <p className="form-privacy-notice">
-                <ShieldCheck size={14} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '6px' }} />
-                Tus datos están protegidos. Respuesta garantizada en menos de 2 horas hábiles.
+          <div className="distributors-layout">
+            <div className="distributors-info">
+              <span className="dist-card-badge">
+                <Sparkles size={14} /> Ventajas Comerciales
+              </span>
+              <h2>Beneficios de ser Distribuidor</h2>
+              <p className="dist-card-intro">
+                Únete a nuestra red nacional autorizada con respaldo directo de laboratorio y condiciones comerciales preferenciales para hacer crecer tu negocio veterinario.
               </p>
-            </form>
+
+              <ul className="benefits-list">
+                <li className="benefit-item-glass">
+                  <div className="icon dist-icon-trending">
+                    <TrendingUp size={24} />
+                  </div>
+                  <div className="benefit-item-content">
+                    <strong>Altos Márgenes de Ganancia</strong>
+                    <p>Precios preferenciales escalonados según volumen de compra. Retorno de inversión atractivo.</p>
+                  </div>
+                </li>
+                <li className="benefit-item-glass">
+                  <div className="icon dist-icon-package">
+                    <Package size={24} />
+                  </div>
+                  <div className="benefit-item-content">
+                    <strong>Material de Apoyo</strong>
+                    <p>Te proporcionamos displays, folletos informativos y material digital para tus redes sociales.</p>
+                  </div>
+                </li>
+                <li className="benefit-item-glass">
+                  <div className="icon dist-icon-truck">
+                    <Truck size={24} />
+                  </div>
+                  <div className="benefit-item-content">
+                    <strong>Envíos a Todo México</strong>
+                    <p>Logística eficiente para que nunca te quedes sin stock en tu negocio.</p>
+                  </div>
+                </li>
+                <li className="benefit-item-glass">
+                  <div className="icon dist-icon-handshake">
+                    <Handshake size={24} />
+                  </div>
+                  <div className="benefit-item-content">
+                    <strong>Capacitación Constante</strong>
+                    <p>Asesoría directa sobre el mecanismo de acción de nuestros productos para que puedas orientar a tus clientes.</p>
+                  </div>
+                </li>
+              </ul>
+
+              <div className="contact-direct">
+                <h3>Contacto Directo</h3>
+                <p>También puedes comunicarte con nuestro equipo de ventas mayoristas:</p>
+                <div className="contact-methods">
+                  <a href="mailto:distribuidores@megatrol.com.mx" className="contact-method">
+                    <Mail size={18} />
+                    <span>distribuidores@megatrol.com.mx</span>
+                  </a>
+                  <a 
+                    href="https://wa.me/525536206854?text=Hola,%20me%20interesa%20informaci%C3%B3n%20para%20ser%20distribuidor%20de%20Megatrol" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="contact-method method-whatsapp"
+                  >
+                    <MessageCircle size={18} />
+                    <span>WhatsApp: (55) 3620 6854</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="distributors-form-container">
+              {distributorSubmitted ? (
+                <div className="success-message">
+                  <div className="success-icon-wrap">
+                    <CheckCircle2 size={48} color="var(--color-primary)" />
+                  </div>
+                  <h3>¡Solicitud Recibida!</h3>
+                  <p>
+                    Gracias por tu interés en Megatrol. Un asesor se comunicará contigo en las próximas 
+                    24-48 horas hábiles para proporcionarte nuestro catálogo de mayoreo y listas de precios.
+                  </p>
+                  <button className="btn btn-primary" onClick={() => setDistributorSubmitted(false)}>Enviar otra solicitud</button>
+                </div>
+              ) : (
+                <form className="distributors-form" onSubmit={handleFormSubmit}>
+                  <h2>Formulario de Registro</h2>
+                  <p>Déjanos tus datos y nos pondremos en contacto contigo.</p>
+                  
+                  <div className="form-group">
+                    <label>Nombre Completo *</label>
+                    <input type="text" name="nombre" required value={formData.nombre} onChange={handleFormChange} />
+                  </div>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Correo Electrónico *</label>
+                      <input type="email" name="email" required value={formData.email} onChange={handleFormChange} />
+                    </div>
+                    <div className="form-group">
+                      <label>Teléfono / WhatsApp *</label>
+                      <input type="tel" name="telefono" required value={formData.telefono} onChange={handleFormChange} />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Nombre de tu Negocio / Clínica *</label>
+                    <input type="text" name="negocio" required value={formData.negocio} onChange={handleFormChange} />
+                  </div>
+
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>Estado *</label>
+                      <select name="estado" required value={formData.estado} onChange={handleFormChange}>
+                        <option value="">Selecciona tu estado</option>
+                        <option value="Aguascalientes">Aguascalientes</option>
+                        <option value="Baja California">Baja California</option>
+                        <option value="CDMX">CDMX</option>
+                        <option value="Estado de México">Estado de México</option>
+                        <option value="Guanajuato">Guanajuato</option>
+                        <option value="Jalisco">Jalisco</option>
+                        <option value="Michoacán">Michoacán</option>
+                        <option value="Nuevo León">Nuevo León</option>
+                        <option value="Puebla">Puebla</option>
+                        <option value="Querétaro">Querétaro</option>
+                        <option value="Veracruz">Veracruz</option>
+                        <option value="Yucatán">Yucatán</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                    <div className="form-group">
+                      <label>Ciudad *</label>
+                      <input type="text" name="ciudad" required value={formData.ciudad} onChange={handleFormChange} />
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label>¿Cómo nos conociste? / Comentarios</label>
+                    <textarea name="comentarios" rows={3} value={formData.comentarios} onChange={handleFormChange}></textarea>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary submit-btn">Solicitar Información de Mayoreo</button>
+                </form>
+              )}
+            </div>
           </div>
-        </div>
       </div>
     </section>
 
