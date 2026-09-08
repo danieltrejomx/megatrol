@@ -93,8 +93,13 @@ ul {
   font-family: var(--font-sans);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
   border: none;
+  user-select: none;
+}
+
+.btn:active {
+  transform: translateY(0px) scale(0.97) !important;
 }
 
 .btn-primary {
@@ -105,8 +110,8 @@ ul {
 
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--color-primary-hover) 0%, #004d80 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 132, 199, 0.35);
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(0, 132, 199, 0.38);
 }
 
 .btn-secondary {
@@ -118,6 +123,8 @@ ul {
 .btn-secondary:hover {
   background-color: var(--color-primary-light);
   color: var(--color-primary-dark);
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 132, 199, 0.16);
 }
 
 .btn-accent {
@@ -127,8 +134,8 @@ ul {
 }
 
 .btn-accent:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(116, 192, 67, 0.35);
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(116, 192, 67, 0.38);
 }
 
 .btn-green {
@@ -138,8 +145,8 @@ ul {
 }
 
 .btn-green:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(116, 192, 67, 0.35);
+  transform: translateY(-2.5px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(116, 192, 67, 0.38);
 }
 
 /* ── SHARED PAGE BANNER (Standardized dimensions across all tabs) ── */
@@ -354,5 +361,21 @@ ul {
   }
   .page-banner-header p {
     font-size: 14.5px;
+  }
+}
+
+/* ── PAGE ENTRANCE ANIMATION ── */
+main > * {
+  animation: pageEntrance 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pageEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
