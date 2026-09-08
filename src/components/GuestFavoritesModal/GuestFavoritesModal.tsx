@@ -154,12 +154,23 @@ export const GuestFavoritesModal: React.FC = () => {
 
                   return (
                     <div key={prod.id} className="guest-fav-item">
-                      <div className="guest-fav-img-wrap">
+                      <div 
+                        className="guest-fav-img-wrap"
+                        onClick={() => {
+                          closeGuestFavorites();
+                          navigate(`/producto/${prod.slug}`);
+                        }}
+                        style={{ cursor: 'pointer' }}
+                        title={`Ver detalles de ${prod.name}`}
+                      >
                         <img src={prod.image} alt={prod.name} className="guest-fav-img" />
                         <button
                           type="button"
                           className="guest-fav-remove-btn"
-                          onClick={() => toggleFavorite(prod.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(prod.id);
+                          }}
                           title="Eliminar de favoritos"
                           aria-label={`Eliminar ${prod.name} de favoritos`}
                         >
@@ -169,7 +180,17 @@ export const GuestFavoritesModal: React.FC = () => {
 
                       <div className="guest-fav-details">
                         <span className="guest-fav-line">{prod.line}</span>
-                        <h4 className="guest-fav-name">{prod.name}</h4>
+                        <h4 
+                          className="guest-fav-name"
+                          onClick={() => {
+                            closeGuestFavorites();
+                            navigate(`/producto/${prod.slug}`);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          title={`Ver detalles de ${prod.name}`}
+                        >
+                          {prod.name}
+                        </h4>
                         <div className="guest-fav-specs">
                           {prod.species && <span className="guest-spec-tag">🐾 {prod.species}</span>}
                           {firstPres && <span className="guest-spec-tag">📦 {firstPres}</span>}

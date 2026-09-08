@@ -179,7 +179,7 @@ export const BlogModal: React.FC<BlogModalProps> = ({ article, onClose }) => {
                           className="btn-modal-view-link"
                           onClick={() => {
                             onClose();
-                            navigate(`/tienda?producto=${prod.slug}`);
+                            navigate(`/producto/${prod.slug}`);
                           }}
                         >
                           <span>Ver Ficha Técnica Completa</span>

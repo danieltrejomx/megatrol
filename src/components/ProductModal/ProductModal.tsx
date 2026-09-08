@@ -22,7 +22,9 @@ import {
   AlertCircle,
   Lock,
   UserCheck,
-  Heart
+  Heart,
+  Share2,
+  Check
 } from 'lucide-react';
 import { type Product, parsePresentations } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -65,8 +67,36 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
   const [reviewComment, setReviewComment] = useState('');
   const [reviewPresentation, setReviewPresentation] = useState('');
   const [formSubmittedSuccess, setFormSubmittedSuccess] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
 
   const reviewsSectionRef = useRef<HTMLDivElement>(null);
+
+  const handleShareProduct = async () => {
+    if (!product) return;
+    const url = `${window.location.origin}/producto/${product.slug}`;
+    if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
+      try {
+        await navigator.share({
+          title: `${product.name} | Megatrol`,
+          text: product.desc,
+          url: url,
+        });
+        return;
+      } catch {
+        // Fallback to clipboard
+      }
+    }
+
+    if (navigator.clipboard) {
+      try {
+        await navigator.clipboard.writeText(url);
+        setCopiedLink(true);
+        setTimeout(() => setCopiedLink(false), 2400);
+      } catch {
+        // Fallback
+      }
+    }
+  };
 
   // Reset state when product changes
   useEffect(() => {
@@ -131,7 +161,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
 
   const handleBuyNow = () => {
     addToCart(product, quantity, selectedPresentation, selectedAroma, false);
-    onClose();
     navigate('/carrito');
   };
 
@@ -209,8 +238,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
       aria-labelledby="product-modal-title"
     >
       <div className="product-modal-card" onClick={(e) => e.stopPropagation()}>
-        {/* Top Header Actions (Favorite & Close) */}
+        {/* Top Header Actions (Favorite, Share & Close) */}
         <div className="product-modal-top-actions">
+          <button
+            type="button"
+            className={`product-modal-share-btn ${copiedLink ? 'copied' : ''}`}
+            onClick={handleShareProduct}
+            aria-label="Copiar o compartir enlace de este producto"
+            title={copiedLink ? "¡Enlace copiado al portapapeles!" : "Compartir o copiar enlace de este producto"}
+          >
+            {copiedLink ? <Check size={18} color="#059669" /> : <Share2 size={18} color="#475569" />}
+            {copiedLink && <span className="share-copied-badge">¡Copiado!</span>}
+          </button>
           <button
             type="button"
             className={`product-modal-fav-btn ${isFavorite(product.id) ? 'active' : ''}`}
@@ -288,6 +327,15 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
                     <span>{product.species}</span>
                   </span>
                 )}
+                <button
+                  type="button"
+                  className="product-modal-link-pill"
+                  onClick={handleShareProduct}
+                  title="Copiar enlace directo de este producto"
+                >
+                  <Share2 size={11} />
+                  <span>{copiedLink ? '¡Enlace copiado!' : `/producto/${product.slug}`}</span>
+                </button>
               </div>
 
               <h2 id="product-modal-title" className="product-modal-title">{product.name}</h2>

@@ -597,7 +597,7 @@ export const AccountModal = () => {
                             <span>Comprar</span>
                           </button>
                           <Link
-                            to={`/tienda?producto=${prod.slug}`}
+                            to={`/producto/${prod.slug}`}
                             className="favorite-btn-details"
                             onClick={closeAccountModal}
                           >

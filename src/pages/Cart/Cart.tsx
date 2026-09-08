@@ -49,7 +49,12 @@ const Cart = () => {
 
             return (
               <div key={item.id} className="cart-item">
-                <div className="cart-item-image">
+                <div 
+                  className="cart-item-image"
+                  onClick={() => navigate(`/producto/${product.slug}`)}
+                  style={{ cursor: 'pointer' }}
+                  title={`Ver detalles de ${product.name}`}
+                >
                   <img
                     src={currentImg}
                     alt={product.name}
@@ -57,7 +62,13 @@ const Cart = () => {
                   />
                 </div>
                 <div className="cart-item-info">
-                  <h3>{product.name}</h3>
+                  <h3 
+                    onClick={() => navigate(`/producto/${product.slug}`)}
+                    style={{ cursor: 'pointer' }}
+                    title={`Ver detalles de ${product.name}`}
+                  >
+                    {product.name}
+                  </h3>
                   <p className="cart-item-desc">{product.desc}</p>
 
                   {/* Selector de Aromas */}

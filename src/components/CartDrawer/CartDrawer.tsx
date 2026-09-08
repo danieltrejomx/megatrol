@@ -165,13 +165,31 @@ export const CartDrawer: React.FC = () => {
 
                 return (
                   <div key={item.id} className="drawer-item-card">
-                    <div className="drawer-item-thumb">
+                    <div 
+                      className="drawer-item-thumb"
+                      onClick={() => {
+                        closeCart();
+                        navigate(`/producto/${product.slug}`);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                      title={`Ver detalles de ${product.name}`}
+                    >
                       <img src={currentImg} alt={product.name} />
                     </div>
 
                     <div className="drawer-item-details">
                       <div className="drawer-item-top">
-                        <h4 className="drawer-item-name">{product.name}</h4>
+                        <h4 
+                          className="drawer-item-name"
+                          onClick={() => {
+                            closeCart();
+                            navigate(`/producto/${product.slug}`);
+                          }}
+                          style={{ cursor: 'pointer' }}
+                          title={`Ver detalles de ${product.name}`}
+                        >
+                          {product.name}
+                        </h4>
                         <button
                           type="button"
                           className="drawer-item-delete"

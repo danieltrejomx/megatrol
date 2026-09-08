@@ -1,4 +1,7 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, useParams, useNavigate, type Location } from 'react-router-dom';
+import { products } from './data/products';
+import { ProductModal } from './components/ProductModal/ProductModal';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { AuthModal } from './components/AuthModal/AuthModal';
@@ -21,26 +24,64 @@ import Distributors from './pages/Distributors/Distributors';
 import Blog from './pages/Blog/Blog';
 import BlogArticle from './pages/Blog/BlogArticle';
 
+function ProductModalRoute() {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const product = products.find((p) => p.slug === slug);
+
+  useEffect(() => {
+    if (product) {
+      const prevTitle = document.title;
+      document.title = `${product.name} | Megatrol Pet Care`;
+      return () => {
+        document.title = prevTitle;
+      };
+    }
+  }, [product]);
+
+  if (!product) return null;
+
+  const handleClose = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/tienda');
+    }
+  };
+
+  return <ProductModal product={product} onClose={handleClose} />;
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
+  const state = location.state as { backgroundLocation?: Location } | null;
+  const currentRoutesLocation = state?.backgroundLocation || location;
 
   return (
-    <div key={location.pathname} className="page-transition-wrapper">
-      <Routes location={location}>
-        <Route path="/" element={<Home />} />
-        <Route path="/tienda" element={<Shop />} />
-        <Route path="/producto/:slug" element={<ProductDetail />} />
-        <Route path="/carrito" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/orden-confirmada" element={<OrderConfirmed />} />
-        <Route path="/ciencia" element={<Science />} />
-        <Route path="/nosotros" element={<About />} />
-        <Route path="/distribuidores" element={<Distributors />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogArticle />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
-    </div>
+    <>
+      <div key={currentRoutesLocation.pathname} className="page-transition-wrapper">
+        <Routes location={currentRoutesLocation}>
+          <Route path="/" element={<Home />} />
+          <Route path="/tienda" element={<Shop />} />
+          <Route path="/producto/:slug" element={<ProductDetail />} />
+          <Route path="/carrito" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/orden-confirmada" element={<OrderConfirmed />} />
+          <Route path="/ciencia" element={<Science />} />
+          <Route path="/nosotros" element={<About />} />
+          <Route path="/distribuidores" element={<Distributors />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogArticle />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </div>
+
+      {state?.backgroundLocation && (
+        <Routes>
+          <Route path="/producto/:slug" element={<ProductModalRoute />} />
+        </Routes>
+      )}
+    </>
   );
 }
 

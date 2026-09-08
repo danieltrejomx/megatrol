@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { 
   PawPrint, 
   Leaf, 
@@ -44,6 +44,7 @@ const Shop = () => {
   const { addToCart } = useCart();
   const { toggleFavorite, isFavorite } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
 
   // Detect window width to only enable category drawer breakdown on mobile
@@ -59,14 +60,20 @@ const Shop = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Open modal if URL specifies ?producto=slug or ?p=slug
+  // Redirige parámetros legados ?producto=slug o ?p=slug a la ruta canónica /producto/:slug
   useEffect(() => {
     const slug = searchParams.get('producto') || searchParams.get('p');
     if (slug) {
-      const found = products.find(p => p.slug === slug);
-      if (found) setModalProduct(found);
+      navigate(`/producto/${slug}`, { 
+        replace: true, 
+        state: { backgroundLocation: { pathname: '/tienda', search: '', hash: '', state: null, key: 'shop-bg' } } 
+      });
     }
-  }, [searchParams]);
+  }, [searchParams, navigate]);
+
+  const handleOpenProduct = (product: Product) => {
+    navigate(`/producto/${product.slug}`, { state: { backgroundLocation: location } });
+  };
 
   const handleCloseModal = () => {
     setModalProduct(null);
@@ -95,7 +102,7 @@ const Shop = () => {
       <div
         key={product.id}
         className="product-card"
-        onClick={() => setModalProduct(product)}
+        onClick={() => handleOpenProduct(product)}
       >
         <div className="product-card-image-wrap">
           {product.tag && <span className="product-card-tag">{product.tag}</span>}
@@ -268,7 +275,7 @@ const Shop = () => {
                           <div
                             key={p.id}
                             className="drawer-product-row"
-                            onClick={() => setModalProduct(p)}
+                            onClick={() => handleOpenProduct(p)}
                             title={`Ver detalles de ${p.name}`}
                           >
                             <img src={p.image} alt={p.name} className="drawer-product-img" />
@@ -383,7 +390,7 @@ const Shop = () => {
       </div>
 
       {/* Pantalla Emergente de Producto (Product Detail Modal) */}
-      <ProductModal product={modalProduct} onClose={handleCloseModal} />
+      {modalProduct && <ProductModal product={modalProduct} onClose={handleCloseModal} />}
     </div>
   );
 };

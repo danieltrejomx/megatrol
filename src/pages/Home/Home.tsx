@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -234,6 +234,7 @@ const Home = () => {
   const { addToCart } = useCart();
   const { toggleFavorite, isFavorite } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedHomeLine, setSelectedHomeLine] = useState('all');
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
   const [formData, setFormData] = useState({ nombre: '', email: '', negocio: '', estado: '', ciudad: '', telefono: '', comentarios: '' });
@@ -373,12 +374,7 @@ const Home = () => {
 
   const handleOpenReviewProduct = (slug?: string) => {
     if (!slug) return;
-    const found = products.find((p) => p.slug === slug);
-    if (found) {
-      setModalProduct(found);
-    } else {
-      navigate(`/tienda?producto=${slug}`);
-    }
+    navigate(`/producto/${slug}`, { state: { backgroundLocation: location } });
   };
 
   const handleAddFromVideo = (slug: string) => {
@@ -644,7 +640,7 @@ const Home = () => {
                   className="carousel-card" 
                   onClick={() => {
                     if (dragMovedRef.current) return;
-                    setModalProduct(p);
+                    navigate(`/producto/${p.slug}`, { state: { backgroundLocation: location } });
                   }}
                 >
                   {p.tag && <span className="product-tag">{p.tag}</span>}
@@ -896,8 +892,7 @@ const Home = () => {
                           <button 
                             type="button"
                             onClick={() => {
-                              const found = products.find((p) => p.slug === prod.slug);
-                              if (found) setModalProduct(found);
+                              navigate(`/producto/${prod.slug}`, { state: { backgroundLocation: location } });
                             }}
                             className="video-prod-main-link"
                             title={`Ver detalles de ${prod.name}`}
@@ -1280,7 +1275,7 @@ const Home = () => {
       <BlogModal article={selectedArticle} onClose={() => setSelectedArticle(null)} />
 
       {/* Pantalla Emergente (Modal) con toda la información del producto */}
-      <ProductModal product={modalProduct} onClose={() => setModalProduct(null)} />
+      {modalProduct && <ProductModal product={modalProduct} onClose={() => setModalProduct(null)} />}
 
     </div>
   );

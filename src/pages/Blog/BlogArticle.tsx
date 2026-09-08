@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Calendar, 
   Clock, 
@@ -27,6 +27,7 @@ const getInitials = (name: string) => {
 const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { addToCart } = useCart();
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
 
@@ -169,7 +170,7 @@ const BlogArticle = () => {
                     <button
                       type="button"
                       className="btn-article-view-link"
-                      onClick={() => navigate(`/tienda?producto=${p.slug}`)}
+                      onClick={() => navigate(`/producto/${p.slug}`, { state: { backgroundLocation: location } })}
                     >
                       <span>Ver Ficha Técnica Completa</span>
                       <ArrowRight size={13} />
