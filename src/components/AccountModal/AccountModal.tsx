@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, useEffect, useRef, type FormEvent } from 'react';
 import { 
   X, 
   Package, 
@@ -13,6 +13,7 @@ import {
   Building2,
   Store,
   ChevronRight,
+  ChevronLeft,
   ChevronDown,
   Sparkles,
   Heart,
@@ -62,6 +63,44 @@ export const AccountModal = () => {
   const [addressSavedToast, setAddressSavedToast] = useState(false);
   const [profileSavedToast, setProfileSavedToast] = useState(false);
   const [headerSaved, setHeaderSaved] = useState(false);
+
+  // Tab scroll monitoring for mobile overflow
+  const tabsRef = useRef<HTMLDivElement>(null);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+
+  const checkTabsScroll = () => {
+    if (!tabsRef.current) return;
+    const { scrollLeft, scrollWidth, clientWidth } = tabsRef.current;
+    setCanScrollLeft(scrollLeft > 6);
+    setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 6);
+  };
+
+  useEffect(() => {
+    if (isAccountModalOpen) {
+      const timer = setTimeout(checkTabsScroll, 120);
+      const el = tabsRef.current;
+      if (el) {
+        el.addEventListener('scroll', checkTabsScroll, { passive: true });
+      }
+      window.addEventListener('resize', checkTabsScroll);
+      return () => {
+        clearTimeout(timer);
+        if (el) {
+          el.removeEventListener('scroll', checkTabsScroll);
+        }
+        window.removeEventListener('resize', checkTabsScroll);
+      };
+    }
+  }, [isAccountModalOpen, currentUser]);
+
+  const scrollTabs = (direction: 'left' | 'right') => {
+    if (!tabsRef.current) return;
+    tabsRef.current.scrollBy({
+      left: direction === 'right' ? 150 : -150,
+      behavior: 'smooth'
+    });
+  };
 
   // Address form state
   const [addressForm, setAddressForm] = useState<UserAddress>({
@@ -259,60 +298,84 @@ export const AccountModal = () => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="account-tabs">
-          <button
-            type="button"
-            className={`account-tab-item ${activeTab === 'orders' ? 'active' : ''}`}
-            onClick={() => setActiveTab('orders')}
-          >
-            <Package size={17} />
-            <span>Mis Pedidos</span>
-            {currentUser.orders?.length > 0 && (
-              <span className="account-tab-badge">{currentUser.orders.length}</span>
-            )}
-          </button>
+        <div className={`account-tabs-wrapper ${canScrollRight ? 'has-overflow-right' : ''} ${canScrollLeft ? 'has-overflow-left' : ''}`}>
+          {canScrollLeft && (
+            <button
+              type="button"
+              className="account-tabs-arrow left"
+              onClick={() => scrollTabs('left')}
+              aria-label="Ver pestañas anteriores"
+            >
+              <ChevronLeft size={16} />
+            </button>
+          )}
 
-          <button
-            type="button"
-            className={`account-tab-item ${activeTab === 'favorites' ? 'active' : ''}`}
-            onClick={() => setActiveTab('favorites')}
-          >
-            <Heart size={17} />
-            <span>Favoritos</span>
-            {favorites.length > 0 && (
-              <span className="account-tab-badge fav-badge">{favorites.length}</span>
-            )}
-          </button>
+          <div className="account-tabs" ref={tabsRef}>
+            <button
+              type="button"
+              className={`account-tab-item ${activeTab === 'orders' ? 'active' : ''}`}
+              onClick={() => setActiveTab('orders')}
+            >
+              <Package size={17} />
+              <span>Mis Pedidos</span>
+              {currentUser.orders?.length > 0 && (
+                <span className="account-tab-badge">{currentUser.orders.length}</span>
+              )}
+            </button>
 
-          <button
-            type="button"
-            className={`account-tab-item ${activeTab === 'profile' ? 'active' : ''}`}
-            onClick={() => setActiveTab('profile')}
-          >
-            <User size={17} />
-            <span>Mi Perfil</span>
-          </button>
+            <button
+              type="button"
+              className={`account-tab-item ${activeTab === 'favorites' ? 'active' : ''}`}
+              onClick={() => setActiveTab('favorites')}
+            >
+              <Heart size={17} />
+              <span>Favoritos</span>
+              {favorites.length > 0 && (
+                <span className="account-tab-badge fav-badge">{favorites.length}</span>
+              )}
+            </button>
 
-          <button
-            type="button"
-            className={`account-tab-item ${activeTab === 'address' ? 'active' : ''}`}
-            onClick={() => setActiveTab('address')}
-          >
-            <MapPin size={17} />
-            <span>Dirección</span>
-          </button>
+            <button
+              type="button"
+              className={`account-tab-item ${activeTab === 'profile' ? 'active' : ''}`}
+              onClick={() => setActiveTab('profile')}
+            >
+              <User size={17} />
+              <span>Mi Perfil</span>
+            </button>
 
-          <button
-            type="button"
-            className={`account-tab-item ${activeTab === 'cart' ? 'active' : ''}`}
-            onClick={() => setActiveTab('cart')}
-          >
-            <ShoppingCart size={17} />
-            <span>Carrito</span>
-            {items.length > 0 && (
-              <span className="account-tab-badge">{items.length}</span>
-            )}
-          </button>
+            <button
+              type="button"
+              className={`account-tab-item ${activeTab === 'address' ? 'active' : ''}`}
+              onClick={() => setActiveTab('address')}
+            >
+              <MapPin size={17} />
+              <span>Dirección</span>
+            </button>
+
+            <button
+              type="button"
+              className={`account-tab-item ${activeTab === 'cart' ? 'active' : ''}`}
+              onClick={() => setActiveTab('cart')}
+            >
+              <ShoppingCart size={17} />
+              <span>Carrito</span>
+              {items.length > 0 && (
+                <span className="account-tab-badge">{items.length}</span>
+              )}
+            </button>
+          </div>
+
+          {canScrollRight && (
+            <button
+              type="button"
+              className="account-tabs-arrow right"
+              onClick={() => scrollTabs('right')}
+              aria-label="Ver más pestañas a la derecha"
+            >
+              <ChevronRight size={16} />
+            </button>
+          )}
         </div>
 
         {/* Modal Body */}
