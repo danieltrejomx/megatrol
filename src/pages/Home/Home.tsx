@@ -682,7 +682,7 @@ const Home = () => {
                 <div className="step-glass">
                   <span className="step-num">01</span>
                   <div>
-                    <h4>Ataca al Adulto</h4>
+                    <h4>Efecto Adulticida</h4>
                     <p>Afecta directamente el sistema neuroendocrino del parásito adulto.</p>
                   </div>
                 </div>
