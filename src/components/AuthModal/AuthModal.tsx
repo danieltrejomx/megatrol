@@ -27,6 +27,7 @@ export const AuthModal = () => {
     register 
   } = useAuth();
 
+  const [tab, setTab] = useState<'login' | 'register'>(authModalTab);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -38,7 +39,12 @@ export const AuthModal = () => {
   const [forgotPasswordView, setForgotPasswordView] = useState(false);
   const [resetSent, setResetSent] = useState(false);
 
-  // Reset form when modal opens or tab changes
+  // Sync tab with context when modal opens or tab prop changes
+  useEffect(() => {
+    setTab(authModalTab);
+  }, [authModalTab]);
+
+  // Reset error/success when modal opens or tab changes
   useEffect(() => {
     if (isAuthModalOpen) {
       setErrorMsg('');
@@ -46,7 +52,7 @@ export const AuthModal = () => {
       setForgotPasswordView(false);
       setResetSent(false);
     }
-  }, [isAuthModalOpen, authModalTab]);
+  }, [isAuthModalOpen, tab]);
 
   // Handle ESC key
   useEffect(() => {
@@ -73,49 +79,76 @@ export const AuthModal = () => {
 
   if (!isAuthModalOpen) return null;
 
+  const handleTabChange = (newTab: 'login' | 'register') => {
+    setTab(newTab);
+    openAuthModal(newTab);
+    setErrorMsg('');
+    setSuccessMsg('');
+    setForgotPasswordView(false);
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setErrorMsg('');
     setSuccessMsg('');
-    setLoading(true);
 
-    try {
-      if (forgotPasswordView) {
-        if (!email.trim()) {
-          setErrorMsg('Por favor ingresa tu correo electrónico');
-          setLoading(false);
-          return;
-        }
-        setResetSent(true);
-        setSuccessMsg(`Te hemos enviado un enlace de recuperación a ${email}`);
-        setLoading(false);
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = name.trim();
+    const cleanPassword = password.trim();
+
+    if (forgotPasswordView) {
+      if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+        setErrorMsg('Por favor ingresa un correo electrónico válido');
+        return;
+      }
+      setResetSent(true);
+      setSuccessMsg(`Te hemos enviado un enlace de recuperación a ${cleanEmail}`);
+      return;
+    }
+
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      setErrorMsg('Por favor ingresa un correo electrónico válido');
+      return;
+    }
+
+    if (tab === 'register') {
+      if (!cleanName) {
+        setErrorMsg('Por favor ingresa tu nombre completo');
+        return;
+      }
+      if (!cleanPassword || cleanPassword.length < 3) {
+        setErrorMsg('Por favor crea una contraseña de al menos 3 caracteres');
         return;
       }
 
-      if (authModalTab === 'login') {
-        const res = await login(email, password);
-        if (res.success) {
-          setSuccessMsg('¡Bienvenido de vuelta!');
-        } else {
-          setErrorMsg(res.error || 'No se pudo iniciar sesión. Verifica tus datos.');
+      setLoading(true);
+      try {
+        const res = await register(cleanName, cleanEmail, cleanPassword, phone.trim());
+        if (!res.success) {
+          setErrorMsg(res.error || 'No se pudo crear la cuenta');
         }
-      } else {
-        if (!name.trim()) {
-          setErrorMsg('Por favor ingresa tu nombre completo');
-          setLoading(false);
-          return;
-        }
-        const res = await register(name, email, password, phone);
-        if (res.success) {
-          setSuccessMsg('¡Cuenta creada exitosamente!');
-        } else {
-          setErrorMsg(res.error || 'Error al crear la cuenta.');
-        }
+      } catch {
+        setErrorMsg('Ocurrió un error al procesar tu solicitud');
+      } finally {
+        setLoading(false);
       }
-    } catch {
-      setErrorMsg('Ocurrió un error inesperado. Intenta de nuevo.');
-    } finally {
-      setLoading(false);
+    } else {
+      // Login
+      if (!cleanPassword) {
+        setErrorMsg('Por favor ingresa tu contraseña');
+        return;
+      }
+      setLoading(true);
+      try {
+        const res = await login(cleanEmail, cleanPassword);
+        if (!res.success) {
+          setErrorMsg(res.error || 'No se pudo iniciar sesión');
+        }
+      } catch {
+        setErrorMsg('Ocurrió un error al procesar tu solicitud');
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -124,7 +157,6 @@ export const AuthModal = () => {
     setErrorMsg('');
     try {
       await loginWithGoogle();
-      setSuccessMsg('¡Sesión iniciada con Google!');
     } catch {
       setErrorMsg('No se pudo conectar con Google');
     } finally {
@@ -136,7 +168,6 @@ export const AuthModal = () => {
     setLoading(true);
     try {
       await loginAsDemo();
-      setSuccessMsg('¡Entraste como Cliente Demo!');
     } catch {
       setErrorMsg('Error al entrar como demo');
     } finally {
@@ -164,16 +195,16 @@ export const AuthModal = () => {
           <h2 className="auth-title">
             {forgotPasswordView
               ? 'Recuperar Contraseña'
-              : authModalTab === 'login'
+              : tab === 'login'
               ? '¡Bienvenido de vuelta!'
               : 'Crea tu Cuenta'}
           </h2>
           <p className="auth-subtitle">
             {forgotPasswordView
               ? 'Ingresa tu correo para recibir instrucciones'
-              : authModalTab === 'login'
+              : tab === 'login'
               ? 'Guarda tu carrito, revisa tus pedidos y gestiona tus direcciones'
-              : 'Accede a promociones exclusivas y compra más rápido'}
+              : 'Accede a tus pedidos, autocompleta tus compras y guarda tu carrito'}
           </p>
         </div>
 
@@ -182,15 +213,15 @@ export const AuthModal = () => {
           <div className="auth-tabs">
             <button 
               type="button"
-              className={`auth-tab-btn ${authModalTab === 'login' ? 'active' : ''}`}
-              onClick={() => openAuthModal('login')}
+              className={`auth-tab-btn ${tab === 'login' ? 'active' : ''}`}
+              onClick={() => handleTabChange('login')}
             >
               Iniciar Sesión
             </button>
             <button 
               type="button"
-              className={`auth-tab-btn ${authModalTab === 'register' ? 'active' : ''}`}
-              onClick={() => openAuthModal('register')}
+              className={`auth-tab-btn ${tab === 'register' ? 'active' : ''}`}
+              onClick={() => handleTabChange('register')}
             >
               Crear Cuenta
             </button>
@@ -242,14 +273,14 @@ export const AuthModal = () => {
             </button>
 
             <div className="auth-divider">
-              <span>o ingresa con tu correo</span>
+              <span>o ingresa con tus datos</span>
             </div>
           </>
         )}
 
         {/* Email & Password Form */}
-        <form className="auth-form" onSubmit={handleSubmit}>
-          {authModalTab === 'register' && !forgotPasswordView && (
+        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+          {tab === 'register' && !forgotPasswordView && (
             <>
               <div className="auth-input-group">
                 <label htmlFor="auth-name">Nombre y Apellido *</label>
@@ -257,10 +288,12 @@ export const AuthModal = () => {
                   <User size={18} className="auth-input-icon" />
                   <input
                     id="auth-name"
+                    name="name"
                     type="text"
+                    autoComplete="name"
                     placeholder="Ej. Dra. Mariana Sánchez"
                     value={name}
-                    onChange={e => setName(e.target.value)}
+                    onChange={e => { setErrorMsg(''); setName(e.target.value); }}
                     required
                   />
                 </div>
@@ -272,10 +305,12 @@ export const AuthModal = () => {
                   <Phone size={18} className="auth-input-icon" />
                   <input
                     id="auth-phone"
+                    name="tel"
                     type="tel"
+                    autoComplete="tel"
                     placeholder="Ej. 55 1234 5678"
                     value={phone}
-                    onChange={e => setPhone(e.target.value)}
+                    onChange={e => { setErrorMsg(''); setPhone(e.target.value); }}
                   />
                 </div>
               </div>
@@ -288,10 +323,12 @@ export const AuthModal = () => {
               <Mail size={18} className="auth-input-icon" />
               <input
                 id="auth-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 placeholder="tu@correo.com"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => { setErrorMsg(''); setEmail(e.target.value); }}
                 required
               />
             </div>
@@ -300,8 +337,10 @@ export const AuthModal = () => {
           {!forgotPasswordView && (
             <div className="auth-input-group">
               <div className="auth-label-row">
-                <label htmlFor="auth-password">Contraseña *</label>
-                {authModalTab === 'login' && (
+                <label htmlFor="auth-password">
+                  {tab === 'register' ? 'Crea una Contraseña *' : 'Contraseña *'}
+                </label>
+                {tab === 'login' && (
                   <button 
                     type="button" 
                     className="auth-forgot-btn" 
@@ -315,10 +354,12 @@ export const AuthModal = () => {
                 <Lock size={18} className="auth-input-icon" />
                 <input
                   id="auth-password"
+                  name="password"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="••••••••"
+                  autoComplete={tab === 'register' ? 'new-password' : 'current-password'}
+                  placeholder="Mínimo 3 caracteres"
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={e => { setErrorMsg(''); setPassword(e.target.value); }}
                   required
                 />
                 <button
@@ -354,7 +395,7 @@ export const AuthModal = () => {
                 'Procesando...'
               ) : forgotPasswordView ? (
                 'Enviar Enlace de Recuperación'
-              ) : authModalTab === 'login' ? (
+              ) : tab === 'login' ? (
                 <>
                   <span>Iniciar Sesión</span>
                   <ArrowRight size={18} />
@@ -378,9 +419,9 @@ export const AuthModal = () => {
             </button>
           )}
 
-          {authModalTab === 'register' && !forgotPasswordView && (
+          {tab === 'register' && !forgotPasswordView && (
             <p className="auth-terms-note">
-              Al registrarte aceptas los <a href="/privacidad" onClick={e => e.preventDefault()}>Términos de Servicio</a> y el <a href="/privacidad" onClick={e => e.preventDefault()}>Aviso de Privacidad</a> de Megatrol.
+              Al registrarte aceptas los <a href="/nosotros" onClick={e => e.preventDefault()}>Términos de Servicio</a> y el <a href="/nosotros" onClick={e => e.preventDefault()}>Aviso de Privacidad</a> de Megatrol.
             </p>
           )}
         </form>
@@ -388,17 +429,17 @@ export const AuthModal = () => {
         {/* Footer note for switching */}
         {!forgotPasswordView && (
           <div className="auth-modal-footer">
-            {authModalTab === 'login' ? (
+            {tab === 'login' ? (
               <p>
                 ¿Aún no tienes cuenta?{' '}
-                <button type="button" className="auth-switch-link" onClick={() => openAuthModal('register')}>
+                <button type="button" className="auth-switch-link" onClick={() => handleTabChange('register')}>
                   Regístrate aquí
                 </button>
               </p>
             ) : (
               <p>
                 ¿Ya tienes cuenta?{' '}
-                <button type="button" className="auth-switch-link" onClick={() => openAuthModal('login')}>
+                <button type="button" className="auth-switch-link" onClick={() => handleTabChange('login')}>
                   Inicia sesión
                 </button>
               </p>

@@ -188,16 +188,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, _password?: string): Promise<{ success: boolean; error?: string }> => {
     const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      return { success: false, error: 'Por favor ingresa un correo electrónico válido' };
+    }
+
     const users = getUsersDb();
     const found = users.find(u => u.email.toLowerCase() === cleanEmail);
 
     if (found) {
       setCurrentUser(found);
       setIsAuthModalOpen(false);
+      setIsAccountModalOpen(true);
       return { success: true };
     }
 
-    // If not found, create seamless local account for that email
+    // If not found in DB, seamlessly create an account for them so they are never blocked
     const namePart = cleanEmail.split('@')[0];
     const capitalizedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
     const newUser: User = {
@@ -212,6 +217,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     saveUsersDb(users);
     setCurrentUser(newUser);
     setIsAuthModalOpen(false);
+    setIsAccountModalOpen(true);
     return { success: true };
   };
 
@@ -279,27 +285,47 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setIsAuthModalOpen(false);
+    setIsAccountModalOpen(true);
     return { success: true };
   };
 
   const loginAsDemo = async (): Promise<{ success: boolean }> => {
     setCurrentUser(DEMO_USER);
     setIsAuthModalOpen(false);
+    setIsAccountModalOpen(true);
     return { success: true };
   };
 
   const register = async (name: string, email: string, _password?: string, phone?: string): Promise<{ success: boolean; error?: string }> => {
     const cleanEmail = email.trim().toLowerCase();
-    const users = getUsersDb();
-    const existing = users.find(u => u.email.toLowerCase() === cleanEmail);
+    const cleanName = name.trim();
 
-    if (existing) {
-      return { success: false, error: 'Ya existe una cuenta con este correo. Por favor inicia sesión.' };
+    if (!cleanName) {
+      return { success: false, error: 'Por favor ingresa tu nombre completo' };
+    }
+    if (!cleanEmail || !cleanEmail.includes('@')) {
+      return { success: false, error: 'Por favor ingresa un correo electrónico válido' };
+    }
+
+    const users = getUsersDb();
+    const existingIndex = users.findIndex(u => u.email.toLowerCase() === cleanEmail);
+
+    // If an account already exists with this email, seamlessly update with the new name and log in
+    if (existingIndex >= 0) {
+      users[existingIndex].name = cleanName;
+      if (phone?.trim()) {
+        users[existingIndex].phone = phone.trim();
+      }
+      saveUsersDb(users);
+      setCurrentUser(users[existingIndex]);
+      setIsAuthModalOpen(false);
+      setIsAccountModalOpen(true);
+      return { success: true };
     }
 
     const newUser: User = {
       id: `usr_${Date.now()}`,
-      name: name.trim(),
+      name: cleanName,
       email: cleanEmail,
       phone: phone?.trim(),
       provider: 'local',
@@ -311,6 +337,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     saveUsersDb(users);
     setCurrentUser(newUser);
     setIsAuthModalOpen(false);
+    setIsAccountModalOpen(true);
     return { success: true };
   };
 
