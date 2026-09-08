@@ -60,6 +60,7 @@ export const AccountModal = () => {
   const [activeTab, setActiveTab] = useState<'orders' | 'favorites' | 'profile' | 'address' | 'cart'>('orders');
   const [addressSavedToast, setAddressSavedToast] = useState(false);
   const [profileSavedToast, setProfileSavedToast] = useState(false);
+  const [headerSaved, setHeaderSaved] = useState(false);
 
   // Address form state
   const [addressForm, setAddressForm] = useState<UserAddress>({
@@ -145,6 +146,30 @@ export const AccountModal = () => {
     setTimeout(() => setProfileSavedToast(false), 3000);
   };
 
+  const handleHeaderSave = () => {
+    if (editName.trim()) {
+      updateProfile({
+        name: editName.trim(),
+        phone: editPhone.trim(),
+        avatar: editAvatar
+      });
+    }
+    if (activeTab === 'address') {
+      updateProfile({
+        phone,
+        address: addressForm
+      });
+      setAddressSavedToast(true);
+      setTimeout(() => setAddressSavedToast(false), 3000);
+    }
+    setProfileSavedToast(true);
+    setHeaderSaved(true);
+    setTimeout(() => {
+      setProfileSavedToast(false);
+      setHeaderSaved(false);
+    }, 2500);
+  };
+
   const getPaymentMethodLabel = (method: 'card' | 'oxxo' | 'transfer') => {
     switch (method) {
       case 'card':
@@ -201,12 +226,12 @@ export const AccountModal = () => {
           <div className="account-header-actions">
             <button
               type="button"
-              className="account-header-edit-btn"
-              onClick={() => setActiveTab('profile')}
-              title="Editar nombre y foto de perfil"
+              className={`account-header-edit-btn ${headerSaved ? 'saved' : ''}`}
+              onClick={handleHeaderSave}
+              title="Guardar cambios de tu cuenta"
             >
-              <Pencil size={14} />
-              <span>Editar Perfil</span>
+              <Check size={14} />
+              <span>{headerSaved ? '¡Guardado!' : 'Guardar Cambios'}</span>
             </button>
             <button 
               type="button" 
