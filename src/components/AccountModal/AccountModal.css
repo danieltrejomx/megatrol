@@ -899,18 +899,78 @@
   gap: 1rem;
 }
 
-.account-cart-subtotal {
+.account-cart-summary-breakdown {
   display: flex;
   flex-direction: column;
+  gap: 0.35rem;
+  min-width: 240px;
 }
 
-.account-cart-subtotal span {
-  font-size: 0.82rem;
+.account-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.85rem;
   color: #64748b;
 }
 
-.account-cart-subtotal strong {
-  font-size: 1.3rem;
+.account-summary-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 500;
+}
+
+.account-summary-truck {
+  color: #0084c7;
+}
+
+.account-summary-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.account-summary-value.free {
+  color: #15803d;
+  background: #dcfce7;
+  padding: 0.12rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.account-shipping-bar-notice {
+  font-size: 0.75rem;
+  color: #92400e;
+  background: #fef3c7;
+  border-left: 3px solid #f59e0b;
+  padding: 0.3rem 0.55rem;
+  border-radius: 4px;
+  margin: 0.2rem 0;
+  line-height: 1.35;
+}
+
+.account-shipping-bar-notice span {
+  font-weight: 700;
+  color: #b45309;
+}
+
+.account-summary-row.total {
+  margin-top: 0.25rem;
+  padding-top: 0.4rem;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.account-summary-row.total .account-summary-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.account-summary-total {
+  font-size: 1.25rem;
+  font-weight: 800;
   color: #0084c7;
 }
 

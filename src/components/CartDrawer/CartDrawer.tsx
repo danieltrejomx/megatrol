@@ -196,7 +196,7 @@ export const CartDrawer: React.FC = () => {
                             >
                               {availablePresentations.map((pres) => {
                                 const presPrice = product.presentationPrices?.[pres];
-                                const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice})` : '';
+                                const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice.toLocaleString('es-MX')} MXN)` : '';
                                 return (
                                   <option key={pres} value={pres}>
                                     {pres}{priceLabel}

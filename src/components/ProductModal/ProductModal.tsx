@@ -338,6 +338,8 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
                   <div className="modal-options-row">
                     {presentations.map((pres) => {
                       const isSelected = selectedPresentation === pres;
+                      const presPrice = product.presentationPrices?.[pres];
+                      const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice.toLocaleString('es-MX')} MXN)` : '';
                       return (
                         <button
                           key={pres}
@@ -346,7 +348,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
                           onClick={() => setSelectedPresentation(pres)}
                         >
                           <span className="chip-indicator"></span>
-                          <span>{pres}</span>
+                          <span>{pres}{priceLabel}</span>
                         </button>
                       );
                     })}

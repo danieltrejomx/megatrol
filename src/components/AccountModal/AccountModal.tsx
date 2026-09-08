@@ -789,7 +789,7 @@ export const AccountModal = () => {
                                   >
                                     {availablePresentations.map((pres) => {
                                       const presPrice = it.product.presentationPrices?.[pres];
-                                      const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice})` : '';
+                                      const priceLabel = typeof presPrice === 'number' ? ` ($${presPrice.toLocaleString('es-MX')} MXN)` : '';
                                       return (
                                         <option key={pres} value={pres}>
                                           {pres}{priceLabel}
@@ -869,28 +869,59 @@ export const AccountModal = () => {
                     })}
                   </div>
 
-                  <div className="account-cart-checkout-box">
-                    <div className="account-cart-subtotal">
-                      <span>Total estimado:</span>
-                      <strong>${totalPrice.toLocaleString('es-MX')} MXN</strong>
-                    </div>
-                    <div className="account-cart-actions">
-                      <button 
-                        type="button" 
-                        className="account-cart-view-btn"
-                        onClick={() => { closeAccountModal(); openCart(); }}
-                      >
-                        Abrir Carrito
-                      </button>
-                      <Link 
-                        to="/checkout" 
-                        className="account-checkout-btn"
-                        onClick={closeAccountModal}
-                      >
-                        Proceder al Pago
-                      </Link>
-                    </div>
-                  </div>
+                  {(() => {
+                    const freeShippingThreshold = 599;
+                    const isFreeShipping = totalPrice >= freeShippingThreshold;
+                    const shippingCost = items.length > 0 ? (isFreeShipping ? 0 : 99) : 0;
+                    const grandTotal = totalPrice + shippingCost;
+                    const amountRemaining = Math.max(0, freeShippingThreshold - totalPrice);
+
+                    return (
+                      <div className="account-cart-checkout-box">
+                        <div className="account-cart-summary-breakdown">
+                          <div className="account-summary-row">
+                            <span className="account-summary-label">Subtotal:</span>
+                            <span className="account-summary-value">${totalPrice.toLocaleString('es-MX')} MXN</span>
+                          </div>
+                          <div className="account-summary-row">
+                            <span className="account-summary-label">
+                              <Truck size={14} className="account-summary-truck" />
+                              <span>Envío {isFreeShipping ? '(Gratis)' : 'Nacional'}:</span>
+                            </span>
+                            <span className={`account-summary-value ${isFreeShipping ? 'free' : ''}`}>
+                              {isFreeShipping ? '¡Gratis!' : `$${shippingCost.toLocaleString('es-MX')} MXN`}
+                            </span>
+                          </div>
+                          {!isFreeShipping && items.length > 0 && (
+                            <div className="account-shipping-bar-notice">
+                              Agrega <strong>${amountRemaining.toLocaleString('es-MX')} MXN</strong> más para <span>Envío Gratis</span>
+                            </div>
+                          )}
+                          <div className="account-summary-row total">
+                            <span className="account-summary-label">Total estimado:</span>
+                            <strong className="account-summary-total">${grandTotal.toLocaleString('es-MX')} MXN</strong>
+                          </div>
+                        </div>
+
+                        <div className="account-cart-actions">
+                          <button 
+                            type="button" 
+                            className="account-cart-view-btn"
+                            onClick={() => { closeAccountModal(); openCart(); }}
+                          >
+                            Abrir Carrito
+                          </button>
+                          <Link 
+                            to="/checkout" 
+                            className="account-checkout-btn"
+                            onClick={closeAccountModal}
+                          >
+                            Proceder al Pago
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
             </div>

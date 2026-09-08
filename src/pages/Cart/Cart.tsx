@@ -97,7 +97,7 @@ const Cart = () => {
                         {presentations.map((pres) => {
                           const isSelected = currentPres === pres;
                           const presPrice = product.presentationPrices?.[pres];
-                          const priceText = typeof presPrice === 'number' ? ` ($${presPrice})` : '';
+                          const priceText = typeof presPrice === 'number' ? ` ($${presPrice.toLocaleString('es-MX')} MXN)` : '';
                           return (
                             <button
                               key={pres}

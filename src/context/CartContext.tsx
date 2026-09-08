@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { parsePresentations, type Product } from '../data/products';
+import { parsePresentations, products, type Product } from '../data/products';
 
 export interface CartItem {
   id: string;
@@ -56,7 +56,19 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_CART);
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed: CartItem[] = JSON.parse(saved);
+      return parsed.map((item) => {
+        const freshProduct = products.find((p) => p.id === item.product.id) || item.product;
+        const freshUnitPrice = resolveUnitPrice(freshProduct, item.selectedPresentation);
+        const freshImage = resolveActiveImage(freshProduct, item.selectedPresentation, item.selectedAroma);
+        return {
+          ...item,
+          product: freshProduct,
+          unitPrice: freshUnitPrice,
+          activeImage: freshImage || item.activeImage
+        };
+      });
     } catch {
       return [];
     }

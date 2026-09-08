@@ -72,7 +72,7 @@ export const products: Product[] = [
       '155 mL': '/images/megatrol-spray-155ml.png'
     },
     presentationPrices: {
-      '30 mL': 'pendiente',
+      '30 mL': 149,
       '155 mL': 349
     },
     formula: 'Agua, monoterpenos cíclicos de extracción vegetal, aceites totales de neem (Azadirachtina en nanopartículas), surfactantes activos etoxilados, alcohol hexa-hidroxílico, potenciador de penetrancia y antioxidantes.',
@@ -250,7 +250,7 @@ export const products: Product[] = [
     },
     presentationPrices: {
       '250 mL': 270,
-      'Galón 4 L': 'pendiente'
+      'Galón 4 L': 1790
     },
     formula: 'Ácido salicílico, eucaliptol, aceite de neem, azufre orgánico, cocamidopropil betaína, timol, EDTA, vitamina E, emolientes, hidratantes y agua desionizada.',
     administration: 'Tópica.',
@@ -392,7 +392,7 @@ export const products: Product[] = [
     ],
     category: 'dermocosmeticos',
     line: 'Megatrol Shower',
-    presentation: '200 mL, 250 mL y Galón 4 L',
+    presentation: 'Frasco de 250 mL',
     formula: 'Base de microemulsión de tensioactivos anfotéricos naturales, manteca de karité, proteína de seda, vitamina E, germen de trigo.',
     administration: 'Tópica.',
     indications: 'Restaura la salud de la piel en casos de dermatitis alérgica, hidratación y fortalecimiento del pelaje.',
@@ -418,7 +418,7 @@ export const products: Product[] = [
     ],
     category: 'dermocosmeticos',
     line: 'Megatrol Shower',
-    presentation: '60 mL, 200 mL, 250 mL y 1 L',
+    presentation: 'Frasco de 250 mL',
     formula: 'Agua desionizada, tensoactivas anfifílicas, nanoemulsión de terpenos, extracto de aloe vera, acondicionador y manteca de karité.',
     administration: 'Tópica. Uso ocasional.',
     indications: 'Auxiliar para el pelaje de tu mascota, dejándolo limpio de manchas de aceite, grasa, lodo y tierra.',
@@ -470,7 +470,7 @@ export const products: Product[] = [
     ],
     category: 'farmaceuticos',
     line: 'Línea Megadoxi',
-    presentation: 'Frascos de 25 mL y 100 mL',
+    presentation: 'Frasco de 25 mL',
     formula: 'Cada mL contiene Doxiciclina 100 mg y vehículo c.b.p. 1 mL.',
     administration: 'Intramuscular y subcutánea.',
     indications: 'Infecciones bacterianas del tracto respiratorio, gastrointestinal, genitourinario y enfermedades dérmicas.',
