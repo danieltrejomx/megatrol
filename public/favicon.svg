@@ -2,19 +2,19 @@
   <defs>
     <linearGradient id="megatrolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#0084c7"/>
-      <stop offset="100%" stop-color="#005585"/>
+      <stop offset="100%" stop-color="#004e82"/>
     </linearGradient>
     <linearGradient id="limeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#8dc63f"/>
-      <stop offset="100%" stop-color="#a4db52"/>
+      <stop offset="0%" stop-color="#74c043"/>
+      <stop offset="100%" stop-color="#9de255"/>
     </linearGradient>
+    <clipPath id="cardClip">
+      <rect width="64" height="64" rx="16"/>
+    </clipPath>
   </defs>
-  <!-- Background with rounded corners matching modern tabs -->
-  <rect width="64" height="64" rx="16" fill="url(#megatrolGrad)"/>
-  
-  <!-- Stylized Italic M vector shape -->
-  <path d="M 13 46 L 18.5 16 L 26.5 16 L 32 31.5 L 37.5 16 L 45.5 16 L 40 46 L 33.5 46 L 36.8 26 L 33.2 36.5 L 30.8 36.5 L 27.2 26 L 19.5 46 Z" fill="#ffffff"/>
-  
-  <!-- Signature Lime green stripe at bottom -->
-  <rect x="12" y="52" width="40" height="5" rx="2.5" fill="url(#limeGrad)"/>
+  <g clip-path="url(#cardClip)">
+    <rect width="64" height="64" fill="url(#megatrolGrad)"/>
+    <rect x="0" y="57" width="64" height="7" fill="url(#limeGrad)"/>
+    <path d="M 12 47 L 17.8 15 L 26.2 15 L 32 31.8 L 37.8 15 L 46.2 15 L 40.4 47 L 33.6 47 L 36.9 26.5 L 33.3 37.5 L 30.7 37.5 L 27.1 26.5 L 18.8 47 Z" fill="#ffffff"/>
+  </g>
 </svg>
