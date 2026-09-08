@@ -6,7 +6,8 @@ import {
   Handshake, 
   Mail, 
   MessageCircle, 
-  CheckCircle2 
+  CheckCircle2,
+  Sparkles
 } from 'lucide-react';
 import './Distributors.css';
 
@@ -41,40 +42,47 @@ const Distributors = () => {
       <div className="container distributors-content">
         <div className="distributors-layout">
           <div className="distributors-info">
+            <span className="dist-card-badge">
+              <Sparkles size={14} /> Ventajas Comerciales
+            </span>
             <h2>Beneficios de ser Distribuidor</h2>
+            <p className="dist-card-intro">
+              Únete a nuestra red nacional autorizada con respaldo directo de laboratorio y condiciones comerciales preferenciales para hacer crecer tu negocio veterinario.
+            </p>
+
             <ul className="benefits-list">
-              <li>
+              <li className="benefit-item-glass">
                 <div className="icon dist-icon-trending">
                   <TrendingUp size={24} />
                 </div>
-                <div>
+                <div className="benefit-item-content">
                   <strong>Altos Márgenes de Ganancia</strong>
                   <p>Precios preferenciales escalonados según volumen de compra. Retorno de inversión atractivo.</p>
                 </div>
               </li>
-              <li>
+              <li className="benefit-item-glass">
                 <div className="icon dist-icon-package">
                   <Package size={24} />
                 </div>
-                <div>
+                <div className="benefit-item-content">
                   <strong>Material de Apoyo</strong>
                   <p>Te proporcionamos displays, folletos informativos y material digital para tus redes sociales.</p>
                 </div>
               </li>
-              <li>
+              <li className="benefit-item-glass">
                 <div className="icon dist-icon-truck">
                   <Truck size={24} />
                 </div>
-                <div>
+                <div className="benefit-item-content">
                   <strong>Envíos a Todo México</strong>
                   <p>Logística eficiente para que nunca te quedes sin stock en tu negocio.</p>
                 </div>
               </li>
-              <li>
+              <li className="benefit-item-glass">
                 <div className="icon dist-icon-handshake">
                   <Handshake size={24} />
                 </div>
-                <div>
+                <div className="benefit-item-content">
                   <strong>Capacitación Constante</strong>
                   <p>Asesoría directa sobre el mecanismo de acción de nuestros productos para que puedas orientar a tus clientes.</p>
                 </div>
@@ -86,12 +94,17 @@ const Distributors = () => {
               <p>También puedes comunicarte con nuestro equipo de ventas mayoristas:</p>
               <div className="contact-methods">
                 <a href="mailto:distribuidores@megatrol.com.mx" className="contact-method">
-                  <Mail size={16} />
+                  <Mail size={18} />
                   <span>distribuidores@megatrol.com.mx</span>
                 </a>
-                <a href="https://wa.me/5211234567890" target="_blank" rel="noreferrer" className="contact-method">
-                  <MessageCircle size={16} />
-                  <span>WhatsApp: +52 112 345 6789</span>
+                <a 
+                  href="https://wa.me/525536206854?text=Hola,%20me%20interesa%20informaci%C3%B3n%20para%20ser%20distribuidor%20de%20Megatrol" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="contact-method method-whatsapp"
+                >
+                  <MessageCircle size={18} />
+                  <span>WhatsApp: (55) 3620 6854</span>
                 </a>
               </div>
             </div>

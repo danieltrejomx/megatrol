@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   Zap,
   ChevronDown,
-  Check
+  CheckCircle2
 } from 'lucide-react';
 import { products, type Product } from '../../data/products';
 import { useCart } from '../../context/CartContext';
@@ -90,26 +90,37 @@ const Shop = () => {
           <div className="product-card-actions">
             <button
               type="button"
-              className="btn btn-primary btn-sm-view"
+              className="btn btn-shop-buy"
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/producto/${product.slug}`);
+                addToCart(product, 1);
+                navigate('/carrito');
               }}
             >
-              Ver Detalles
+              <Zap size={14} />
+              <span>Comprar Ahora</span>
             </button>
             <button
               type="button"
-              className={`btn btn-cart-quick ${addedId === product.id ? 'added' : ''}`}
-              title="Agregar al carrito"
+              className={`btn btn-shop-cart ${addedId === product.id ? 'added' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                addToCart(product);
+                addToCart(product, 1);
                 setAddedId(product.id);
-                setTimeout(() => setAddedId(null), 1500);
+                setTimeout(() => setAddedId(null), 1600);
               }}
             >
-              {addedId === product.id ? <Check size={16} /> : <ShoppingCart size={16} />}
+              {addedId === product.id ? (
+                <>
+                  <CheckCircle2 size={15} />
+                  <span>¡Agregado!</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingCart size={15} />
+                  <span>Agregar al Carrito</span>
+                </>
+              )}
             </button>
           </div>
         </div>
