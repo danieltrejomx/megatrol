@@ -831,6 +831,7 @@ export const AccountModal = () => {
                                 <button
                                   type="button"
                                   onClick={() => updateQuantity(it.id, it.quantity - 1)}
+                                  disabled={it.quantity <= 1}
                                   aria-label="Disminuir cantidad"
                                   className="account-cart-qty-btn"
                                 >

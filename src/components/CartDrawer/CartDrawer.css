@@ -472,6 +472,17 @@
   color: var(--color-primary);
 }
 
+.drawer-qty-control button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
+.drawer-qty-control button:disabled:hover {
+  background: transparent;
+  color: #94a3b8;
+}
+
 .drawer-qty-value {
   padding: 0 8px;
   font-size: 13px;

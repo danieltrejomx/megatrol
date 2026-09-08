@@ -146,8 +146,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateQuantity = (itemId: string | number, quantity: number) => {
-    if (quantity < 1) { removeFromCart(itemId); return; }
-    setItems(prev => prev.map(i => (i.id === String(itemId) || i.product.id === itemId) ? { ...i, quantity } : i));
+    const validQty = Math.max(1, quantity);
+    setItems(prev => prev.map(i => (i.id === String(itemId) || i.product.id === itemId) ? { ...i, quantity: validQty } : i));
   };
 
   const clearCart = () => setItems([]);

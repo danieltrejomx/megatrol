@@ -849,6 +849,17 @@
   color: #0084c7;
 }
 
+.account-cart-qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  color: #94a3b8;
+}
+
+.account-cart-qty-btn:disabled:hover {
+  background: transparent;
+  color: #94a3b8;
+}
+
 .account-cart-qty-val {
   padding: 0 8px;
   font-size: 0.82rem;

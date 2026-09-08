@@ -244,6 +244,7 @@ export const CartDrawer: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => updateQuantity(item.id, quantity - 1)}
+                            disabled={quantity <= 1}
                             aria-label="Disminuir cantidad"
                           >
                             −

@@ -116,9 +116,20 @@ const Cart = () => {
 
                   <div className="cart-item-actions">
                     <div className="quantity-selector-sm">
-                      <button onClick={() => updateQuantity(item.id, quantity - 1)}>−</button>
+                      <button 
+                        onClick={() => updateQuantity(item.id, quantity - 1)}
+                        disabled={quantity <= 1}
+                        aria-label="Disminuir cantidad"
+                      >
+                        −
+                      </button>
                       <span>{quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, quantity + 1)}>+</button>
+                      <button 
+                        onClick={() => updateQuantity(item.id, quantity + 1)}
+                        aria-label="Aumentar cantidad"
+                      >
+                        +
+                      </button>
                     </div>
                     <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
                       <Trash2 size={14} />

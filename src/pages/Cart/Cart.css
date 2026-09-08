@@ -73,6 +73,13 @@
   transition: background 0.2s;
 }
 .quantity-selector-sm button:hover { background: var(--color-primary-light); }
+.quantity-selector-sm button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.quantity-selector-sm button:disabled:hover {
+  background: var(--color-bg-alt);
+}
 .quantity-selector-sm span {
   width: 40px;
   text-align: center;
