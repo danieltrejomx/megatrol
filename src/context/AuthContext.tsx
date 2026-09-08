@@ -55,7 +55,7 @@ interface AuthContextType {
   closeAuthModal: () => void;
   openAccountModal: () => void;
   closeAccountModal: () => void;
-  login: (identifier: string, password?: string) => Promise<{ success: boolean; error?: string }>;
+  login: (identifier: string, password?: string) => Promise<{ success: boolean; notRegistered?: boolean; error?: string }>;
   register: (name: string, email: string, phone: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateProfile: (data: Partial<Pick<User, 'name' | 'phone' | 'email' | 'avatar' | 'address' | 'favorites'>>) => void;
@@ -151,7 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAccountModalOpen(false);
   };
 
-  const login = async (identifier: string, _password?: string): Promise<{ success: boolean; error?: string }> => {
+  const login = async (identifier: string, _password?: string): Promise<{ success: boolean; notRegistered?: boolean; error?: string }> => {
     const raw = identifier.trim();
     if (!raw) {
       return { success: false, error: 'Por favor ingresa tu correo electrónico o número de WhatsApp' };
@@ -176,27 +176,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { success: true };
     }
 
-    // If not registered yet, create seamless account so user can access immediately
-    const isEmail = raw.includes('@');
-    const namePart = isEmail ? raw.split('@')[0] : `Cliente ${raw.slice(-4)}`;
-    const capitalizedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-
-    const newUser: User = {
-      id: `usr_${Date.now()}`,
-      name: capitalizedName,
-      email: isEmail ? cleanEmail : `${cleanDigits}@whatsapp.megatrol`,
-      phone: !isEmail ? raw : undefined,
-      provider: !isEmail ? 'whatsapp' : 'email',
-      orders: [],
-      createdAt: new Date().toISOString()
+    // Si NO está registrado aún, no permitir iniciar sesión y enviar directo a crear cuenta
+    return {
+      success: false,
+      notRegistered: true,
+      error: raw.includes('@')
+        ? 'Este correo electrónico aún no está registrado. Te hemos dirigido a Crear Cuenta para registrar tus datos.'
+        : 'Este número de WhatsApp aún no está registrado. Te hemos dirigido a Crear Cuenta para registrar tus datos.'
     };
-
-    users.push(newUser);
-    saveUsersDb(users);
-    setCurrentUser(newUser);
-    setIsAuthModalOpen(false);
-    setIsAccountModalOpen(true);
-    return { success: true };
   };
 
   const register = async (name: string, email: string, phone: string, _password?: string): Promise<{ success: boolean; error?: string }> => {

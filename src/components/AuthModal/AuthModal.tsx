@@ -42,7 +42,7 @@ export const AuthModal = () => {
     setTab(authModalTab);
   }, [authModalTab]);
 
-  // Reset error/success when modal opens or tab changes
+  // Reset error/success when modal opens
   useEffect(() => {
     if (isAuthModalOpen) {
       setErrorMsg('');
@@ -50,7 +50,7 @@ export const AuthModal = () => {
       setForgotPasswordView(false);
       setResetSent(false);
     }
-  }, [isAuthModalOpen, tab]);
+  }, [isAuthModalOpen]);
 
   // Handle ESC key
   useEffect(() => {
@@ -116,7 +116,18 @@ export const AuthModal = () => {
       try {
         const res = await login(cleanIdent, password.trim());
         if (!res.success) {
-          setErrorMsg(res.error || 'No se pudo iniciar sesión');
+          if (res.notRegistered) {
+            // Mandar directo a Crear Cuenta
+            setTab('register');
+            if (cleanIdent.includes('@')) {
+              setEmail(cleanIdent);
+            } else {
+              setPhone(cleanIdent);
+            }
+            setErrorMsg(res.error || 'Este correo aún no está registrado. Crea tu cuenta para continuar.');
+          } else {
+            setErrorMsg(res.error || 'No se pudo iniciar sesión');
+          }
         }
       } catch {
         setErrorMsg('Ocurrió un error al procesar tu solicitud');
