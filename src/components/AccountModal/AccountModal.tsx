@@ -567,13 +567,7 @@ export const AccountModal = () => {
               </div>
 
               <div className="account-field-full">
-                <label className="avatar-section-title">
-                  <Sparkles size={16} />
-                  <span>Elige tu Icono de Foto Predeterminado</span>
-                </label>
-                <p className="avatar-section-subtitle">
-                  Elige un icono oficial de Megatrol para tu perfil. Son lindos, profesionales y del mismo estilo:
-                </p>
+                <label className="avatar-section-title">Avatar</label>
 
                 <div className="preset-avatars-grid">
                   {PRESET_AVATARS.map(avatar => {
