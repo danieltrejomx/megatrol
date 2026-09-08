@@ -35,7 +35,7 @@ export interface User {
   email: string;
   phone?: string;
   avatar?: string;
-  provider?: 'local' | 'google';
+  provider?: 'email' | 'whatsapp' | 'local';
   address?: UserAddress;
   orders: OrderRecord[];
   createdAt: string;
@@ -51,59 +51,12 @@ interface AuthContextType {
   closeAuthModal: () => void;
   openAccountModal: () => void;
   closeAccountModal: () => void;
-  login: (email: string, password?: string) => Promise<{ success: boolean; error?: string }>;
-  loginWithGoogle: (customEmail?: string, customName?: string) => Promise<{ success: boolean; error?: string }>;
-  loginAsDemo: () => Promise<{ success: boolean }>;
-  register: (name: string, email: string, password?: string, phone?: string) => Promise<{ success: boolean; error?: string }>;
+  login: (identifier: string, password?: string) => Promise<{ success: boolean; error?: string }>;
+  register: (name: string, email: string, phone: string, password?: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateProfile: (data: Partial<Pick<User, 'name' | 'phone' | 'address'>>) => void;
   addOrder: (order: OrderRecord) => void;
 }
-
-const DEMO_USER: User = {
-  id: 'usr_demo_101',
-  name: 'Carlos Mendoza',
-  email: 'carlos.mendoza@ejemplo.com',
-  phone: '55 1234 5678',
-  provider: 'local',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-  address: {
-    calle: 'Av. Insurgentes Sur 1602, Int. 4B',
-    colonia: 'Crédito Constructor',
-    ciudad: 'Benito Juárez',
-    estado: 'Ciudad de México',
-    cp: '03940'
-  },
-  orders: [
-    {
-      orderNumber: 'MEG-849201',
-      customerName: 'Carlos Mendoza',
-      email: 'carlos.mendoza@ejemplo.com',
-      phone: '55 1234 5678',
-      total: 320,
-      shipping: 0,
-      paymentMethod: 'card',
-      status: 'Confirmado',
-      date: '5 de septiembre de 2026',
-      items: [
-        {
-          name: 'Megatrol Ungüento 100g',
-          qty: 1,
-          price: 320,
-          variant: 'Tubo 100g'
-        }
-      ],
-      address: {
-        calle: 'Av. Insurgentes Sur 1602, Int. 4B',
-        colonia: 'Crédito Constructor',
-        ciudad: 'Benito Juárez',
-        estado: 'Ciudad de México',
-        cp: '03940'
-      }
-    }
-  ],
-  createdAt: '2026-08-15T10:00:00.000Z'
-};
 
 const STORAGE_KEY_AUTH = 'megatrol_auth_user';
 const STORAGE_KEY_USERS = 'megatrol_registered_users';
@@ -124,7 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState<'login' | 'register'>('login');
 
-  // Load registered users array from localStorage or initialize with demo user
+  // Load registered users array from localStorage
   const getUsersDb = (): User[] => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY_USERS);
@@ -134,9 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch {
       // fallback
     }
-    const initial = [DEMO_USER];
-    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(initial));
-    return initial;
+    return [];
   };
 
   const saveUsersDb = (users: User[]) => {
@@ -186,14 +137,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAccountModalOpen(false);
   };
 
-  const login = async (email: string, _password?: string): Promise<{ success: boolean; error?: string }> => {
-    const cleanEmail = email.trim().toLowerCase();
-    if (!cleanEmail || !cleanEmail.includes('@')) {
-      return { success: false, error: 'Por favor ingresa un correo electrónico válido' };
+  const login = async (identifier: string, _password?: string): Promise<{ success: boolean; error?: string }> => {
+    const raw = identifier.trim();
+    if (!raw) {
+      return { success: false, error: 'Por favor ingresa tu correo electrónico o número de WhatsApp' };
     }
 
+    const cleanEmail = raw.toLowerCase();
+    const cleanDigits = raw.replace(/\D/g, '');
     const users = getUsersDb();
-    const found = users.find(u => u.email.toLowerCase() === cleanEmail);
+
+    // Match by email OR by phone number (comparing digits)
+    const found = users.find(u => {
+      const emailMatch = u.email && u.email.toLowerCase() === cleanEmail;
+      const phoneDigits = u.phone ? u.phone.replace(/\D/g, '') : '';
+      const phoneMatch = cleanDigits.length >= 7 && phoneDigits.length >= 7 && (phoneDigits === cleanDigits || phoneDigits.endsWith(cleanDigits) || cleanDigits.endsWith(phoneDigits));
+      return emailMatch || phoneMatch;
+    });
 
     if (found) {
       setCurrentUser(found);
@@ -202,17 +162,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { success: true };
     }
 
-    // If not found in DB, seamlessly create an account for them so they are never blocked
-    const namePart = cleanEmail.split('@')[0];
+    // If not registered yet, create seamless account so user can access immediately
+    const isEmail = raw.includes('@');
+    const namePart = isEmail ? raw.split('@')[0] : `Cliente ${raw.slice(-4)}`;
     const capitalizedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+
     const newUser: User = {
       id: `usr_${Date.now()}`,
       name: capitalizedName,
-      email: cleanEmail,
-      provider: 'local',
+      email: isEmail ? cleanEmail : `${cleanDigits}@whatsapp.megatrol`,
+      phone: !isEmail ? raw : undefined,
+      provider: !isEmail ? 'whatsapp' : 'email',
       orders: [],
       createdAt: new Date().toISOString()
     };
+
     users.push(newUser);
     saveUsersDb(users);
     setCurrentUser(newUser);
@@ -221,67 +185,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { success: true };
   };
 
-  const loginWithGoogle = async (customEmail?: string, customName?: string): Promise<{ success: boolean; error?: string }> => {
-    const cleanEmail = customEmail?.trim().toLowerCase();
-    const cleanName = customName?.trim();
-
-    const users = getUsersDb();
-
-    if (cleanEmail) {
-      const existing = users.find(u => u.email.toLowerCase() === cleanEmail);
-      if (existing) {
-        if (cleanName) existing.name = cleanName;
-        saveUsersDb(users);
-        setCurrentUser(existing);
-      } else {
-        const namePart = cleanName || (cleanEmail.split('@')[0].charAt(0).toUpperCase() + cleanEmail.split('@')[0].slice(1));
-        const newGoogleUser: User = {
-          id: `usr_g_${Date.now()}`,
-          name: namePart,
-          email: cleanEmail,
-          provider: 'google',
-          orders: [],
-          createdAt: new Date().toISOString()
-        };
-        users.push(newGoogleUser);
-        saveUsersDb(users);
-        setCurrentUser(newGoogleUser);
-      }
-      setIsAuthModalOpen(false);
-      setIsAccountModalOpen(true);
-      return { success: true };
-    }
-
-    return { success: false, error: 'Por favor ingresa tu correo de Gmail' };
-  };
-
-  const loginAsDemo = async (): Promise<{ success: boolean }> => {
-    setCurrentUser(DEMO_USER);
-    setIsAuthModalOpen(false);
-    setIsAccountModalOpen(true);
-    return { success: true };
-  };
-
-  const register = async (name: string, email: string, _password?: string, phone?: string): Promise<{ success: boolean; error?: string }> => {
-    const cleanEmail = email.trim().toLowerCase();
+  const register = async (name: string, email: string, phone: string, _password?: string): Promise<{ success: boolean; error?: string }> => {
     const cleanName = name.trim();
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPhone = phone.trim();
 
     if (!cleanName) {
       return { success: false, error: 'Por favor ingresa tu nombre completo' };
     }
-    if (!cleanEmail || !cleanEmail.includes('@')) {
+
+    if (!cleanEmail && !cleanPhone) {
+      return { success: false, error: 'Por favor ingresa tu correo electrónico o tu número de WhatsApp' };
+    }
+
+    if (cleanEmail && !cleanEmail.includes('@')) {
       return { success: false, error: 'Por favor ingresa un correo electrónico válido' };
     }
 
     const users = getUsersDb();
-    const existingIndex = users.findIndex(u => u.email.toLowerCase() === cleanEmail);
+    const cleanDigits = cleanPhone.replace(/\D/g, '');
 
-    // If an account already exists with this email, seamlessly update with the new name and log in
+    // Check if user already exists
+    const existingIndex = users.findIndex(u => {
+      const emailMatch = cleanEmail && u.email && u.email.toLowerCase() === cleanEmail;
+      const phoneDigits = u.phone ? u.phone.replace(/\D/g, '') : '';
+      const phoneMatch = cleanDigits.length >= 7 && phoneDigits.length >= 7 && phoneDigits === cleanDigits;
+      return emailMatch || phoneMatch;
+    });
+
     if (existingIndex >= 0) {
       users[existingIndex].name = cleanName;
-      if (phone?.trim()) {
-        users[existingIndex].phone = phone.trim();
-      }
+      if (cleanEmail) users[existingIndex].email = cleanEmail;
+      if (cleanPhone) users[existingIndex].phone = cleanPhone;
       saveUsersDb(users);
       setCurrentUser(users[existingIndex]);
       setIsAuthModalOpen(false);
@@ -292,9 +227,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const newUser: User = {
       id: `usr_${Date.now()}`,
       name: cleanName,
-      email: cleanEmail,
-      phone: phone?.trim(),
-      provider: 'local',
+      email: cleanEmail || `${cleanDigits}@whatsapp.megatrol`,
+      phone: cleanPhone || undefined,
+      provider: cleanPhone ? 'whatsapp' : 'email',
       orders: [],
       createdAt: new Date().toISOString()
     };
@@ -346,8 +281,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         openAccountModal,
         closeAccountModal,
         login,
-        loginWithGoogle,
-        loginAsDemo,
         register,
         logout,
         updateProfile,
