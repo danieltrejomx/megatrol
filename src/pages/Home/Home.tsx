@@ -403,6 +403,12 @@ const Home = () => {
             <div className="hero-orb hero-orb-blue"></div>
             <div className="hero-orb hero-orb-green"></div>
 
+            {/* Subtle Minimalist Brand Watermark */}
+            <div className="hero-brand-watermark" aria-hidden="true">
+              <span className="hero-brand-text">MEGATROL</span>
+              <span className="hero-brand-subtext">INOBAZZ PHARMA • VETERINARIA BOTÁNICA</span>
+            </div>
+
             <div className="hero-grid">
               <div className="hero-content">
                 <div className="hero-badge-pill">
