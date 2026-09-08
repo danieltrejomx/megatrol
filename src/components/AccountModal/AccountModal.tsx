@@ -19,7 +19,8 @@ import {
   User,
   Pencil,
   Trash2,
-  Check
+  Check,
+  MessageCircle
 } from 'lucide-react';
 import { useAuth, type UserAddress } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
@@ -507,27 +508,49 @@ export const AccountModal = () => {
                 </div>
               )}
 
-              <div className="account-form-row">
-                <div className="account-field-half">
-                  <label htmlFor="edit-name">Nombre Completo *</label>
-                  <input
-                    id="edit-name"
-                    type="text"
-                    value={editName}
-                    onChange={e => setEditName(e.target.value)}
-                    placeholder="Tu nombre completo"
-                    required
-                  />
+              <div className="account-profile-grid">
+                <div className="account-input-group">
+                  <label htmlFor="edit-name" className="account-input-label">
+                    <span>Nombre Completo</span>
+                    <span className="account-required-star">*</span>
+                  </label>
+                  <div className="account-input-wrapper">
+                    <User size={18} className="account-input-icon" />
+                    <input
+                      id="edit-name"
+                      type="text"
+                      className="account-input-field"
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      placeholder="Tu nombre completo"
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="account-field-half">
-                  <label htmlFor="edit-phone">WhatsApp / Teléfono</label>
-                  <input
-                    id="edit-phone"
-                    type="tel"
-                    value={editPhone}
-                    onChange={e => setEditPhone(e.target.value)}
-                    placeholder="Ej. 55 1234 5678"
-                  />
+
+                <div className="account-input-group">
+                  <div className="account-label-row">
+                    <label htmlFor="edit-phone" className="account-input-label">
+                      <span>WhatsApp / Teléfono</span>
+                    </label>
+                    <span className="account-field-badge">
+                      <MessageCircle size={11} /> WhatsApp
+                    </span>
+                  </div>
+                  <div className="account-input-wrapper">
+                    <MessageCircle size={18} className="account-input-icon whatsapp" />
+                    <input
+                      id="edit-phone"
+                      type="tel"
+                      className="account-input-field"
+                      value={editPhone}
+                      onChange={e => setEditPhone(e.target.value)}
+                      placeholder="Ej. 55 1234 5678"
+                    />
+                  </div>
+                  <span className="account-input-hint">
+                    Para recibir confirmaciones y dar seguimiento a tus pedidos.
+                  </span>
                 </div>
               </div>
 
