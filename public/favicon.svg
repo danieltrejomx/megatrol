@@ -15,10 +15,10 @@
   <g clip-path="url(#cardClip)">
     <rect width="64" height="64" fill="url(#megatrolGrad)"/>
     <rect x="0" y="56" width="64" height="8" fill="url(#limeGrad)"/>
-    <path d="M 11.5 47 L 17.5 13 L 32.5 41 L 47.5 13 L 41.5 47" 
+    <path d="M 13.5 47 L 13.5 13 L 32 43 L 50.5 13 L 50.5 47" 
           fill="none" 
           stroke="#ffffff" 
-          stroke-width="5" 
+          stroke-width="5.5" 
           stroke-linecap="round" 
           stroke-linejoin="round" />
   </g>
