@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { 
   Calendar, 
@@ -9,7 +10,10 @@ import {
   BookOpen, 
   Leaf, 
   Lightbulb, 
-  AlertCircle 
+  AlertCircle,
+  Zap,
+  CheckCircle2,
+  ArrowRight
 } from 'lucide-react';
 import { blogArticles } from '../../data/blog';
 import { products } from '../../data/products';
@@ -24,6 +28,18 @@ const BlogArticle = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [addedSlug, setAddedSlug] = useState<string | null>(null);
+
+  const handleBuyNow = (product: any) => {
+    addToCart(product, 1);
+    navigate('/carrito');
+  };
+
+  const handleAddToCart = (product: any) => {
+    addToCart(product, 1);
+    setAddedSlug(product.slug);
+    setTimeout(() => setAddedSlug(null), 2500);
+  };
   const article = blogArticles.find(a => a.slug === slug);
 
   if (!article) {
@@ -125,17 +141,37 @@ const BlogArticle = () => {
                   </div>
                   <div className="article-product-cta-actions">
                     <button
-                      className="btn btn-primary"
-                      onClick={() => navigate(`/producto/${p.slug}`)}
+                      type="button"
+                      className="btn btn-primary btn-article-buy"
+                      onClick={() => handleBuyNow(p)}
                     >
-                      Ver Producto
+                      <Zap size={16} />
+                      <span>Comprar Ahora</span>
                     </button>
                     <button
-                      className="btn btn-secondary"
-                      onClick={() => addToCart(p)}
+                      type="button"
+                      className={`btn btn-secondary btn-article-cart ${addedSlug === p.slug ? 'added' : ''}`}
+                      onClick={() => handleAddToCart(p)}
                     >
-                      <ShoppingCart size={16} />
-                      <span>Agregar al Carrito</span>
+                      {addedSlug === p.slug ? (
+                        <>
+                          <CheckCircle2 size={16} />
+                          <span>¡Agregado al Carrito!</span>
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart size={16} />
+                          <span>Agregar al Carrito</span>
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn-article-view-link"
+                      onClick={() => navigate(`/tienda?producto=${p.slug}`)}
+                    >
+                      <span>Ver Ficha Técnica Completa</span>
+                      <ArrowRight size={13} />
                     </button>
                   </div>
                 </div>

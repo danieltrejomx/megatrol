@@ -257,6 +257,80 @@
   flex-direction: column;
   gap: 10px;
   flex-shrink: 0;
+  min-width: 210px;
+}
+
+.btn-article-buy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 132, 199, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-article-buy:hover {
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, #004d80 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 132, 199, 0.35);
+}
+
+.btn-article-cart {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  background: #ffffff;
+  color: #0c2b42;
+  border: 1.5px solid #bae6fd;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-article-cart:hover {
+  background: #f0f9ff;
+  border-color: #0284c7;
+  color: #0284c7;
+  transform: translateY(-1px);
+}
+
+.btn-article-cart.added {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+
+.btn-article-view-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0284c7;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-article-view-link:hover {
+  color: #0369a1;
+  text-decoration: underline;
+  gap: 8px;
 }
 
 /* ── AUTHOR BOX ── */

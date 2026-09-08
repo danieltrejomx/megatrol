@@ -1,4 +1,4 @@
-﻿/* ── BLOG MODAL (PANTALLA EMERGENTE) ── */
+/* ── BLOG MODAL (PANTALLA EMERGENTE) ── */
 .blog-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -259,25 +259,85 @@
 
 .modal-product-actions {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.btn-modal-buy {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  gap: 8px;
+  padding: 13px 22px;
+  font-size: 15px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 132, 199, 0.28);
+  transition: all 0.2s ease;
+}
+
+.btn-modal-buy:hover {
+  background: linear-gradient(135deg, var(--color-primary-hover) 0%, #004d80 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 132, 199, 0.38);
 }
 
 .btn-modal-cart {
+  width: 100%;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 11px 20px;
+  padding: 12px 20px;
   font-size: 14px;
+  font-weight: 700;
+  background: #ffffff;
+  color: #0c2b42;
+  border: 1.5px solid #bae6fd;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.btn-modal-view {
+.btn-modal-cart:hover {
+  background: #f0f9ff;
+  border-color: #0284c7;
+  color: #0284c7;
+  transform: translateY(-1px);
+}
+
+.btn-modal-cart.added {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+
+.btn-modal-view-link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 11px 18px;
-  font-size: 14px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0284c7;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  margin-top: 4px;
+}
+
+.btn-modal-view-link:hover {
+  color: #005f9e;
+  text-decoration: underline;
 }
 
 .blog-modal-footer {

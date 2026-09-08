@@ -9,7 +9,9 @@ import {
   ShoppingCart, 
   MessageCircle, 
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Zap,
+  CheckCircle2
 } from 'lucide-react';
 import type { BlogArticle } from '../../data/blog';
 import { products } from '../../data/products';
@@ -25,6 +27,19 @@ interface BlogModalProps {
 export const BlogModal: React.FC<BlogModalProps> = ({ article, onClose }) => {
   const { addToCart } = useCart();
   const navigate = useNavigate();
+  const [addedSlug, setAddedSlug] = React.useState<string | null>(null);
+
+  const handleBuyNow = (prod: typeof products[0]) => {
+    addToCart(prod, 1);
+    onClose();
+    navigate('/carrito');
+  };
+
+  const handleAddToCart = (prod: typeof products[0]) => {
+    addToCart(prod, 1);
+    setAddedSlug(prod.slug);
+    setTimeout(() => setAddedSlug(null), 1600);
+  };
 
   useEffect(() => {
     if (!article) return;
@@ -131,21 +146,40 @@ export const BlogModal: React.FC<BlogModalProps> = ({ article, onClose }) => {
                     {prod && (
                       <div className="modal-product-actions">
                         <button 
-                          className="btn btn-primary btn-modal-cart"
-                          onClick={() => addToCart(prod)}
+                          type="button"
+                          className="btn btn-primary btn-modal-buy"
+                          onClick={() => handleBuyNow(prod)}
                         >
-                          <ShoppingCart size={16} />
-                          <span>Agregar al Carrito — ${prod.price}</span>
+                          <Zap size={16} />
+                          <span>Comprar Ahora — ${prod.price}</span>
                         </button>
                         <button 
-                          className="btn btn-secondary btn-modal-view"
+                          type="button"
+                          className={`btn btn-secondary btn-modal-cart ${addedSlug === prod.slug ? 'added' : ''}`}
+                          onClick={() => handleAddToCart(prod)}
+                        >
+                          {addedSlug === prod.slug ? (
+                            <>
+                              <CheckCircle2 size={16} />
+                              <span>¡Agregado al Carrito!</span>
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingCart size={16} />
+                              <span>Agregar al Carrito</span>
+                            </>
+                          )}
+                        </button>
+                        <button 
+                          type="button"
+                          className="btn-modal-view-link"
                           onClick={() => {
                             onClose();
-                            navigate(`/producto/${prod.slug}`);
+                            navigate(`/tienda?producto=${prod.slug}`);
                           }}
                         >
-                          <span>Ver Detalles</span>
-                          <ArrowRight size={14} />
+                          <span>Ver Ficha Técnica Completa</span>
+                          <ArrowRight size={13} />
                         </button>
                       </div>
                     )}
