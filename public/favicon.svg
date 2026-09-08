@@ -14,7 +14,12 @@
   </defs>
   <g clip-path="url(#cardClip)">
     <rect width="64" height="64" fill="url(#megatrolGrad)"/>
-    <rect x="0" y="57" width="64" height="7" fill="url(#limeGrad)"/>
-    <path d="M 12 47 L 17.8 15 L 26.2 15 L 32 31.8 L 37.8 15 L 46.2 15 L 40.4 47 L 33.6 47 L 36.9 26.5 L 33.3 37.5 L 30.7 37.5 L 27.1 26.5 L 18.8 47 Z" fill="#ffffff"/>
+    <rect x="0" y="56" width="64" height="8" fill="url(#limeGrad)"/>
+    <path d="M 11.5 47 L 17.5 13 L 32.5 41 L 47.5 13 L 41.5 47" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="5" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
   </g>
 </svg>
