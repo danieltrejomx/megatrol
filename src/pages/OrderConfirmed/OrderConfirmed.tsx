@@ -8,10 +8,22 @@ import {
   Building2, 
   Copy, 
   Check, 
-  ShieldCheck 
+  ShieldCheck,
+  Truck,
+  CreditCard,
+  Store,
+  ExternalLink,
+  Send
 } from 'lucide-react';
 import { MEGATROL_BANK_DETAILS } from '../../data/bankDetails';
 import './OrderConfirmed.css';
+
+interface OrderItem {
+  name: string;
+  qty: number;
+  price: number;
+  variant?: string;
+}
 
 interface OrderData {
   orderNumber: string;
@@ -22,12 +34,21 @@ interface OrderData {
   shipping?: number;
   paymentMethod?: 'card' | 'oxxo' | 'transfer';
   date?: string;
+  items?: OrderItem[];
+  address?: {
+    calle: string;
+    colonia: string;
+    ciudad: string;
+    estado: string;
+    cp: string;
+  };
 }
 
 const OrderConfirmed = () => {
   const location = useLocation();
   const [order, setOrder] = useState<OrderData | null>(null);
   const [copiedClabe, setCopiedClabe] = useState(false);
+  const [emailSentToast, setEmailSentToast] = useState(false);
 
   useEffect(() => {
     if (location.state && (location.state as OrderData).orderNumber) {
@@ -64,28 +85,146 @@ const OrderConfirmed = () => {
     setTimeout(() => setCopiedClabe(false), 2500);
   };
 
-  const whatsappMessage = encodeURIComponent(
-    `Hola Distribuidora de Megatrol, acabo de realizar la transferencia de $${orderTotal.toFixed(2)} MXN para el pedido ${orderNumber} de Megatrol. Adjunto mi comprobante:`
+  const handleSendEmailCopy = () => {
+    setEmailSentToast(true);
+    setTimeout(() => setEmailSentToast(false), 4000);
+  };
+
+  // Build a friendly, complete WhatsApp receipt
+  const itemsText = order?.items && order.items.length > 0 
+    ? order.items.map(i => `• ${i.name} (${i.variant || 'Estándar'}) x${i.qty} - $${(i.price * i.qty).toFixed(2)}`).join('\n')
+    : '• Megatrol Línea Veterinaria';
+
+  const addressText = order?.address 
+    ? `${order.address.calle}, Col. ${order.address.colonia}, ${order.address.ciudad}, ${order.address.estado}, CP ${order.address.cp}`
+    : 'A acordar por WhatsApp';
+
+  const paymentLabel = order?.paymentMethod === 'card' 
+    ? 'Tarjeta de Crédito / Débito' 
+    : order?.paymentMethod === 'oxxo' 
+    ? 'Efectivo OXXO Pay' 
+    : 'Transferencia Banamex SPEI';
+
+  const fullConfirmationMessage = encodeURIComponent(
+`¡Hola Distribuidora de Megatrol! Acabo de registrar mi compra en la tienda oficial:
+
+📋 *Orden:* ${orderNumber}
+👤 *Cliente:* ${order?.customerName || 'Cliente Megatrol'}
+📞 *Teléfono:* ${order?.phone || 'No especificado'}
+📧 *Correo:* ${order?.email || 'No especificado'}
+
+🛒 *Productos:*
+${itemsText}
+
+💰 *Total:* $${orderTotal.toFixed(2)} MXN
+💳 *Forma de Pago:* ${paymentLabel}
+📍 *Envío a:* ${addressText}
+
+${isTransfer ? '👉 Adjunto en este chat mi comprobante de transferencia Banamex para generar mi guía de envío.' : '👉 Favor de confirmar mi pedido y número de guía de paquetería cuando esté en camino.'}`
   );
 
   return (
     <div className="order-confirmed-page container">
       <div className="confirmed-card">
+        
+        {/* Success Icon */}
         <div className="confirmed-icon">
-          <CheckCircle2 size={68} color="var(--color-primary)" />
+          <CheckCircle2 size={68} color="#0084c7" />
         </div>
-        <h1>¡Pedido Registrado con Éxito!</h1>
+        
+        <h1 className="confirmed-main-title">¡Pedido Registrado con Éxito!</h1>
         <p className="order-number">Número de orden: <strong>{orderNumber}</strong></p>
 
         {order?.customerName && (
           <p className="confirmed-greeting">
-            Hola <strong>{order.customerName}</strong>, gracias por tu compra.
+            Hola <strong>{order.customerName}</strong>, gracias por tu compra en la tienda oficial de Megatrol.
           </p>
         )}
 
-        <p className="confirmed-msg">
-          Hemos registrado tu solicitud. Tu paquete será despachado de bodega en un plazo de <strong>1-2 días hábiles</strong> hacia tu domicilio.
-        </p>
+        {/* Channels of Confirmation Box */}
+        <div className="confirmed-channels-box">
+          <div className="channel-box-header">
+            <MessageCircle size={22} className="channel-icon-wa" />
+            <div className="channel-box-title">
+              <h3>Confirmación Inmediata por WhatsApp</h3>
+              <p>Envía tu pedido a la Distribuidora de Megatrol para preparar tu paquete de inmediato.</p>
+            </div>
+          </div>
+
+          <a
+            href={`https://wa.me/${MEGATROL_BANK_DETAILS.supportWhatsapp}?text=${fullConfirmationMessage}`}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-confirm-whatsapp-full"
+          >
+            <MessageCircle size={20} />
+            <span>{isTransfer ? 'Enviar Comprobante por WhatsApp' : 'Confirmar Pedido por WhatsApp'}</span>
+            <ExternalLink size={16} />
+          </a>
+
+          {order?.email && (
+            <div className="channel-email-row">
+              <div className="channel-email-text">
+                <Mail size={16} />
+                <span>Copia registrada para: <strong>{order.email}</strong></span>
+              </div>
+              <button 
+                type="button" 
+                className="btn-request-email-copy"
+                onClick={handleSendEmailCopy}
+              >
+                <Send size={14} />
+                <span>Enviar copia a mi correo</span>
+              </button>
+            </div>
+          )}
+
+          {emailSentToast && (
+            <div className="email-sent-toast">
+              <Check size={16} />
+              <span>¡Confirmación enviada! Recibirás los datos en tu bandeja de entrada o spam.</span>
+            </div>
+          )}
+        </div>
+
+        {/* Order Details Breakdown */}
+        {order?.items && order.items.length > 0 && (
+          <div className="confirmed-items-card">
+            <h3>Resumen de tu Compra</h3>
+            <div className="confirmed-items-list">
+              {order.items.map((it, idx) => (
+                <div key={idx} className="c-item-row">
+                  <div className="c-item-info">
+                    <strong>{it.name}</strong>
+                    {it.variant && <span className="c-item-variant">{it.variant}</span>}
+                  </div>
+                  <div className="c-item-price-qty">
+                    <span>x{it.qty}</span>
+                    <strong>${(it.price * it.qty).toFixed(2)} MXN</strong>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="confirmed-totals-box">
+              <div className="c-total-line">
+                <span>Envío:</span>
+                <span>{order.shipping === 0 ? '¡Gratis!' : `$${order.shipping || 99}.00 MXN`}</span>
+              </div>
+              <div className="c-total-line c-total-final">
+                <span>Total a Pagar:</span>
+                <strong>${orderTotal.toFixed(2)} MXN</strong>
+              </div>
+            </div>
+
+            {order?.address && (
+              <div className="confirmed-address-box">
+                <Truck size={16} />
+                <span><strong>Dirección de entrega:</strong> {addressText}</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Bank Transfer Instructions Card (Banamex - Distribuidora de Megatrol) */}
         {isTransfer && (
@@ -146,46 +285,46 @@ const OrderConfirmed = () => {
                 <strong className="c-bank-value c-ref-code">{orderNumber}</strong>
               </div>
             </div>
-
-            {/* Direct WhatsApp Voucher CTA */}
-            <div className="confirmed-whatsapp-voucher-box">
-              <p>
-                <strong>¿Ya realizaste tu transferencia?</strong> Envíanos tu comprobante para generar tu guía de envío al instante:
-              </p>
-              <a
-                href={`https://wa.me/${MEGATROL_BANK_DETAILS.supportWhatsapp}?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noreferrer"
-                className="btn-send-whatsapp-voucher"
-              >
-                <MessageCircle size={18} />
-                <span>Enviar Comprobante por WhatsApp al (55) 3620 6854</span>
-              </a>
-            </div>
           </div>
         )}
 
-        <div className="next-steps">
-          <div className="next-step">
-            <div className="next-step-icon">
-              <Mail size={22} />
-            </div>
-            <p>Recibirás un correo con la confirmación y número de guía de envío de Estafeta / FedEx.</p>
+        {/* Card or Oxxo notice */}
+        {order?.paymentMethod === 'card' && (
+          <div className="confirmed-payment-badge-row">
+            <CreditCard size={20} color="#0084c7" />
+            <span>Pago procesado con <strong>Tarjeta de Crédito / Débito</strong>.</span>
           </div>
+        )}
+        {order?.paymentMethod === 'oxxo' && (
+          <div className="confirmed-payment-badge-row">
+            <Store size={20} color="#f59e0b" />
+            <span>Recuerda acudir a tu tienda OXXO más cercana con tu referencia: <strong>{orderNumber}</strong></span>
+          </div>
+        )}
+
+        {/* Next Steps */}
+        <div className="next-steps">
           <div className="next-step">
             <div className="next-step-icon">
               <Package size={22} />
             </div>
-            <p>Tu pedido llegará en 3-5 días hábiles a toda la República Mexicana con empaque seguro.</p>
+            <p>Tu paquete será despachado de bodega en un plazo de <strong>1-2 días hábiles</strong> hacia tu domicilio.</p>
+          </div>
+          <div className="next-step">
+            <div className="next-step-icon">
+              <Truck size={22} />
+            </div>
+            <p>Recibirás tu número de guía de rastreo (Estafeta / FedEx / RedPack) por WhatsApp o correo.</p>
           </div>
           <div className="next-step">
             <div className="next-step-icon">
               <MessageCircle size={22} />
             </div>
-            <p>¿Tienes dudas sobre tu dosis o envío? Nuestro equipo veterinario te atiende por WhatsApp.</p>
+            <p>¿Dudas sobre dosis o aplicación veterinaria? Mayela te atiende directo al <strong>(55) 3620 6854</strong>.</p>
           </div>
         </div>
 
+        {/* Action buttons */}
         <div className="confirmed-actions">
           <Link to="/" className="btn btn-primary">Volver al Inicio</Link>
           <Link to="/tienda" className="btn btn-secondary">Seguir Comprando</Link>
