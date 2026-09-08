@@ -14,7 +14,7 @@ const Blog = () => {
         <div className="page-banner-header banner-blog">
           <span className="page-banner-badge">Inobazz Pharma</span>
           <h1>Blog y Consejos</h1>
-          <p>Información veterinaria de confianza para el cuidado de tus mascotas y animales</p>
+          <p>Información veterinaria de confianza para el cuidado de tus mascotas</p>
         </div>
       </div>
 
