@@ -13,13 +13,17 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product, quantity?: number, presentation?: string, aroma?: string) => void;
+  addToCart: (product: Product, quantity?: number, presentation?: string, aroma?: string, openDrawer?: boolean) => void;
   removeFromCart: (itemId: string | number) => void;
   updateQuantity: (itemId: string | number, quantity: number) => void;
   updateItemVariant: (itemId: string | number, newPresentation?: string, newAroma?: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
+  isCartOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
 }
 
 const resolveUnitPrice = (product: Product, presentation?: string): number => {
@@ -48,8 +52,13 @@ const CartContext = createContext<CartContextType | null>(null);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const addToCart = (product: Product, quantity = 1, presentation?: string, aroma?: string) => {
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+  const toggleCart = () => setIsCartOpen(prev => !prev);
+
+  const addToCart = (product: Product, quantity = 1, presentation?: string, aroma?: string, openDrawer = true) => {
     const presentations = parsePresentations(product.presentation);
     const finalPres = presentation || (presentations.length > 0 ? presentations[0] : undefined);
     const finalAroma = aroma || (product.aromas && product.aromas.length > 0 ? product.aromas[0] : undefined);
@@ -74,6 +83,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         activeImage
       }];
     });
+
+    if (openDrawer) {
+      setIsCartOpen(true);
+    }
   };
 
   const updateItemVariant = (itemId: string | number, newPresentation?: string, newAroma?: string) => {
@@ -125,7 +138,20 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const totalPrice = items.reduce((sum, i) => sum + (i.unitPrice ?? i.product.price) * i.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ items, addToCart, removeFromCart, updateQuantity, updateItemVariant, clearCart, totalItems, totalPrice }}>
+    <CartContext.Provider value={{ 
+      items, 
+      addToCart, 
+      removeFromCart, 
+      updateQuantity, 
+      updateItemVariant, 
+      clearCart, 
+      totalItems, 
+      totalPrice,
+      isCartOpen,
+      openCart,
+      closeCart,
+      toggleCart
+    }}>
       {children}
     </CartContext.Provider>
   );

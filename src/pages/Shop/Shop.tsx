@@ -118,7 +118,7 @@ const Shop = () => {
               className="btn btn-shop-buy"
               onClick={(e) => {
                 e.stopPropagation();
-                addToCart(product, 1);
+                addToCart(product, 1, undefined, undefined, false);
                 navigate('/carrito');
               }}
             >

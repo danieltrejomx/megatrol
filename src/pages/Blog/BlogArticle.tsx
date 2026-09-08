@@ -31,12 +31,12 @@ const BlogArticle = () => {
   const [addedSlug, setAddedSlug] = useState<string | null>(null);
 
   const handleBuyNow = (product: any) => {
-    addToCart(product, 1);
+    addToCart(product, 1, undefined, undefined, false);
     navigate('/carrito');
   };
 
   const handleAddToCart = (product: any) => {
-    addToCart(product, 1);
+    addToCart(product, 1, undefined, undefined, true);
     setAddedSlug(product.slug);
     setTimeout(() => setAddedSlug(null), 2500);
   };

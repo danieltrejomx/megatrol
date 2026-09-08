@@ -79,13 +79,16 @@ export const ProductModal: React.FC<ProductModalProps> = ({ product, onClose }) 
      selectedPresentation.toLowerCase().includes('galon'));
 
   const handleAddToCart = () => {
-    addToCart(product, quantity, selectedPresentation, selectedAroma);
+    addToCart(product, quantity, selectedPresentation, selectedAroma, true);
     setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    setTimeout(() => {
+      setAdded(false);
+      onClose();
+    }, 400);
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity, selectedPresentation, selectedAroma);
+    addToCart(product, quantity, selectedPresentation, selectedAroma, false);
     onClose();
     navigate('/carrito');
   };

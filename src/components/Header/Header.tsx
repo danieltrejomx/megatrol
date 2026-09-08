@@ -1,12 +1,11 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import './Header.css';
 
 const Header = () => {
-  const { totalItems } = useCart();
-  const navigate = useNavigate();
+  const { totalItems, openCart } = useCart();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   // Close mobile menu on ESC key
@@ -79,7 +78,7 @@ const Header = () => {
         </nav>
 
         <div className="header-actions">
-          <button className="cart-btn" aria-label="Carrito de compras" onClick={() => { setMobileOpen(false); navigate('/carrito'); }}>
+          <button className="cart-btn" aria-label="Carrito de compras" onClick={() => { setMobileOpen(false); openCart(); }}>
             <ShoppingCart size={24} />
             {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
           </button>

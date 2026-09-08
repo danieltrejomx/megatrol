@@ -3,6 +3,7 @@ import { CartProvider } from './context/CartContext';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import CartDrawer from './components/CartDrawer/CartDrawer';
 import Home from './pages/Home/Home';
 import Shop from './pages/Shop/Shop';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
@@ -20,6 +21,7 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <ScrollToTop />
+        <CartDrawer />
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header />
           <main style={{ flex: 1 }}>

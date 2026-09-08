@@ -30,15 +30,18 @@ export const BlogModal: React.FC<BlogModalProps> = ({ article, onClose }) => {
   const [addedSlug, setAddedSlug] = React.useState<string | null>(null);
 
   const handleBuyNow = (prod: typeof products[0]) => {
-    addToCart(prod, 1);
+    addToCart(prod, 1, undefined, undefined, false);
     onClose();
     navigate('/carrito');
   };
 
   const handleAddToCart = (prod: typeof products[0]) => {
-    addToCart(prod, 1);
+    addToCart(prod, 1, undefined, undefined, true);
     setAddedSlug(prod.slug);
-    setTimeout(() => setAddedSlug(null), 1600);
+    setTimeout(() => {
+      setAddedSlug(null);
+      onClose();
+    }, 400);
   };
 
   useEffect(() => {

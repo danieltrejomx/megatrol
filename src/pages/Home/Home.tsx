@@ -313,7 +313,7 @@ const Home = () => {
   const handleBuyNowFromVideo = (slug: string) => {
     const productObj = products.find((p) => p.slug === slug);
     if (productObj) {
-      addToCart(productObj, 1);
+      addToCart(productObj, 1, undefined, undefined, false);
       navigate('/carrito');
     }
   };
@@ -574,7 +574,7 @@ const Home = () => {
                         className="btn btn-buy-now"
                         onClick={(e) => {
                           e.stopPropagation();
-                          addToCart(p, 1);
+                          addToCart(p, 1, undefined, undefined, false);
                           navigate('/carrito');
                         }}
                       >
